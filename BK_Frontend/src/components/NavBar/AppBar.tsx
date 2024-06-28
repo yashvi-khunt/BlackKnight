@@ -16,9 +16,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import Logo from "./Logo";
+import Logo from "../Logo";
+import { adminRoutes } from "../../routes/AdminRoutes";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Tooltip } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -95,6 +96,10 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -122,7 +127,11 @@ export default function MiniDrawer() {
           </IconButton>
 
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            {open ? (
+              adminRoutes.find((r) => currentPath.includes(r.path))?.name
+            ) : (
+              <Logo />
+            )}
           </Typography>
         </Toolbar>
         <Divider />
@@ -139,33 +148,89 @@ export default function MiniDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+        <List sx={{ pt: 2 }}>
+          {adminRoutes.map((route) => (
+            <ListItem key={route.path} disablePadding sx={{ display: "block" }}>
+              {open ? (
+                <ListItemButton
+                  onClick={() => navigate(route.path)}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    minHeight: 48,
                     justifyContent: "center",
+                    px: 2.5,
+                    m: 1,
+                    borderRadius: "10px",
+                    backgroundColor: currentPath.includes(route.path)
+                      ? "secondary.light"
+                      : "inherit",
+                    boxShadow: currentPath.includes(route.path) ? 3 : 0,
+                    ":hover": {
+                      backgroundColor: "secondary.light",
+                    },
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 2 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    {route.iconClass}
+                  </ListItemIcon>
+
+                  <ListItemText
+                    primary={route.name}
+                    primaryTypographyProps={{ fontWeight: 600 }}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              ) : (
+                <Tooltip title={route.name} placement="right" arrow>
+                  <ListItemButton
+                    onClick={() => navigate(route.path)}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: "center",
+                      px: 2.5,
+                      m: 1,
+                      borderRadius: "10px",
+                      backgroundColor: currentPath.includes(route.path)
+                        ? "secondary.light"
+                        : "inherit",
+                      boxShadow: currentPath.includes(route.path) ? 3 : 0,
+                      ":hover": {
+                        backgroundColor: "secondary.light",
+                      },
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 2 : "auto",
+                        justifyContent: "center",
+                        color: "black",
+                      }}
+                    >
+                      {route.iconClass}
+                    </ListItemIcon>
+
+                    <ListItemText
+                      primary={route.name}
+                      primaryTypographyProps={{ fontWeight: 600 }}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
+              )}
             </ListItem>
           ))}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
+        <Outlet />
       </Box>
     </Box>
   );

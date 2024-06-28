@@ -1,12 +1,12 @@
 import { ThemeProvider } from "@emotion/react";
-import MiniDrawer from "./components/AppBar";
 import theme from "./theme";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <MiniDrawer />
+        <AppRoutes />
       </ThemeProvider>
     </>
   );

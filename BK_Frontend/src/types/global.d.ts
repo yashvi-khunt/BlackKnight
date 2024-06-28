@@ -1,12 +1,13 @@
 declare namespace Global {
-  type RouteConfig = Array<{
+  type route = {
     name?: string;
     path: string;
     element: React.ReactNode;
     roles: Array<Role>;
-    children?: RouteConfig;
-    iconClass?: stirng;
-  }>;
+    children?: Array<RouteConfig>;
+    iconClass?: SvgIconTypeMap;
+  };
+  type RouteConfig = Array<route>;
 
   type Role = "Admin" | "Client" | "Jobworker";
 

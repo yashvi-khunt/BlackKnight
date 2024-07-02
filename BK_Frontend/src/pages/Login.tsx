@@ -9,18 +9,12 @@ import {
 } from "@mui/material";
 import bgImg from "../assets/LoginBG.png";
 import Logo from "../assets/Logo.png";
-import bgPattern from "../assets/LoginBG_1.png";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { FormInputText, FormInputPassword } from "../components/form";
 
 function Login() {
-  const {
-    handleSubmit,
-    register,
-    control,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit, register, control } = useForm();
   const [error, setError] = useState(null);
 
   // useEffect(() => {
@@ -66,20 +60,6 @@ function Login() {
         backgroundPosition: "center",
       }}
     >
-      <Box
-        component="img"
-        src={bgPattern}
-        alt="Background Pattern"
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 1,
-        }}
-      />
       <Paper sx={{ p: 4, borderRadius: 7 }} elevation={5}>
         <Box display="flex" flexDirection="column">
           <Box

@@ -39,6 +39,7 @@ const theme: Theme = createTheme({
       main: "#ffffff",
     },
   },
+  typography: { fontFamily: "Inter" },
 });
 
 export default theme;

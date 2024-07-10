@@ -1,4 +1,5 @@
 import MiniDrawer from "../components/NavBar/AppBar";
+import { useAppSelector } from "../redux/hooks";
 import { adminRoutes } from "./AdminRoutes";
 import { authRoutes } from "./AuthRoutes";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
@@ -7,8 +8,8 @@ const AppRoutes = () => {
   const protectedRoutes = [...adminRoutes];
   const unprotectedRoutes = [...authRoutes];
 
-  // const userRole = useAppSelector((state) => state.auth.userData?.role);
-  const userRole: Global.Role = "Admin";
+  const userRole = useAppSelector((state) => state.auth.userData?.role);
+  // const userRole: Global.Role = "Admin";
 
   const filterRoute = (routeArray: Global.RouteConfig) => {
     return routeArray

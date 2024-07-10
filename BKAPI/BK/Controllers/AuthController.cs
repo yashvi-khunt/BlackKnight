@@ -2,61 +2,67 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BK.BLL.Helper;
-using BK.DAL.Context;
 using BK.DAL.Models;
 using BK.DAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using ILogger = Serilog.ILogger;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace BKAPI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController : Controller
+public class AuthController : ControllerBase
 {
 
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly ApplicationDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly ILogger _logger;
 
-    public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
-        ApplicationDbContext context, IConfiguration configuration)
+    public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration,
+        ILogger logger)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
-        _context = context;
         _configuration = configuration;
+        _logger = logger;
     }
     
     [HttpPost]
-    [Route("login")]
+    [Route("Login")]
     public async Task<IActionResult> Login([FromBody] VMLogin model)
     {
+        _logger.Information("Login attempt for user {UserName}", model.UserName);
+        
         var user = await _userManager.FindByNameAsync(model.UserName);
 
         if (user == null)
         {
+            _logger.Warning("Login failed for user {UserName}: user not found", model.UserName);
             return StatusCode(StatusCodes.Status401Unauthorized, new Response("Username or Password is incorrect", false));
         }
 
         if (!await _userManager.CheckPasswordAsync(user, model.Password))
         {
+            _logger.Warning("Login failed for user {UserName}: incorrect password", model.UserName);
             return StatusCode(StatusCodes.Status401Unauthorized, new Response("Username or Password is incorrect", false));
         }
         
         var userRole = await _userManager.GetRolesAsync(user);
 
         var token = GenerateJwtToken(user, userRole);
+        
+        _logger.Information("User {UserName} logged in successfully", model.UserName);
         return StatusCode(200, new Response<string>(token, true, "Logged in successfully!"));
     }
 
     [Authorize]
-    [HttpPut("ChangePassword")]
+    [HttpPut("Change-password")]
     public async Task<IActionResult> ChangePassword([FromBody] VMChangePassword model)
     {
+        _logger.Information("ChangePassword attempt for user {UserName}", User.Identity.Name);
+        
         try
         {
             var user = await _userManager.GetUserAsync(User);
@@ -68,18 +74,22 @@ public class AuthController : Controller
 
                 if (result.Succeeded)
                 {
+                    _logger.Information("Password changed successfully for user {UserName}", user.UserName);
                     return Ok(new Response("Password Changed successfully."));
                 }
                 else
                 {
+                    _logger.Error("Error changing password for user {UserName}", user.UserName);
                     return StatusCode(500, "Something went wrong.");
                 }
 
             }
+            _logger.Error("User not found while changing password for {UserName}", User.Identity.Name);
             return StatusCode(500, new Response("Something went wrong.", false));
         }
         catch (Exception ex)
         {
+            _logger.Error(ex, "Exception occurred while changing password for user {UserName}", User.Identity.Name);
             return StatusCode(StatusCodes.Status500InternalServerError, new Response(ex.Message, false));
         }
     }
@@ -91,7 +101,6 @@ public class AuthController : Controller
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.GivenName,user.UserId)
         };
 
         foreach (var role in userRole)
@@ -111,6 +120,4 @@ public class AuthController : Controller
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-    
-    
 }

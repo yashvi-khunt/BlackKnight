@@ -1,13 +1,17 @@
 import { ThemeProvider } from "@emotion/react";
 import theme from "./theme";
 import AppRoutes from "./routes/AppRoutes";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 function App() {
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <AppRoutes />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <AppRoutes />
+        </ThemeProvider>
+      </Provider>
     </>
   );
 }

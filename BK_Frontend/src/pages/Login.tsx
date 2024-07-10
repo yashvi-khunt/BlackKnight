@@ -10,40 +10,36 @@ import {
 import bgImg from "../assets/LoginBG.png";
 import Logo from "../assets/Logo.png";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormInputText, FormInputPassword } from "../components/form";
+import { useAppDispatch } from "../redux/hooks";
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../redux/api/authApi";
+import { login } from "../redux/slice/authSlice";
 
 function Login() {
   const { handleSubmit, register, control } = useForm();
   const [error, setError] = useState(null);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [loginApi, { data: loginResponse, error: loginError }] =
+    useLoginMutation();
 
-  // useEffect(() => {
-  //   setError(loginError?.data.message);
-  // }, [loginError]);
+  useEffect(() => {
+    setError(loginError?.data.message);
+  }, [loginError]);
 
   const onSubmit = (data) => {
     console.log(data);
-    // loginApi(data as authTypes.loginRegisterParams);
+    loginApi(data as authTypes.loginRegisterParams);
   };
 
-  //  useEffect(() => {
-  //    if (loginResponse?.success) {
-  //      dispatch(login(loginResponse.data));
-  //      navigate("/");
-  //    }
-  //  }, [loginResponse]);
-
-  // useEffect(() => {
-  //   console.log(apisuccess);
-  //   if (apisuccess?.status) {
-  //     dispatch(login(apisuccess?.data?.token));
-  //     navigate("/");
-  //   }
-  // }, [apisuccess?.data]);
-
-  // useEffect(() => {
-  //   setError(apiError?.data.message);
-  // }, [apiError]);
+  useEffect(() => {
+    if (loginResponse?.success) {
+      dispatch(login(loginResponse.data));
+      navigate("/");
+    }
+  }, [loginResponse]);
 
   const clearError = () => {
     setError(null);

@@ -1,4 +1,6 @@
 using BK.BLL.Helper;
+using BK.BLL.Repositories;
+using BK.BLL.Services;
 using BK.DAL.Context;
 using BK.DAL.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -57,6 +59,9 @@ namespace BKAPI
                 .CreateLogger();
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
+            
+            //Services
+            builder.Services.AddTransient<IUserService, UserService>();
 
             //Identity
             builder.Services.AddDbContext<ApplicationDbContext>(
@@ -117,8 +122,6 @@ namespace BKAPI
                                .AllowAnyHeader();
                     });
             });
-
-
 
             var app = builder.Build();
 

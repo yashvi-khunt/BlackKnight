@@ -48,7 +48,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             IsActivated = true,
             CreatedDate = DateTime.Now,
             CompanyName = "Black Knight Enterprise",
-            UserId = "BK_Admin",
             UserPassword = "Admin@123",
         };
         builder.Entity<ApplicationUser>().HasData(admin);

@@ -20,6 +20,8 @@ import Logo from "../Logo";
 import { adminRoutes } from "../../routes/AdminRoutes";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Tooltip } from "@mui/material";
+import { useEffect } from "react";
+import { useAppSelector } from "../../redux/hooks";
 
 const drawerWidth = 240;
 
@@ -99,6 +101,14 @@ export default function MiniDrawer() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
+
+  const userStatus = useAppSelector((state) => state.auth.status);
+
+  useEffect(() => {
+    if (currentPath === "/") {
+      userStatus ? navigate("/dashboard") : navigate("/login");
+    }
+  }, [currentPath]);
 
   const handleDrawerOpen = () => {
     setOpen(true);

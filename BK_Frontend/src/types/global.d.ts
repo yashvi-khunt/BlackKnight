@@ -4,7 +4,7 @@ declare namespace Global {
     path: string;
     element: React.ReactNode;
     roles: Array<Role>;
-    children?: Array<RouteConfig>;
+    children?: Array<route>;
     iconClass?: SvgIconTypeMap;
   };
   type RouteConfig = Array<route>;
@@ -20,6 +20,18 @@ declare namespace Global {
   type Option = {
     label: string;
     value: number | string;
+  };
+
+  type UserData = {
+    role: string;
+    id: string;
+    email: string;
+  };
+
+  type InitialUser = {
+    status: boolean;
+    userData: UserData | null;
+    token: string | null;
   };
 
   type dropDownOptions = Global.apiResponse<Global.Option[]>;

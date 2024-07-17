@@ -142,7 +142,7 @@ public class UserService : IUserService
         {
             UserId = newJobworker.Id,
             FluteRate = addJobworker.FluteRate,
-            LinerRate = addJobworker.LinerRate
+            LinerRate = addJobworker.LinerRate ?? null
         };
 
         _context.JobWorkers.Add(jobWorkerDetails);

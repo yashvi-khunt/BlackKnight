@@ -74,3 +74,44 @@ declare namespace clientTypes {
   };
   type getClient = Global.apiResponse<addClient>;
 }
+
+declare namespace jobworkerTypes {
+  type addJobworker = {
+    companyName: string;
+    userName: string;
+    userPassword: string;
+    phoneNumber: string;
+    fluteRate: number;
+    linerRate?: number;
+    gstNumber?: string;
+  };
+
+  type updateJobworker = {
+    companyName?: string;
+    userName?: string;
+    userPassword?: string;
+    phoneNumber?: string;
+    fluteRate?: number;
+    linerRate?: number;
+    gstNumber?: string;
+  };
+
+  type jobworkerDetails = {
+    id: string;
+    companyName: string;
+    userName: string;
+    userPassword: string;
+    phoneNumber: string;
+    fluteRate: number;
+    linerRate: number;
+    gstNumber: string;
+  };
+
+  type getJobworkers = Omit<Global.apiResponse, "data"> & {
+    data: {
+      count: number;
+      data: jobworkerDetails[];
+    };
+  };
+  type getJobworker = Global.apiResponse<addJobworker>;
+}

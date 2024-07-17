@@ -4,23 +4,23 @@ import { useForm } from "react-hook-form";
 import capitalizeFirstLetter from "../../helperFunctions/capitalizeFirstLetter";
 import { FormInputPassword, FormInputText } from "../../components/form";
 import {
-  useAddClientMutation,
-  useUpdateClientMutation,
-} from "../../redux/api/clientApi";
+  useAddJobworkerMutation,
+  useUpdateJobworkerMutation,
+} from "../../redux/api/jobworkerApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
 
-function ClientModal({ open, handleClose, clientData, mode }) {
+function JobworkerModal({ open, handleClose, jobworkerData, mode }) {
   const { control, register, handleSubmit, reset, watch } = useForm();
-  const [addClient, { error: addError, data: addResponse }] =
-    useAddClientMutation();
-  const [updateClient, { error: updateError, data: updateResponse }] =
-    useUpdateClientMutation();
+  const [addJobworker, { error: addError, data: addResponse }] =
+    useAddJobworkerMutation();
+  const [updateJobworker, { error: updateError, data: updateResponse }] =
+    useUpdateJobworkerMutation();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (clientData) {
-      reset({ ...clientData, confirmPassword: clientData.userPassword });
+    if (jobworkerData) {
+      reset({ ...jobworkerData, confirmPassword: jobworkerData.userPassword });
     } else {
       reset({
         companyName: "",
@@ -28,9 +28,11 @@ function ClientModal({ open, handleClose, clientData, mode }) {
         userPassword: "",
         phoneNumber: "",
         gstNumber: "",
+        fluteRate: "",
+        linerRate: "",
       });
     }
-  }, [clientData, reset]);
+  }, [jobworkerData, reset]);
 
   useEffect(() => {
     if (addResponse) {
@@ -75,13 +77,19 @@ function ClientModal({ open, handleClose, clientData, mode }) {
   }, [updateResponse, updateError?.data]);
 
   const onSubmit = async (data) => {
+    const jobworkerData = {
+      ...data,
+      linerRate: data.linerRate ? parseFloat(data.linerRate) : null,
+    };
+
+    console.log(jobworkerData);
+
     if (mode === "add") {
-      await addClient(data);
+      await addJobworker(jobworkerData);
     } else if (mode === "edit") {
-      await updateClient({ data, id: clientData.id });
+      await updateJobworker({ data: jobworkerData, id: jobworkerData.id });
     }
   };
-
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -97,7 +105,7 @@ function ClientModal({ open, handleClose, clientData, mode }) {
         }}
       >
         <Typography variant="h6" component="h2">
-          {`${capitalizeFirstLetter(mode)} Client`}
+          {`${capitalizeFirstLetter(mode)} Jobworker`}
         </Typography>
         <Box
           component="form"
@@ -181,6 +189,34 @@ function ClientModal({ open, handleClose, clientData, mode }) {
           />
           <FormInputText
             control={control}
+            label="Flute Rate"
+            {...register("fluteRate", {
+              required: {
+                value: true,
+                message: "Flute rate is required.",
+              },
+              pattern: {
+                value: /^\d+(\.\d{1,2})?$/,
+                message:
+                  "Please enter a positive decimal number with up to two decimal places.",
+              },
+            })}
+            disabled={mode === "view"}
+          />
+          <FormInputText
+            control={control}
+            label="Liner Rate"
+            {...register("linerRate", {
+              pattern: {
+                value: /^\d+(\.\d{1,2})?$/,
+                message:
+                  "Please enter a positive decimal number with up to two decimal places.",
+              },
+            })}
+            disabled={mode === "view"}
+          />
+          <FormInputText
+            control={control}
             label="GST Number"
             placeholder="11AAAAA1111A1AA"
             {...register("gstNumber", {
@@ -213,4 +249,4 @@ function ClientModal({ open, handleClose, clientData, mode }) {
   );
 }
 
-export default ClientModal;
+export default JobworkerModal;

@@ -1,8 +1,8 @@
-import MiniDrawer from "../components/NavBar/AppBar";
 import { useAppSelector } from "../redux/hooks";
 import { adminRoutes } from "./AdminRoutes";
 import { authRoutes } from "./AuthRoutes";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import Layout from "./Layout";
 
 const AppRoutes = () => {
   const protectedRoutes = [...adminRoutes];
@@ -10,10 +10,11 @@ const AppRoutes = () => {
 
   const userRole = useAppSelector((state) => state.auth.userData?.role);
   // const userRole: Global.Role = "Admin";
+  console.log(userRole);
 
   const filterRoute = (routeArray: Global.RouteConfig) => {
     return routeArray
-      .filter((route) => route.roles?.includes(userRole))
+      .filter((route) => route.roles?.includes(userRole as Global.Role))
       .map((route) => {
         return (
           <Route
@@ -32,33 +33,35 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {unprotectedRoutes.map((route) => {
-          if (route.children && route.children.length > 0) {
-            const childRoutes = route.children.map((childRoute) => (
-              <Route
-                key={childRoute.path}
-                path={childRoute.path}
-                element={childRoute.element}
-              />
-            ));
-            return (
-              <Route key={route.path} path={route.path} element={<Outlet />}>
-                <Route path="" element={route.element} />
-                {childRoutes}
-              </Route>
-            );
-          } else {
-            return (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            );
-          }
-        })}
-        <Route path="/" element={<MiniDrawer />}>
-          {filterRoute(protectedRoutes)}
+        <Route path="/">
+          {unprotectedRoutes.map((route) => {
+            if (route.children && route.children.length > 0) {
+              const childRoutes = route.children.map((childRoute) => (
+                <Route
+                  key={childRoute.path}
+                  path={childRoute.path}
+                  element={childRoute.element}
+                />
+              ));
+              return (
+                <Route key={route.path} path={route.path} element={<Outlet />}>
+                  <Route path="" element={route.element} />
+                  {childRoutes}
+                </Route>
+              );
+            } else {
+              return (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              );
+            }
+          })}
+          <Route path="/" element={<Layout />}>
+            {filterRoute(protectedRoutes)}
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

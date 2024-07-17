@@ -1,67 +1,122 @@
-import { Container, Box, Typography, Button } from "@mui/material";
-import AutoCompleteField from "../../components/dynamicTable/AutoCompleteField";
+import { useState } from "react";
+import { Box, Typography, Button, Icon } from "@mui/material";
 import { useGetClientsQuery } from "../../redux/api/clientApi";
-import { useNavigate } from "react-router-dom";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Table from "../../components/dynamicTable/DynamicTable";
+import ClientModal from "./ClientModal";
+import { EditOutlined, InfoOutlined } from "@mui/icons-material";
 
 function Clients() {
-  const { data: clients } = useGetClientsQuery(null);
-  const navigate = useNavigate();
-  console.log(clients?.data.data);
+  const { data: clients, isLoading } = useGetClientsQuery(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState("add"); // "add", "edit", "view"
+  const [selectedClient, setSelectedClient] = useState(null);
+
+  const handleOpenModal = (mode, clientData = null) => {
+    console.log(clientData);
+    setModalMode(mode);
+    setSelectedClient(clientData);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedClient(null);
+  };
 
   const columns: GridColDef[] = [
     {
       field: "companyName",
       headerName: "Company Name",
+      minWidth: 150,
     },
     {
       field: "userName",
       headerName: "Username",
+      minWidth: 150,
     },
     {
       field: "userPassword",
       headerName: "Password",
+      minWidth: 150,
     },
     {
       field: "phoneNumber",
       headerName: "Phone",
+      minWidth: 150,
+    },
+    {
+      field: "gstNumber",
+      headerName: "GST Number",
+      renderCell: ({ value }) => {
+        return value === null ? "-" : value;
+      },
+      minWidth: 150,
+    },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
+      renderCell: (params) => (
+        <Box display="flex" gap={1}>
+          <GridActionsCellItem
+            sx={{
+              border: "1px solid",
+              borderRadius: "5px",
+              borderColor: "secondary.main",
+            }}
+            color="primary"
+            icon={<EditOutlined />}
+            label="Edit"
+            className="textPrimary"
+            onClick={() => handleOpenModal("edit", params.row)}
+          />
+          <GridActionsCellItem
+            sx={{
+              border: "1px solid",
+              borderRadius: "5px",
+              borderColor: "secondary.main",
+            }}
+            color="primary"
+            icon={<InfoOutlined />}
+            label="View"
+            onClick={() => handleOpenModal("view", params.row)}
+          />
+        </Box>
+      ),
     },
   ];
 
-  const rows = clients?.data.data.map((row, index) => ({ ...row, id: index }));
-
   const pageInfo: DynamicTable.TableProps = {
     columns: columns,
-    rows: rows,
+    rows: clients?.data.data,
     rowCount: clients?.data.count,
+    isLoading: isLoading,
   };
+
   return (
-    <Container>
+    <>
       <Box
-        mb={4}
+        mb={2}
         display="flex"
         justifyContent="space-between"
         alignItems="right"
       >
         <Typography variant="h5" color="initial"></Typography>
         <Box>
-          <Button variant="contained" onClick={() => navigate("/add-client")}>
-            Add
+          <Button variant="contained" onClick={() => handleOpenModal("add")}>
+            + Add Client
           </Button>
         </Box>
       </Box>
-      <Table {...pageInfo}>
-        {/* <Box
-          sx={{
-            paddingBottom: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "10px",
-          }}
-        ></Box> */}
-      </Table>
-    </Container>
+      <Table {...pageInfo}></Table>
+      <ClientModal
+        open={modalOpen}
+        handleClose={handleCloseModal}
+        clientData={selectedClient}
+        mode={modalMode}
+      />
+    </>
   );
 }
 

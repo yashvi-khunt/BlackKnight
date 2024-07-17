@@ -6,7 +6,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import React from "react";
 
 const FormInputPassword = React.forwardRef(
-  ({ name, control, label }: FormTypes.FormInputProps, ref) => {
+  ({ name, control, label, disabled }: FormTypes.FormInputProps, ref) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
       <Controller
@@ -21,6 +21,7 @@ const FormInputPassword = React.forwardRef(
             value={value}
             fullWidth
             label={label}
+            disabled={disabled}
             variant="outlined"
             required
             InputProps={{

@@ -9,7 +9,6 @@ import {
 import { Box } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import CustomPagination from "./CustomPagination";
-import { useAppSelector } from "../../redux/hooks";
 import { styled } from "@mui/material/styles";
 
 const StyledGridOverlay = styled("div")(({ theme }) => ({
@@ -133,10 +132,10 @@ const Table = ({
   return (
     <>
       {children}
-      <Box sx={{ height: "100%" }}>
+      <Box sx={{ maxHeight: "1000px", width: "100%" }}>
         <DataGrid
-          sx={{ minHeight: "400px", width: "100%" }}
-          autoHeight
+          loading={props?.isLoading}
+          disableColumnResize
           columns={props?.columns || []}
           rows={props?.rows || []}
           rowCount={props?.rowCount || 0}
@@ -147,19 +146,21 @@ const Table = ({
             noRowsOverlay: CustomNoRowsOverlay,
           }}
           disableRowSelectionOnClick
-          disableColumnMenu
-          paginationModel={paginationModel}
-          sortModel={sortModel}
           paginationMode="server"
-          filterMode="server"
-          sortingMode="server"
+          paginationModel={paginationModel}
           onPaginationModelChange={handleOnPaginationModelChange}
+          sortingMode="server"
+          sortModel={sortModel}
           onSortModelChange={handleOnSortModelChange}
-
-          // columnVisibilityModel={{
-          //   actions: userRole === "Admin",
-          //   name: userRole !== "Employee",
-          // }}
+          autoHeight={false}
+          disableColumnMenu={true}
+          sx={{
+            "& .MuiDataGrid-columnHeaderTitle": {
+              overflow: "visible",
+              whiteSpace: "normal",
+              lineHeight: "normal",
+            },
+          }}
         />
       </Box>
     </>

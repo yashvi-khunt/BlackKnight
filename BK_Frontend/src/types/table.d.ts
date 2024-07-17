@@ -20,5 +20,6 @@ declare namespace DynamicTable {
       | ApiTypes.loginHistoriesProps
       | ApiTypes.CrawlingJobProps[];
     rowCount?: number;
+    isLoading?: boolean;
   };
 }

@@ -4,5 +4,7 @@ declare namespace FormTypes {
     control: Control<unknown>;
     label: string;
     value?: string | null | undefined;
+    disabled?: boolean;
+    placeholder?: string;
   };
 }

@@ -3,7 +3,17 @@ import TextField from "@mui/material/TextField";
 import React from "react";
 
 const FormInputText = React.forwardRef(
-  ({ name, control, label, value }: FormTypes.FormInputProps, ref) => {
+  (
+    {
+      name,
+      control,
+      label,
+      value,
+      disabled,
+      placeholder,
+    }: FormTypes.FormInputProps,
+    ref
+  ) => {
     return (
       <Controller
         name={name}
@@ -18,8 +28,9 @@ const FormInputText = React.forwardRef(
             fullWidth
             label={label}
             variant="outlined"
-            required
             inputRef={ref}
+            disabled={disabled}
+            placeholder={placeholder}
           />
         )}
       />

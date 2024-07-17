@@ -46,13 +46,30 @@ declare namespace clientTypes {
     userName: string;
     userPassword: string;
     phoneNumber: string;
-    gSTNumber?: string;
+    gstNumber?: string;
+  };
+
+  type updateClient = {
+    companyName?: string;
+    userName?: string;
+    userPassword?: string;
+    phoneNumber?: string;
+    gstNumber?: string;
+  };
+
+  type clientDetails = {
+    id: string;
+    companyName: string;
+    userName: string;
+    userPassword: string;
+    phoneNumber: string;
+    gstNumber?: string;
   };
 
   type getClients = Omit<Global.apiResponse, "data"> & {
     data: {
       count: number;
-      data: addClient[];
+      data: clientDetails[];
     };
   };
   type getClient = Global.apiResponse<addClient>;

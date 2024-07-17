@@ -5,9 +5,9 @@ using BK.DAL.Context;
 using BK.DAL.Models;
 using BK.DAL.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BK.BLL.Services;
-
 
 public class UserService : IUserService
 {
@@ -15,14 +15,14 @@ public class UserService : IUserService
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public UserService(UserManager<ApplicationUser> userManager, ApplicationDbContext context,IMapper mapper)
+    public UserService(UserManager<ApplicationUser> userManager, ApplicationDbContext context, IMapper mapper)
     {
         _userManager = userManager;
         _context = context;
         _mapper = mapper;
     }
-    
-    public async Task UpdateAdmin(string id,VMUpdateAdmin updateAdmin)
+
+    public async Task UpdateAdmin(string id, VMUpdateAdmin updateAdmin)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user != null)
@@ -38,10 +38,7 @@ public class UserService : IUserService
             user.GSTNumber = updateAdmin.GSTNumber ?? user.GSTNumber;
 
             var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-            {
-                throw new Exception("Failed to update admin");
-            }
+            if (!result.Succeeded) throw new Exception("Failed to update admin");
         }
         else
         {
@@ -69,7 +66,7 @@ public class UserService : IUserService
         return newClient;
     }
 
-    public async Task UpdateClient(string id,VMUpdateClient updateClient)
+    public async Task UpdateClient(string id, VMUpdateClient updateClient)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user != null)
@@ -79,17 +76,14 @@ public class UserService : IUserService
             if (updateClient.UserPassword != null)
             {
                 user.UserPassword = updateClient.UserPassword;
-                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user,updateClient.UserPassword);
+                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, updateClient.UserPassword);
             }
 
             user.PhoneNumber = updateClient.PhoneNumber ?? user.PhoneNumber;
             user.GSTNumber = updateClient.GSTNumber ?? user.GSTNumber;
 
             var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-            {
-                throw new Exception("Failed to update client");
-            }
+            if (!result.Succeeded) throw new Exception("Failed to update client");
         }
         else
         {
@@ -97,14 +91,23 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<VMGetAll<VMAddClient>> GetAllClients()
+    public async Task<VMGetAll<VMClientDetails>> GetAllClients()
     {
         var clients = await _userManager.GetUsersInRoleAsync("Client");
-        var vmClients = _mapper.Map<List<VMAddClient>>(clients);
-        var obj = new VMGetAll<VMAddClient>
+        var vmClients = clients.Select(client => new VMClientDetails
+        {
+            Id = client.Id,
+            CompanyName = client.CompanyName,
+            UserName = client.UserName,
+            PhoneNumber = client.PhoneNumber,
+            UserPassword = client.UserPassword,
+            GSTNumber = client.GSTNumber
+        }).ToList();
+
+        var obj = new VMGetAll<VMClientDetails>
         {
             Count = clients.Count,
-            Data = vmClients,
+            Data = vmClients
         };
         return obj;
     }
@@ -116,23 +119,95 @@ public class UserService : IUserService
         return vmClient;
     }
 
-    public Task AddJobworker()
+    public async Task<ApplicationUser> AddJobworker(VMAddJobworker addJobworker)
     {
-        throw new NotImplementedException();
+        var newJobworker = new ApplicationUser
+        {
+            CompanyName = addJobworker.CompanyName,
+            CreatedDate = DateTime.Now,
+            UserName = addJobworker.UserName,
+            UserPassword = addJobworker.UserPassword,
+            PhoneNumber = addJobworker.PhoneNumber,
+            GSTNumber = addJobworker.GSTNumber ?? null
+        };
+
+        var result = await _userManager.CreateAsync(newJobworker, addJobworker.UserPassword);
+
+        if (!result.Succeeded)
+            throw new Exception("Something went wrong while adding jobworker");
+
+        await _userManager.AddToRoleAsync(newJobworker, "JobWorker");
+
+        var jobWorkerDetails = new JobWorker
+        {
+            UserId = newJobworker.Id,
+            FluteRate = addJobworker.FluteRate,
+            LinerRate = addJobworker.LinerRate
+        };
+
+        _context.JobWorkers.Add(jobWorkerDetails);
+        await _context.SaveChangesAsync();
+        return newJobworker;
     }
 
-    public Task UpdateJobworker()
+    public async Task UpdateJobworker(string id, VMUpdateJobworker updateJobworker)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByIdAsync(id);
+        var jobWorker = await _context.JobWorkers.FirstOrDefaultAsync(j => user != null && j.UserId == user.Id);
+
+        if (user != null && jobWorker != null)
+        {
+            user.CompanyName = updateJobworker.CompanyName ?? user.CompanyName;
+            user.UserName = updateJobworker.UserName ?? user.UserName;
+            if (updateJobworker.UserPassword != null)
+            {
+                user.UserPassword = updateJobworker.UserPassword;
+                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, updateJobworker.UserPassword);
+            }
+
+            user.PhoneNumber = updateJobworker.PhoneNumber ?? user.PhoneNumber;
+            user.GSTNumber = updateJobworker.GSTNumber ?? user.GSTNumber;
+
+
+            jobWorker.FluteRate = updateJobworker.FluteRate ?? jobWorker.FluteRate;
+            jobWorker.LinerRate = updateJobworker.LinerRate ?? jobWorker.LinerRate;
+
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) throw new Exception("Failed to update job worker");
+
+            await _context.SaveChangesAsync();
+        }
+        else
+        {
+            throw new Exception("Job worker not found");
+        }
     }
 
-    public Task GetAllJobworkers()
+    public async Task<VMGetAll<VMJobworkerDetails>> GetAllJobworkers()
     {
-        throw new NotImplementedException();
-    }
+        var jobworkers = await _userManager.GetUsersInRoleAsync("JobWorker");
+        var vmJobworkers = new List<VMJobworkerDetails>();
 
-    public Task GetJobworkerById(int id)
+        foreach (var jobworker in jobworkers)
+        {
+            var jw = await _context.JobWorkers.Include(u => u.User).FirstOrDefaultAsync(jw => jw.UserId == jobworker.Id);
+            var vmJobworker = _mapper.Map<VMJobworkerDetails>(jw);
+            vmJobworkers.Add(vmJobworker);
+        }
+        
+        var obj = new VMGetAll<VMJobworkerDetails>
+        {
+            Count = jobworkers.Count,
+            Data = vmJobworkers,
+        };
+        return obj;
+    }
+    public async Task<VMAddJobworker> GetJobworkerById(string uname)
     {
-        throw new NotImplementedException();
+        var jobworker = await _userManager.FindByNameAsync(uname);
+        var jw = await _context.JobWorkers.Include(j => j.User).FirstOrDefaultAsync(u => u.UserId == jobworker.Id);
+        var vmJobworker = _mapper.Map<VMAddJobworker>(jw);
+        return vmJobworker;
     }
 }

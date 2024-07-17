@@ -20,7 +20,22 @@ const clientApi = indexApi.injectEndpoints({
       }),
       providesTags: ["Client"],
     }),
+    updateClient: builder.mutation<
+      Global.apiResponse<string>,
+      { data: clientTypes.updateClient; id: string }
+    >({
+      query: ({ data, id }) => ({
+        method: "PUT",
+        url: `User/Update-client/${id}`,
+        body: data,
+      }),
+      invalidatesTags: ["Client"],
+    }),
   }),
 });
 
-export const { useAddClientMutation, useGetClientsQuery } = clientApi;
+export const {
+  useAddClientMutation,
+  useGetClientsQuery,
+  useUpdateClientMutation,
+} = clientApi;

@@ -25,12 +25,12 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("Get-all-clients")]
-    public async Task<ActionResult<VMGetAll<VMAddClient>>> GetAllClients()
+    public async Task<ActionResult<VMGetAll<VMClientDetails>>> GetAllClients()
     {
         try
         {
             var result = await _userService.GetAllClients();
-            return Ok(new Response<VMGetAll<VMAddClient>>(result,true,"Clients loaded successfully!"));
+            return Ok(new Response<VMGetAll<VMClientDetails>>(result,true,"Clients loaded successfully!"));
         }
         catch (Exception ex)
         {
@@ -102,13 +102,123 @@ public class UserController : ControllerBase
             }
 
             _logger.Information("Client added successfully with ID: {ClientId}", client.Id);
-            return Ok(new Response<ApplicationUser>(client,true,"Client added successfully."));
+            return Ok(new Response("Client added successfully."));
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "An error occurred while adding a client for CompanyName: {CompanyName}", addClient
                 .CompanyName);
             return StatusCode(500, new Response("Internal server error",false));
+        }
+    }
+    
+    [HttpPut("Update-client/{id}")]
+    public async Task<IActionResult> UpdateClient(string id, [FromBody] VMUpdateClient updateClient)
+    {
+        try
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                _logger.Error("Client not found with ID: {Id}", id);
+                return NotFound(new Response("Client not found.", false));
+            }
+
+            await _userService.UpdateClient(id, updateClient);
+
+            _logger.Information("Client updated successfully with ID: {Id}", id);
+            return Ok(new Response("Client updated successfully.", true));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the client with ID: {Id}", id);
+            return StatusCode(500, new Response("Internal server error.", false));
+        }
+    }
+    
+    [HttpPost("Add-jobworker")]
+    public async Task<IActionResult> AddJobworker([FromBody] VMAddJobworker addJobworker)
+    {
+        _logger.Information("AddJobworker action called with CompanyName: {CompanyName}", addJobworker.CompanyName);
+
+        try
+        {
+            var jobworker = await _userService.AddJobworker(addJobworker);
+            if (jobworker == null)
+            {
+                _logger.Warning("Failed to add jobworker for CompanyName: {CompanyName}", addJobworker.CompanyName);
+                return BadRequest(new Response("Failed to add jobworker", false));
+            }
+
+            _logger.Information("Jobworker added successfully with ID: {JobworkerId}", jobworker.Id);
+            return Ok(new Response( "Jobworker added successfully."));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while adding a jobworker for CompanyName: {CompanyName}", addJobworker.CompanyName);
+            return StatusCode(500, new Response("Internal server error", false));
+        }
+    }
+
+    [HttpPut("Update-jobworker/{id}")]
+    public async Task<IActionResult> UpdateJobworker(string id, [FromBody] VMUpdateJobworker updateJobworker)
+    {
+        try
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                _logger.Error("Jobworker not found with ID: {Id}", id);
+                return NotFound(new Response("Jobworker not found.", false));
+            }
+
+            await _userService.UpdateJobworker(id, updateJobworker);
+
+            _logger.Information("Jobworker updated successfully with ID: {Id}", id);
+            return Ok(new Response("Jobworker updated successfully.", true));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the jobworker with ID: {Id}", id);
+            return StatusCode(500, new Response("Internal server error.", false));
+        }
+    }
+
+    [HttpGet("Get-all-jobworkers")]
+    public async Task<ActionResult<VMGetAll<VMJobworkerDetails>>> GetAllJobworkers()
+    {
+        try
+        {
+            var result = await _userService.GetAllJobworkers();
+            return Ok(new Response<VMGetAll<VMJobworkerDetails>>(result, true, "Jobworkers loaded successfully!"));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while getting jobworkers.");
+            return StatusCode(500, new Response("An error occurred while processing your request.", false));
+        }
+    }
+
+    [HttpGet("Get-jobworker/{uname}")]
+    public async Task<ActionResult<VMAddJobworker>> GetJobworkerByUsername(string uname)
+    {
+        try
+        {
+            var user = await _userManager.FindByNameAsync(uname);
+            if (user == null)
+            {
+                _logger.Warning("Jobworker with username {Username} not found.", uname);
+                return NotFound(new Response("Jobworker not found.", false));
+            }
+
+            var data = await _userService.GetJobworkerById(uname);
+            _logger.Information("Jobworker with username {Username} loaded successfully.", uname);
+            return Ok(new Response<VMAddJobworker>(data, true, "Jobworker loaded successfully."));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while getting jobworker with username {Username}.", uname);
+            return StatusCode(500, new Response("An error occurred while processing your request.", false));
         }
     }
 }

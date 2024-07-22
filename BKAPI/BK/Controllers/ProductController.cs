@@ -22,9 +22,42 @@ public class ProductController : ControllerBase
     
     
     //GET
-    
+    [HttpGet]
+    public async Task<IActionResult> GetAllProducts()
+    {
+        try
+        {
+            var products = await _productService.GetAllProducts();
+            return Ok(new Response<VMGetAll<VMAllProducts>>(products, true, "Products retrieved successfully."));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while retrieving all products.");
+            return StatusCode(500, new Response("An error occurred while retrieving products.", false));
+        }
+    }
     
     //GET BY ID
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductById(int id)
+    {
+        if (id <= 0)
+            return BadRequest(new Response("Invalid product ID.", false));
+
+        try
+        {
+            var product = await _productService.GetProductById(id);
+            if (product == null)
+                return NotFound(new Response("Product not found.", false));
+
+            return Ok(new Response<VMProductDetails>( product,true,"Product retrieved successfully."));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while retrieving the product with ID {ProductId}.", id);
+            return StatusCode(500, new Response("An error occurred while retrieving the product.", false));
+        }
+    }
     
     
     //POST
@@ -51,4 +84,27 @@ public class ProductController : ControllerBase
     }
     
     //PUT
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProduct(int id, VMUpdateProduct vmUpdateProduct)
+    {
+        if (id <= 0 || vmUpdateProduct == null)
+            return BadRequest(new Response("Invalid product ID or request data.", false));
+
+        try
+        {
+            await _productService.UpdateProduct(id, vmUpdateProduct);
+            return Ok(new Response("Product updated successfully", true));
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the database.");
+            return StatusCode(500, new Response("An error occurred while updating the database.", false));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the product with ID {ProductId}.", id);
+            return StatusCode(500, new Response("An error occurred while updating the product.", false));
+        }
+    }
+
 }

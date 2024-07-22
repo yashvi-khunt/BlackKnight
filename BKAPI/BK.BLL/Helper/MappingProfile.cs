@@ -17,5 +17,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.User.PhoneNumber))
             .ForMember(dest => dest.GSTNumber, opt => opt.MapFrom(src => src.User.GSTNumber))
             .ForMember(dest => dest.GSTNumber, opt => opt.MapFrom(src => src.User.GSTNumber));
+
+        CreateMap<Product,VMAddProduct>().ReverseMap();
+        CreateMap<ProductImage, VMAddProductImage>().ReverseMap();
     }
 }

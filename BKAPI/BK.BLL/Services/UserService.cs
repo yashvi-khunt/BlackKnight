@@ -1,5 +1,4 @@
 using AutoMapper;
-using Azure;
 using BK.BLL.Repositories;
 using BK.DAL.Context;
 using BK.DAL.Models;
@@ -62,9 +61,22 @@ public class UserService : IUserService
 
         if (!result.Succeeded)
             return null;
+
         await _userManager.AddToRoleAsync(newClient, "Client");
+
+        // Add default brand name "Others" for the new client
+        var defaultBrand = new Brand
+        {
+            ClientId = newClient.Id,
+            Name = "Others"
+        };
+
+        _context.Brands.Add(defaultBrand);
+        await _context.SaveChangesAsync();
+
         return newClient;
     }
+
 
     public async Task UpdateClient(string id, VMUpdateClient updateClient)
     {

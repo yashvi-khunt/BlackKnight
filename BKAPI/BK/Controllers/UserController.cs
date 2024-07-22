@@ -2,6 +2,7 @@ using BK.BLL.Helper;
 using BK.BLL.Repositories;
 using BK.DAL.Models;
 using BK.DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
@@ -11,6 +12,7 @@ namespace BKAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -127,7 +129,7 @@ public class UserController : ControllerBase
             await _userService.UpdateClient(id, updateClient);
 
             _logger.Information("Client updated successfully with ID: {Id}", id);
-            return Ok(new Response("Client updated successfully.", true));
+            return Ok(new Response("Client updated successfully."));
         }
         catch (Exception ex)
         {
@@ -175,7 +177,7 @@ public class UserController : ControllerBase
             await _userService.UpdateJobworker(id, updateJobworker);
 
             _logger.Information("Jobworker updated successfully with ID: {Id}", id);
-            return Ok(new Response("Jobworker updated successfully.", true));
+            return Ok(new Response("Jobworker updated successfully."));
         }
         catch (Exception ex)
         {

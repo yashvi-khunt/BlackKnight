@@ -62,6 +62,7 @@ namespace BKAPI
             
             //Services
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IProductService, ProductService>();
 
             //Identity
             builder.Services.AddDbContext<ApplicationDbContext>(

@@ -61,8 +61,28 @@ public class ProductService : IProductService
         throw new NotImplementedException();
     }
 
-    public Task GetProductById(int id)
+    public async Task<VMProductDetails> GetProductById(int id)
     {
-        throw new NotImplementedException();
+        // Retrieve the product along with related entities
+        var product = await _context.Products
+            .Include(p => p.Brand)
+            .ThenInclude(b => b.Client)
+            .Include(p => p.TopPaperType)
+            .Include(p => p.FlutePaperType)
+            .Include(p => p.BackPaperType)
+            .Include(p => p.PrintType)
+            .Include(p => p.JobWorker)
+            .Include(p => p.LinerJobWorker)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (product == null)
+        {
+            return null;
+        }
+
+        // Map the product entity to the VMProductDetails view model
+        var productDetails = _mapper.Map<VMProductDetails>(product);
+     
+        return productDetails;
     }
 }

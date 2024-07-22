@@ -25,6 +25,26 @@ public class ProductController : ControllerBase
     
     
     //GET BY ID
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductById(int id)
+    {
+        if (id <= 0)
+            return BadRequest(new Response("Invalid product ID.", false));
+
+        try
+        {
+            var product = await _productService.GetProductById(id);
+            if (product == null)
+                return NotFound(new Response("Product not found.", false));
+
+            return Ok(new Response<VMProductDetails>( product,true,"Product retrieved successfully."));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while retrieving the product with ID {ProductId}.", id);
+            return StatusCode(500, new Response("An error occurred while retrieving the product.", false));
+        }
+    }
     
     
     //POST

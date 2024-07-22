@@ -22,7 +22,20 @@ public class ProductController : ControllerBase
     
     
     //GET
-    
+    [HttpGet]
+    public async Task<IActionResult> GetAllProducts()
+    {
+        try
+        {
+            var products = await _productService.GetAllProducts();
+            return Ok(new Response<VMGetAll<VMAllProducts>>(products, true, "Products retrieved successfully."));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while retrieving all products.");
+            return StatusCode(500, new Response("An error occurred while retrieving products.", false));
+        }
+    }
     
     //GET BY ID
     [HttpGet("{id}")]
@@ -71,4 +84,27 @@ public class ProductController : ControllerBase
     }
     
     //PUT
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProduct(int id, VMUpdateProduct vmUpdateProduct)
+    {
+        if (id <= 0 || vmUpdateProduct == null)
+            return BadRequest(new Response("Invalid product ID or request data.", false));
+
+        try
+        {
+            await _productService.UpdateProduct(id, vmUpdateProduct);
+            return Ok(new Response("Product updated successfully", true));
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the database.");
+            return StatusCode(500, new Response("An error occurred while updating the database.", false));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the product with ID {ProductId}.", id);
+            return StatusCode(500, new Response("An error occurred while updating the product.", false));
+        }
+    }
+
 }

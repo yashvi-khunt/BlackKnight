@@ -2,10 +2,12 @@ namespace BK.DAL.ViewModels;
 
 public class VMProductDetails
 {
+    public string Id { get; set; }
     public string BoxName { get; set; }
     public string BrandName { get; set; }
     public string ClientName { get; set; }
     public int JobWorkerId { get; set; }
+    public string JobWorkerName { get; set; }
     public double ProfitPercent { get; set; }
     public int? LinerJobworkerId { get; set; }
     public string? Remarks { get; set; }
@@ -37,5 +39,7 @@ public class VMProductDetails
     public double FlutePrice { get; set; }
     public double BackPrice { get; set; }
     public double PrintRate { get; set; }
-    public double? LaminationRate { get; set; }
+    public double? LaminationPrice { get; set; }
+    public double JobWorkerPrice { get; set; }
+    public double FinalRate { get; set; }
 }

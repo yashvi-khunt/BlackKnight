@@ -115,3 +115,59 @@ declare namespace jobworkerTypes {
   };
   type getJobworker = Global.apiResponse<addJobworker>;
 }
+
+declare namespace productTypes {
+  type addProduct = {
+    boxName: string;
+    brandId: number;
+    topPaperTypeId: number;
+    flutePaperTypeId: number;
+    backPaperTypeId: number;
+    length?: number;
+    width?: number;
+    height?: number;
+    flap1?: number;
+    flap2?: number;
+    deckle: number;
+    cutting: number;
+    top: number;
+    flute: number;
+    back: number;
+    noOfSheetPerBox: number;
+    printTypeId: number;
+    printingPlate?: string;
+    ply: number;
+    printRate: number;
+    isLamination: boolean;
+    dieCode?: number;
+  };
+
+  type updateProduct = {
+    companyName?: string;
+    userName?: string;
+    userPassword?: string;
+    phoneNumber?: string;
+    fluteRate?: number;
+    linerRate?: number;
+    gstNumber?: string;
+  };
+
+  type productDetails = {
+    id: string;
+    companyName: string;
+    userName: string;
+    userPassword: string;
+    phoneNumber: string;
+    fluteRate: number;
+    linerRate: number;
+    gstNumber: string;
+  };
+
+  type getProducts = Omit<Global.apiResponse, "data"> & {
+    data: {
+      count: number;
+      data: jobworkerDetails[];
+    };
+  };
+  type getProduct = Global.apiResponse<addProduct>;
+}

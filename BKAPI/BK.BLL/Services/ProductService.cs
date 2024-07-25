@@ -75,7 +75,7 @@ public class ProductService : IProductService
             product.Top = updateProduct.Top ?? product.Top;
             product.Flute = updateProduct.Flute ?? product.Flute;
             product.Back = updateProduct.Back ?? product.Back;
-            product.NoOfSheerPerBox = updateProduct.NoOfSheerPerBox ?? product.NoOfSheerPerBox;
+            product.NoOfSheetPerBox = updateProduct.NoOfSheerPerBox ?? product.NoOfSheetPerBox;
             product.PrintTypeId = updateProduct.PrintTypeId ?? product.PrintTypeId;
             product.PrintingPlate = updateProduct.PrintingPlate ?? product.PrintingPlate;
             product.Ply = updateProduct.Ply ?? product.Ply;

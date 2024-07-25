@@ -28,9 +28,9 @@ public class VMProductDetails
     public int Flute { get; set; }
     public int Back { get; set; }
     public int Ply { get; set; }
-    public int NoOfSheerPerBox { get; set; }
+    public int NoOfSheetPerBox { get; set; }
     public bool IsLamination { get; set; }
-    public int DieCode { get; set; }
+    public int? DieCode { get; set; }
     public string PrintTypeName { get; set; }
     public string PrintingPlate { get; set; }
     

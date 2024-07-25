@@ -38,6 +38,19 @@ namespace BK.DAL.Migrations
                 keyColumn: "Id",
                 keyValue: "473a1ad9-2484-41ff-834c-9f7f5d5115cd");
 
+            migrationBuilder.RenameColumn(
+                name: "NoOfSheerPerBox",
+                table: "Products",
+                newName: "SerialNumber");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "DieCode",
+                table: "Products",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
+
             migrationBuilder.AddColumn<int>(
                 name: "LinerJobWorkerId",
                 table: "Products",
@@ -45,7 +58,7 @@ namespace BK.DAL.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "SerialNumber",
+                name: "NoOfSheetPerBox",
                 table: "Products",
                 type: "int",
                 nullable: false,
@@ -56,20 +69,20 @@ namespace BK.DAL.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "87121df0-ba26-49d4-86b7-d09597694a45", null, "JobWorker", "JOBWORKER" },
-                    { "a14fd53e-7c3b-4315-96cc-e7b17131b43c", null, "Client", "CLIENT" },
-                    { "e7aa90e3-5091-4523-a4a9-d0526d10287b", null, "Admin", "ADMIN" }
+                    { "3064abfd-e740-4218-9fd6-05c79f9ded85", null, "Admin", "ADMIN" },
+                    { "942e70c5-cfbd-4ae6-9ee5-08be1fc5225e", null, "JobWorker", "JOBWORKER" },
+                    { "fab5e2cc-78d5-4abd-8ed9-76f4c4398fd1", null, "Client", "CLIENT" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "CompanyName", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "GSTNumber", "IsActivated", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "UserPassword" },
-                values: new object[] { "924dc329-febc-41eb-b0ef-c47d46a5deea", 0, "Black Knight Enterprise", "eadc98c4-52ea-4738-a243-a73764bf43f7", new DateTime(2024, 7, 19, 15, 54, 38, 86, DateTimeKind.Local).AddTicks(3070), null, false, null, true, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEMS1dZLsfdW9nK9u8hnp52sw/5sgiWvXtm7AKtuRzCu6Af/pVLmuQ1iPK8/Ut0dkGQ==", null, false, "d1dbd71a-936e-47ec-a425-dd056d549298", false, "admin", "Admin@123" });
+                values: new object[] { "189d1231-9f34-4b1f-bd58-2175842c4274", 0, "Black Knight Enterprise", "f86d675f-5cef-4955-af8d-d2b2749a2481", new DateTime(2024, 7, 25, 17, 56, 14, 98, DateTimeKind.Local).AddTicks(6650), null, false, null, true, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEBhi0HwWTkVcqtH35Zd+HB1hXkPzlRGBjAk9NeTkpkquvVlBvJ2e/9ziprEtvktJNA==", null, false, "0dfb021b-ec01-4ab6-9fb3-595974f0a97e", false, "admin", "Admin@123" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "e7aa90e3-5091-4523-a4a9-d0526d10287b", "924dc329-febc-41eb-b0ef-c47d46a5deea" });
+                values: new object[] { "3064abfd-e740-4218-9fd6-05c79f9ded85", "189d1231-9f34-4b1f-bd58-2175842c4274" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_LinerJobWorkerId",
@@ -98,35 +111,50 @@ namespace BK.DAL.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "87121df0-ba26-49d4-86b7-d09597694a45");
+                keyValue: "942e70c5-cfbd-4ae6-9ee5-08be1fc5225e");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "a14fd53e-7c3b-4315-96cc-e7b17131b43c");
+                keyValue: "fab5e2cc-78d5-4abd-8ed9-76f4c4398fd1");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUserRoles",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { "e7aa90e3-5091-4523-a4a9-d0526d10287b", "924dc329-febc-41eb-b0ef-c47d46a5deea" });
+                keyValues: new object[] { "3064abfd-e740-4218-9fd6-05c79f9ded85", "189d1231-9f34-4b1f-bd58-2175842c4274" });
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "e7aa90e3-5091-4523-a4a9-d0526d10287b");
+                keyValue: "3064abfd-e740-4218-9fd6-05c79f9ded85");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "924dc329-febc-41eb-b0ef-c47d46a5deea");
+                keyValue: "189d1231-9f34-4b1f-bd58-2175842c4274");
 
             migrationBuilder.DropColumn(
                 name: "LinerJobWorkerId",
                 table: "Products");
 
             migrationBuilder.DropColumn(
-                name: "SerialNumber",
+                name: "NoOfSheetPerBox",
                 table: "Products");
+
+            migrationBuilder.RenameColumn(
+                name: "SerialNumber",
+                table: "Products",
+                newName: "NoOfSheerPerBox");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "DieCode",
+                table: "Products",
+                type: "int",
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",

@@ -132,7 +132,14 @@ const Table = ({
   return (
     <>
       {children}
-      <Box sx={{ maxHeight: "1000px", height: "400px", width: "100%" }}>
+      <Box
+        sx={{
+          maxHeight: "1000px",
+          height: "400px",
+          overflow: "hidden",
+          display: "grid",
+        }}
+      >
         <DataGrid
           loading={props?.isLoading}
           disableColumnResize
@@ -155,7 +162,6 @@ const Table = ({
           autoHeight={false}
           disableColumnMenu={true}
           sx={{
-            // minHeight: "400px",
             "& .MuiDataGrid-columnHeaderTitle": {
               overflow: "visible",
               whiteSpace: "normal",

@@ -29,21 +29,25 @@ function Clients() {
       field: "companyName",
       headerName: "Company Name",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "userName",
       headerName: "Username",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "userPassword",
       headerName: "Password",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "phoneNumber",
       headerName: "Phone",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "gstNumber",
@@ -52,6 +56,7 @@ function Clients() {
         return value === null ? "-" : value;
       },
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "actions",
@@ -84,6 +89,8 @@ function Clients() {
           />
         </Box>
       ),
+      minWidth: 150,
+      flex: 1,
     },
   ];
 

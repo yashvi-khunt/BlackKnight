@@ -140,34 +140,105 @@ declare namespace productTypes {
     printRate: number;
     isLamination: boolean;
     dieCode?: number;
+    jobworkerId: number;
+    linerJobworkerId?: number;
+    profitPercent: number;
+    remarks?: string;
+    images: {
+      imagePath: string;
+      isPrimary: string;
+    }[];
   };
 
   type updateProduct = {
-    companyName?: string;
-    userName?: string;
-    userPassword?: string;
-    phoneNumber?: string;
-    fluteRate?: number;
-    linerRate?: number;
-    gstNumber?: string;
+    boxName?: string;
+    brandId?: number;
+    topPaperTypeId?: number;
+    flutePaperTypeId?: number;
+    backPaperTypeId?: number;
+    length?: number;
+    width?: number;
+    height?: number;
+    flap1?: number;
+    flap2?: number;
+    deckle?: number;
+    cutting?: number;
+    top?: number;
+    flute?: number;
+    back?: number;
+    noOfSheetPerBox?: number;
+    printTypeId?: number;
+    printingPlate?: string;
+    ply?: number;
+    printRate?: number;
+    isLamination?: boolean;
+    dieCode?: number;
+    jobworkerId?: number;
+    linerJobworkerId?: number;
+    profitPercent?: number;
+    remarks?: string;
+    images?: {
+      imagePath: string;
+      isPrimary: string;
+    }[];
   };
 
   type productDetails = {
     id: string;
-    companyName: string;
-    userName: string;
-    userPassword: string;
-    phoneNumber: string;
-    fluteRate: number;
-    linerRate: number;
-    gstNumber: string;
+    boxName: string;
+    brandName: string;
+    clientName: string;
+    jobWorkerId: number;
+    jobWorkerName: string;
+    profitPercent: number;
+    linerJobworerId?: number;
+    remarks?: string;
+    images?: {
+      imagePath: string;
+      isPrimary: string;
+    }[];
+    length?: number;
+    width?: number;
+    height?: number;
+    flap1?: number;
+    flap2?: number;
+    deckle: number;
+    cutting: number;
+    topPaperTypeName: string;
+    flutePaperTypeName: string;
+    backPaperTypeName: string;
+    top: number;
+    flute: number;
+    back: number;
+    ply: number;
+    noOfSheetPerBox: number;
+    isLaminatiom: boolean;
+    dieCode?: number;
+    printTypeName: string;
+    printingPlate: string;
+    topPrice: number;
+    flutePrice: number;
+    backPrice: number;
+    printRate: number;
+    laminationPrice: number;
+    jobworkerPrice: number;
+    finalRate: number;
   };
 
   type getProducts = Omit<Global.apiResponse, "data"> & {
     data: {
       count: number;
-      data: jobworkerDetails[];
+      data: Array<{
+        id: number;
+        primaryImage: string;
+        boxName: string;
+        clientName: string;
+        jobWorkerName: string;
+        jobWorkerPrice: number;
+        profitPercent: number;
+        finalRate: number;
+      }>;
     };
   };
-  type getProduct = Global.apiResponse<addProduct>;
+  type getProduct = Global.apiResponse<productDetails>;
 }

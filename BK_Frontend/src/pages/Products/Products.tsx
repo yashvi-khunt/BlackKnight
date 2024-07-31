@@ -1,49 +1,59 @@
+import { useGetProductsQuery } from "../../redux/api/productApi";
+import Table from "../../components/dynamicTable/DynamicTable";
+import { EditOutlined, InfoOutlined } from "@mui/icons-material";
+import { Box, Typography, Button } from "@mui/material";
+import { GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
+
 function Products() {
-  const { data: clients, isLoading } = useGetClientsQuery(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); // "add", "edit", "view"
-  const [selectedClient, setSelectedClient] = useState(null);
+  const { data: products, isLoading } = useGetProductsQuery(null);
 
-  const handleOpenModal = (mode, clientData = null) => {
-    console.log(clientData);
-    setModalMode(mode);
-    setSelectedClient(clientData);
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setSelectedClient(null);
-  };
+  const navigate = useNavigate();
 
   const columns: GridColDef[] = [
     {
-      field: "companyName",
-      headerName: "Company Name",
+      field: "primaryImage",
+      headerName: "Image",
       minWidth: 150,
+      flex: 1,
     },
     {
-      field: "userName",
-      headerName: "Username",
+      field: "boxName",
+      headerName: "Box Name",
       minWidth: 150,
+      flex: 1,
     },
     {
-      field: "userPassword",
-      headerName: "Password",
+      field: "clientName",
+      headerName: "Client Name",
       minWidth: 150,
+      flex: 1,
     },
     {
-      field: "phoneNumber",
-      headerName: "Phone",
+      field: "jobWorkerName",
+      headerName: "Jobworker Name",
       minWidth: 150,
+      flex: 1,
     },
     {
-      field: "gstNumber",
-      headerName: "GST Number",
-      renderCell: ({ value }) => {
-        return value === null ? "-" : value;
-      },
+      field: "jobWorkerPrice",
+      headerName: "Jobworker Price",
+      renderCell: ({ value }) => Math.round(value),
       minWidth: 150,
+      flex: 1,
+    },
+    {
+      field: "profitPercent",
+      headerName: "Profit Percentage",
+      renderCell: ({ value }) => `${value}%`,
+      minWidth: 150,
+      flex: 1,
+    },
+    {
+      field: "finalRate",
+      headerName: "Final Price",
+      minWidth: 150,
+      flex: 1,
     },
     {
       field: "actions",
@@ -61,7 +71,7 @@ function Products() {
             icon={<EditOutlined />}
             label="Edit"
             className="textPrimary"
-            onClick={() => handleOpenModal("edit", params.row)}
+            onClick={() => navigate(`edit/${params.row.id}`)}
           />
           <GridActionsCellItem
             sx={{
@@ -72,17 +82,19 @@ function Products() {
             color="primary"
             icon={<InfoOutlined />}
             label="View"
-            onClick={() => handleOpenModal("view", params.row)}
+            onClick={() => navigate(`details/${params.row.id}`)}
           />
         </Box>
       ),
+      minWidth: 150,
+      flex: 1,
     },
   ];
 
   const pageInfo: DynamicTable.TableProps = {
     columns: columns,
-    rows: clients?.data.data,
-    rowCount: clients?.data.count,
+    rows: products?.data.data,
+    rowCount: products?.data.count,
     isLoading: isLoading,
   };
 
@@ -96,18 +108,12 @@ function Products() {
       >
         <Typography variant="h5" color="initial"></Typography>
         <Box>
-          <Button variant="contained" onClick={() => handleOpenModal("add")}>
-            + Add Client
+          <Button variant="contained" onClick={() => navigate("add")}>
+            + Add Product
           </Button>
         </Box>
       </Box>
       <Table {...pageInfo}></Table>
-      <ClientModal
-        open={modalOpen}
-        handleClose={handleCloseModal}
-        clientData={selectedClient}
-        mode={modalMode}
-      />
     </>
   );
 }

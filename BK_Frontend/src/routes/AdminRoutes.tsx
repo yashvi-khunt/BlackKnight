@@ -5,6 +5,7 @@ import {
   Jobworkers,
   OrderDetails,
   Orders,
+  ProductDetails,
   Products,
 } from "../pages";
 import {
@@ -66,7 +67,7 @@ export const adminRoutes: Global.RouteConfig = [
       },
       {
         path: "details/:id",
-        element: <AddEditProducts />,
+        element: <ProductDetails />,
         roles: ["Admin"],
       },
     ],

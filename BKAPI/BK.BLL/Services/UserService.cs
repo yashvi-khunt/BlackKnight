@@ -77,6 +77,29 @@ public class UserService : IUserService
         return newClient;
     }
 
+    public async Task<List<VMOptions>> GetClientOptions()
+    {
+        var clients = await _userManager.GetUsersInRoleAsync("Client");
+        var clientOptions = clients.Select(client => new VMOptions
+        {
+            Value = client.Id,
+            Label = client.CompanyName
+        }).ToList();
+
+        return clientOptions;
+    }
+
+    public async Task<List<VMOptions>> GetJobworkerOptions()
+    {
+        var jobworkers = await _userManager.GetUsersInRoleAsync("JobWorker");
+        var jobworkerOptions = jobworkers.Select(jobworker => new VMOptions
+        {
+            Value = jobworker.Id,
+            Label = jobworker.CompanyName
+        }).ToList();
+
+        return jobworkerOptions;
+    }
 
     public async Task UpdateClient(string id, VMUpdateClient updateClient)
     {

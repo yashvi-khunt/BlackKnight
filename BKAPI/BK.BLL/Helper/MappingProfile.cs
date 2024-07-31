@@ -42,5 +42,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.PrimaryImage,
                 opt => opt.MapFrom(src => src.Images.FirstOrDefault(i => i.IsPrimary)));
 
+        CreateMap<VMAddBrand, Brand>();
+        CreateMap<Brand, VMBrandDetails>()
+            .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.UserName)); 
+
     }
 }

@@ -21,4 +21,7 @@ public interface IUserService
     Task<VMGetAll<VMJobworkerDetails>> GetAllJobworkers();
     Task<VMAddJobworker> GetJobworkerById(string uname);
 
+    Task<List<VMOptions>> GetClientOptions();
+    Task<List<VMOptions>> GetJobworkerOptions();
+
 }

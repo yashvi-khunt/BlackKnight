@@ -49,7 +49,7 @@ public class JobWorkerPriceResolver : IValueResolver<Product, VMProductDetails, 
     public double Resolve(Product src, VMProductDetails dest, double destMember, ResolutionContext context)
     {
         double? laminationPrice = dest.LaminationPrice ?? 0;
-        return (double)(dest.TopPrice + dest.FlutePrice + dest.BackPrice + src.PrintRate + laminationPrice)!;
+        return (double)(dest.TopPrice + dest.FlutePrice + dest.BackPrice + src.PrintRate + laminationPrice);
     }
 }
 

@@ -17,7 +17,7 @@ public class VMUpdateProduct
     public int? Top { get; set; }
     public int? Flute { get; set; }
     public int? Back { get; set; }
-    public int? NoOfSheerPerBox { get; set; }
+    public int? NoOfSheetPerBox { get; set; }
     public int? PrintTypeId { get; set; }
     public string? PrintingPlate { get; set; }
     public int? Ply { get; set; }

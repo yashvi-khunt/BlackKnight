@@ -19,7 +19,7 @@ public class UserController : ControllerBase
     private readonly ILogger _logger;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public UserController(IUserService userService, ILogger logger,UserManager<ApplicationUser> userManager)
+    public UserController(IUserService userService, ILogger logger, UserManager<ApplicationUser> userManager)
     {
         _userService = userService;
         _logger = logger;
@@ -32,7 +32,7 @@ public class UserController : ControllerBase
         try
         {
             var result = await _userService.GetAllClients();
-            return Ok(new Response<VMGetAll<VMClientDetails>>(result,true,"Clients loaded successfully!"));
+            return Ok(new Response<VMGetAll<VMClientDetails>>(result, true, "Clients loaded successfully!"));
         }
         catch (Exception ex)
         {
@@ -76,16 +76,16 @@ public class UserController : ControllerBase
                 return NotFound(new Response("Admin not found.", false));
             }
 
-            await _userService.UpdateAdmin(user.Id,updateAdmin);
-            
+            await _userService.UpdateAdmin(user.Id, updateAdmin);
+
             _logger.Information($"Admin updated successfully with ID: {user.Id}");
-            return StatusCode(200,new Response("Admin updated successfully."));
+            return StatusCode(200, new Response("Admin updated successfully."));
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "An error occurred while updating the admin with ID: {Id}", user?.Id);
-            
-            return StatusCode(500, new Response("Internal server error",false));
+
+            return StatusCode(500, new Response("Internal server error", false));
         }
     }
 
@@ -100,7 +100,7 @@ public class UserController : ControllerBase
             if (client == null)
             {
                 _logger.Warning("Failed to add client for CompanyName: {CompanyName}", addClient.CompanyName);
-                return BadRequest(new Response("Failed to add client",false));
+                return BadRequest(new Response("Failed to add client", false));
             }
 
             _logger.Information("Client added successfully with ID: {ClientId}", client.Id);
@@ -110,10 +110,10 @@ public class UserController : ControllerBase
         {
             _logger.Error(ex, "An error occurred while adding a client for CompanyName: {CompanyName}", addClient
                 .CompanyName);
-            return StatusCode(500, new Response("Internal server error",false));
+            return StatusCode(500, new Response("Internal server error", false));
         }
     }
-    
+
     [HttpPut("Update-client/{id}")]
     public async Task<IActionResult> UpdateClient(string id, [FromBody] VMUpdateClient updateClient)
     {
@@ -137,7 +137,7 @@ public class UserController : ControllerBase
             return StatusCode(500, new Response("Internal server error.", false));
         }
     }
-    
+
     [HttpPost("Add-jobworker")]
     public async Task<IActionResult> AddJobworker([FromBody] VMAddJobworker addJobworker)
     {
@@ -153,11 +153,12 @@ public class UserController : ControllerBase
             }
 
             _logger.Information("Jobworker added successfully with ID: {JobworkerId}", jobworker.Id);
-            return Ok(new Response( "Jobworker added successfully."));
+            return Ok(new Response("Jobworker added successfully."));
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "An error occurred while adding a jobworker for CompanyName: {CompanyName}", addJobworker.CompanyName);
+            _logger.Error(ex, "An error occurred while adding a jobworker for CompanyName: {CompanyName}",
+                addJobworker.CompanyName);
             return StatusCode(500, new Response("Internal server error", false));
         }
     }
@@ -220,6 +221,36 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             _logger.Error(ex, "An error occurred while getting jobworker with username {Username}.", uname);
+            return StatusCode(500, new Response("An error occurred while processing your request.", false));
+        }
+    }
+
+    [HttpGet("Get-client-options")]
+    public async Task<ActionResult<List<VMOptions>>> GetClientOptions()
+    {
+        try
+        {
+            var options = await _userService.GetClientOptions();
+            return Ok(new Response<List<VMOptions>>(options, true, "Client options loaded successfully!"));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while getting client options.");
+            return StatusCode(500, new Response("An error occurred while processing your request.", false));
+        }
+    }
+
+    [HttpGet("Get-jobworker-options")]
+    public async Task<ActionResult<List<VMOptions>>> GetJobworkerOptions()
+    {
+        try
+        {
+            var options = await _userService.GetJobworkerOptions();
+            return Ok(new Response<List<VMOptions>>(options, true, "Jobworker options loaded successfully!"));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while getting jobworker options.");
             return StatusCode(500, new Response("An error occurred while processing your request.", false));
         }
     }

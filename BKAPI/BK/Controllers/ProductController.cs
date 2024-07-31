@@ -20,7 +20,6 @@ public class ProductController : ControllerBase
         _logger = logger;
     }
     
-    
     //GET
     [HttpGet]
     public async Task<IActionResult> GetAllProducts()
@@ -58,7 +57,6 @@ public class ProductController : ControllerBase
             return StatusCode(500, new Response("An error occurred while retrieving the product.", false));
         }
     }
-    
     
     //POST
     [HttpPost]
@@ -106,5 +104,4 @@ public class ProductController : ControllerBase
             return StatusCode(500, new Response("An error occurred while updating the product.", false));
         }
     }
-
 }

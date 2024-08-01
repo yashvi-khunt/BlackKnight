@@ -2,10 +2,13 @@ namespace BK.DAL.ViewModels;
 
 public class VMProductDetails
 {
-    public string Id { get; set; }
+    // public string Id { get; set; }
     public string BoxName { get; set; }
     public string BrandName { get; set; }
+    public int BrandId { get; set; }
+
     public string ClientName { get; set; }
+    public int ClientId { get; set; }
     public int JobWorkerId { get; set; }
     public string JobWorkerName { get; set; }
     public double ProfitPercent { get; set; }
@@ -22,8 +25,11 @@ public class VMProductDetails
     public double Deckle { get; set; }
     public double Cutting { get; set; }
     public string TopPaperTypeName { get; set; }
+    public int TopPaperTypeId { get; set; }
     public string FlutePaperTypeName { get; set; }
+    public int FlutePaperTypeId { get; set; }
     public string BackPaperTypeName { get; set; }
+    public int BackPaperTypeId { get; set; }
     public int Top { get; set; }
     public int Flute { get; set; }
     public int Back { get; set; }
@@ -32,6 +38,7 @@ public class VMProductDetails
     public bool IsLamination { get; set; }
     public int? DieCode { get; set; }
     public string PrintTypeName { get; set; }
+    public int PrintTypeId { get; set; }
     public string PrintingPlate { get; set; }
     
     //price breakup

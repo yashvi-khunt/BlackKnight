@@ -153,4 +153,24 @@ public class ProductService : IProductService
      
         return productDetails;
     }
+
+    public async Task<List<VMOptions>> GetPrintOptions()
+    {
+        try
+        {
+            var printTypes = await _context.PrintTypes.ToListAsync();
+            var printTypeOptions = printTypes.Select(pt => new VMOptions
+            {
+                Value = pt.Id.ToString(),
+                Label = pt.Name + $"{(pt.IsOffset ? " Offset" : "")}"
+            }).ToList();
+
+            return printTypeOptions;
+        }
+        catch (Exception ex)
+        {
+            // Log exception (if logging is implemented)
+            throw new Exception("Error fetching paper type options", ex);
+        }
+    }
 }

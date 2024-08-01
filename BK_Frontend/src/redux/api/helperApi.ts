@@ -9,12 +9,19 @@ const otherApis = indexApi.injectEndpoints({
       }),
       providesTags: ["Paper"],
     }),
-    getBrands: builder.query<Global.dropDownOptions, number>({
+    getBrands: builder.query<Global.dropDownOptions, { id: string }>({
       query: (id) => ({
         method: "GET",
-        url: `Brands/Option/${id}`,
+        url: `Brands/Options/${id}`,
       }),
       providesTags: ["Brand"],
+    }),
+    getPrintTypes: builder.query<Global.dropDownOptions, void>({
+      query: () => ({
+        method: "GET",
+        url: "Print/Options",
+      }),
+      providesTags: ["Print"],
     }),
     getClientOptions: builder.query<Global.dropDownOptions, void>({
       query: () => ({
@@ -38,4 +45,5 @@ export const {
   useGetBrandsQuery,
   useGetClientOptionsQuery,
   useGetJobworkerOptionsQuery,
+  useGetPrintTypesQuery,
 } = otherApis;

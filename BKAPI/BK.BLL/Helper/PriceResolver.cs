@@ -17,8 +17,9 @@ public class FlutePriceResolver : IValueResolver<Product, VMProductDetails, doub
 {
     public double Resolve(Product src, VMProductDetails dest, double destMember, ResolutionContext context)
     {
-        var DCN = src.Deckle * src.Cutting * src.NoOfSheetPerBox;
+        var DCN = src.Deckle * src.Cutting * src.NoOfSheetPerBox; 
         var NumberOfFluteSheets = src.Ply / 2;
+        
         return DCN * src.Flute * src.FlutePaperType.Price * NumberOfFluteSheets * src.JobWorker.FluteRate /
                (1550 * 1000);
     }

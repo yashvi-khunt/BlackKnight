@@ -1,4 +1,5 @@
 using AutoMapper;
+using BK.BLL.Helper;
 using BK.BLL.Repositories;
 using BK.DAL.ViewModels;
 using BK.DAL.ViewModels.PaperType;
@@ -28,11 +29,11 @@ public class PaperController : ControllerBase
         try
         {
             await _paperTypeService.AddPaperType(addPaperTypeModel);
-            return Ok();
+            return Ok(new Response("Paper type added successfully."));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
+            return StatusCode(500,new Response( $"Internal server error: {ex.Message}",false));
         }
     }
 
@@ -43,11 +44,11 @@ public class PaperController : ControllerBase
         try
         {
             await _paperTypeService.UpdatePaperType(id, updatePaperTypeModel);
-            return Ok();
+            return Ok(new Response("Paper type updated successfully."));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
+            return StatusCode(500,new Response( $"Internal server error: {ex.Message}",false));
         }
     }
 
@@ -60,15 +61,15 @@ public class PaperController : ControllerBase
             var paperTypeDetails = await _paperTypeService.GetPaperTypeById(id);
             if (paperTypeDetails == null)
             {
-                return NotFound();
+                return NotFound(new Response("Paper type not found.",false));
             }
 
             var paperTypeDetailsVm = _mapper.Map<VMPaperTypeDetails>(paperTypeDetails);
-            return Ok(paperTypeDetailsVm);
+            return Ok(new Response<VMPaperTypeDetails>(paperTypeDetailsVm));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
+            return StatusCode(500,new Response( $"Internal server error: {ex.Message}",false));
         }
     }
 
@@ -79,11 +80,11 @@ public class PaperController : ControllerBase
         try
         {
             var paperTypeOptions = await _paperTypeService.GetPaperTypeOptions();
-            return Ok(paperTypeOptions);
+            return Ok(new Response<List<VMOptions>>(paperTypeOptions));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
+            return StatusCode(500,new Response( $"Internal server error: {ex.Message}",false));
         }
     }
 }

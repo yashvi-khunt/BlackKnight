@@ -91,11 +91,11 @@ public class UserService : IUserService
 
     public async Task<List<VMOptions>> GetJobworkerOptions()
     {
-        var jobworkers = await _userManager.GetUsersInRoleAsync("JobWorker");
+        var jobworkers = await _context.JobWorkers.Include(j => j.User).ToListAsync();
         var jobworkerOptions = jobworkers.Select(jobworker => new VMOptions
         {
-            Value = jobworker.Id,
-            Label = jobworker.CompanyName
+            Value = jobworker.Id.ToString(),
+            Label = jobworker.User.CompanyName
         }).ToList();
 
         return jobworkerOptions;

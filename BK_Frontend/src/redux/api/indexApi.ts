@@ -22,7 +22,7 @@ export const indexApi = createApi({
     "Order",
     "Paper",
     "Brand",
-    "Printing",
+    "Print",
   ],
   endpoints: (builder) => ({}),
 });

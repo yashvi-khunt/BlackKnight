@@ -52,50 +52,86 @@ public class ProductService : IProductService
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateProduct(int id, VMUpdateProduct updateProduct)
+   public async Task UpdateProduct(int id, VMUpdateProduct updateProduct)
+{
+    // Retrieve the product from the database
+    var product = await _context.Products
+        .Include(p => p.Images) // Include existing images
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    if (product != null)
     {
-        // Retrieve the product from the database
-        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+        // Update product properties if the provided value is not null
+        product.BoxName = updateProduct.BoxName ?? product.BoxName;
+        product.BrandId = updateProduct.BrandId ?? product.BrandId;
+        product.TopPaperTypeId = updateProduct.TopPaperTypeId ?? product.TopPaperTypeId;
+        product.FlutePaperTypeId = updateProduct.FlutePaperTypeId ?? product.FlutePaperTypeId;
+        product.BackPaperTypeId = updateProduct.BackPaperTypeId ?? product.BackPaperTypeId;
+        product.Length = updateProduct.Length ?? product.Length;
+        product.Width = updateProduct.Width ?? product.Width;
+        product.Height = updateProduct.Height ?? product.Height;
+        product.Flap1 = updateProduct.Flap1 ?? product.Flap1;
+        product.Flat2 = updateProduct.Flat2 ?? product.Flat2;
+        product.Deckle = updateProduct.Deckle ?? product.Deckle;
+        product.Cutting = updateProduct.Cutting ?? product.Cutting;
+        product.Top = updateProduct.Top ?? product.Top;
+        product.Flute = updateProduct.Flute ?? product.Flute;
+        product.Back = updateProduct.Back ?? product.Back;
+        product.NoOfSheetPerBox = updateProduct.NoOfSheetPerBox ?? product.NoOfSheetPerBox;
+        product.PrintTypeId = updateProduct.PrintTypeId ?? product.PrintTypeId;
+        product.PrintingPlate = updateProduct.PrintingPlate ?? product.PrintingPlate;
+        product.Ply = updateProduct.Ply ?? product.Ply;
+        product.PrintRate = updateProduct.PrintRate ?? product.PrintRate;
+        product.IsLamination = updateProduct.IsLamination ?? product.IsLamination;
+        product.DieCode = updateProduct.DieCode ?? product.DieCode;
+        product.JobWorkerId = updateProduct.JobWorkerId ?? product.JobWorkerId;
+        product.LinerJobWorkerId = updateProduct.LinerJobWorkerId ?? product.LinerJobWorkerId;
+        product.ProfitPercent = updateProduct.ProfitPercent ?? product.ProfitPercent;
+        product.Remarks = updateProduct.Remarks ?? product.Remarks;
+        product.IsActive = updateProduct.IsActive ?? product.IsActive;
 
-        if (product != null)
+        // Update product images
+        if (updateProduct.Images != null)
         {
-            // Update product properties if the provided value is not null
-            product.BoxName = updateProduct.BoxName ?? product.BoxName;
-            product.BrandId = updateProduct.BrandId ?? product.BrandId;
-            product.TopPaperTypeId = updateProduct.TopPaperTypeId ?? product.TopPaperTypeId;
-            product.FlutePaperTypeId = updateProduct.FlutePaperTypeId ?? product.FlutePaperTypeId;
-            product.BackPaperTypeId = updateProduct.BackPaperTypeId ?? product.BackPaperTypeId;
-            product.Length = updateProduct.Length ?? product.Length;
-            product.Width = updateProduct.Width ?? product.Width;
-            product.Height = updateProduct.Height ?? product.Height;
-            product.Flap1 = updateProduct.Flap1 ?? product.Flap1;
-            product.Flat2 = updateProduct.Flat2 ?? product.Flat2;
-            product.Deckle = updateProduct.Deckle ?? product.Deckle;
-            product.Cutting = updateProduct.Cutting ?? product.Cutting;
-            product.Top = updateProduct.Top ?? product.Top;
-            product.Flute = updateProduct.Flute ?? product.Flute;
-            product.Back = updateProduct.Back ?? product.Back;
-            product.NoOfSheetPerBox = updateProduct.NoOfSheetPerBox ?? product.NoOfSheetPerBox;
-            product.PrintTypeId = updateProduct.PrintTypeId ?? product.PrintTypeId;
-            product.PrintingPlate = updateProduct.PrintingPlate ?? product.PrintingPlate;
-            product.Ply = updateProduct.Ply ?? product.Ply;
-            product.PrintRate = updateProduct.PrintRate ?? product.PrintRate;
-            product.IsLamination = updateProduct.IsLamination ?? product.IsLamination;
-            product.DieCode = updateProduct.DieCode ?? product.DieCode;
-            product.JobWorkerId = updateProduct.JobWorkerId ?? product.JobWorkerId;
-            product.LinerJobWorkerId = updateProduct.LinerJobWorkerId ?? product.LinerJobWorkerId;
-            product.ProfitPercent = updateProduct.ProfitPercent ?? product.ProfitPercent;
-            product.Remarks = updateProduct.Remarks ?? product.Remarks;
-            product.IsActive = updateProduct.IsActive ?? product.IsActive;
+            // Find and remove images that are no longer present
+            var imagesToRemove = product.Images
+                .Where(existingImage => updateProduct.Images.All(updatedImage => updatedImage.ImagePath != existingImage.ImagePath))
+                .ToList();
 
-            // Save changes to the database
-            await _context.SaveChangesAsync();
+            _context.Images.RemoveRange(imagesToRemove);
+
+            // Add or update images
+            foreach (var vmImage in updateProduct.Images)
+            {
+                var existingImage = product.Images.FirstOrDefault(img => img.ImagePath == vmImage.ImagePath);
+                if (existingImage != null)
+                {
+                    // Update existing image
+                    existingImage.IsPrimary = vmImage.IsPrimary;
+                }
+                else
+                {
+                    // Add new image
+                    var newImage = new ProductImage
+                    {
+                        ProductId = product.Id,
+                        ImagePath = vmImage.ImagePath,
+                        IsPrimary = vmImage.IsPrimary
+                    };
+                    _context.Images.Add(newImage);
+                }
+            }
         }
-        else
-        {
-            throw new Exception("Product not found");
-        }
+
+        // Save changes to the database
+        await _context.SaveChangesAsync();
     }
+    else
+    {
+        throw new Exception("Product not found");
+    }
+}
+
 
 
 
@@ -105,6 +141,7 @@ public class ProductService : IProductService
             var products = await _context.Products
                 .Include(p => p.Brand)
                 .ThenInclude(b => b.Client)
+                .Include(x => x.Images)
                 .Include(p => p.TopPaperType)
                 .Include(p => p.FlutePaperType)
                 .Include(p => p.BackPaperType)

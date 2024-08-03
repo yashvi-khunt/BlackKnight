@@ -14,8 +14,23 @@ function Products() {
     {
       field: "primaryImage",
       headerName: "Image",
-      minWidth: 150,
+      minWidth: 200,
+
       flex: 1,
+      renderCell: ({ value }) => (
+        <Box
+          component="img"
+          src={value}
+          alt="Product Image"
+          sx={{
+            width: 150,
+            height: 150,
+            objectFit: "cover",
+            margin: "0 auto",
+            borderRadius: "4px",
+          }}
+        />
+      ),
     },
     {
       field: "boxName",

@@ -22,7 +22,7 @@ const clientApi = indexApi.injectEndpoints({
     }),
     updateProduct: builder.mutation<
       Global.apiResponse<string>,
-      { data: productTypes.updateProduct; id: string }
+      { data: productTypes.addProduct; id: string }
     >({
       query: ({ data, id }) => ({
         method: "PUT",

@@ -2,13 +2,13 @@ namespace BK.DAL.ViewModels;
 
 public class VMProductDetails
 {
-    // public string Id { get; set; }
+    public int Id { get; set; }
     public string BoxName { get; set; }
     public string BrandName { get; set; }
     public int BrandId { get; set; }
 
     public string ClientName { get; set; }
-    public int ClientId { get; set; }
+    public string ClientId { get; set; }
     public int JobWorkerId { get; set; }
     public string JobWorkerName { get; set; }
     public double ProfitPercent { get; set; }

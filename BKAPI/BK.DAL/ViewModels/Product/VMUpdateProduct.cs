@@ -29,4 +29,5 @@ public class VMUpdateProduct
     public double? ProfitPercent { get; set; }
     public string? Remarks { get; set; }
     public bool? IsActive { get; set; }
+    public List<VMAddProductImage>? Images { get; set; }
 }

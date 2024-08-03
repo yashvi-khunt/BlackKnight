@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Box, Button, IconButton } from "@mui/material";
 import { Upload as UploadIcon, Clear as ClearIcon } from "@mui/icons-material";
 
@@ -6,9 +7,21 @@ const FormImageUpload = ({
   setImages,
   previewImages,
   setPreviewImages,
+  initialImages = [],
+  initialPreviewImages = [],
   maxImages = 4,
   primaryImageIndex = 0,
 }) => {
+  useEffect(() => {
+    // Set initial images and preview images when editing
+    if (initialImages.length > 0) {
+      setImages(initialImages);
+    }
+    if (initialPreviewImages.length > 0) {
+      setPreviewImages(initialPreviewImages);
+    }
+  }, [initialImages, initialPreviewImages, setImages, setPreviewImages]);
+
   const handleImageChange = (index, event) => {
     const file = event.target.files[0];
     if (file) {

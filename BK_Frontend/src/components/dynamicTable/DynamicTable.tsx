@@ -161,6 +161,7 @@ const Table = ({
           onSortModelChange={handleOnSortModelChange}
           autoHeight={false}
           disableColumnMenu={true}
+          getRowHeight={() => "auto"}
           sx={{
             "& .MuiDataGrid-columnHeaderTitle": {
               overflow: "visible",

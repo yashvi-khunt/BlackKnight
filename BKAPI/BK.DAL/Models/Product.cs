@@ -49,4 +49,5 @@ public class Product
     public virtual PrintType PrintType { get; set; }
     public virtual JobWorker JobWorker { get; set; }
     public virtual JobWorker LinerJobWorker { get; set; }
+    public virtual List<ProductImage> Images { get; set; }
 }

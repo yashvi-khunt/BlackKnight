@@ -59,7 +59,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
       topPaperTypeId: data.topPaperTypeId.value as number,
       flutePaperTypeId: data.flutePaperTypeId.value,
       backPaperTypeId: data.backPaperTypeId.value,
-      jobworkerId: data.jobworkerId.value,
+      jobWorkerId: data.jobWorkerId.value,
       linerJobworkerId: data.linerJobworkerId?.value || null,
       printTypeId: data.printTypeId.value,
       images: images
@@ -70,8 +70,10 @@ const AddEditProducts = ({ isEdit, productData }) => {
     console.log(formData);
 
     if (isEdit) {
+      console.log("edit");
       await updateProductMutation({ data: formData, id: productData.id });
     } else {
+      console.log("add");
       await addProductMutation(formData);
     }
 
@@ -397,7 +399,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
               control={control}
               options={jobworkers?.data || []}
               label="Job Worker"
-              {...register("jobworkerId", {
+              {...register("jobWorkerId", {
                 required: {
                   value: true,
                   message: "Jobworker is required.",
@@ -451,7 +453,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
               control={control}
               setValue={setValue}
               clients={clients?.data || []}
-              selectedClient={selectedClient}
+              sClient={selectedClient}
               setSelectedClient={setSelectedClient}
             />
           </Grid>
@@ -461,6 +463,12 @@ const AddEditProducts = ({ isEdit, productData }) => {
               setImages={setImages}
               previewImages={previewImages}
               setPreviewImages={setPreviewImages}
+              initialImages={
+                productData?.images?.map((img) => img.imagePath) || []
+              }
+              initialPreviewImages={
+                productData?.images?.map((img) => img.imagePath) || []
+              }
             />
           </Grid>
           <Grid item xs={12}>

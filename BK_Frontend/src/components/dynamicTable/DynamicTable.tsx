@@ -84,6 +84,7 @@ function CustomNoRowsOverlay() {
 
 const Table = ({
   children,
+  getRowHeight,
   ...props
 }: PropsWithChildren<DynamicTable.TableProps>) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -134,9 +135,8 @@ const Table = ({
       {children}
       <Box
         sx={{
-          maxHeight: "1000px",
-          height: "400px",
-          overflow: "hidden",
+          height: "800px",
+          // overflow: "hidden",
           display: "grid",
         }}
       >
@@ -161,9 +161,11 @@ const Table = ({
           onSortModelChange={handleOnSortModelChange}
           autoHeight={false}
           disableColumnMenu={true}
-          getRowHeight={() => "auto"}
+          getRowHeight={getRowHeight}
           sx={{
+            fontSize: 17,
             "& .MuiDataGrid-columnHeaderTitle": {
+              fontSize: "default",
               overflow: "visible",
               whiteSpace: "normal",
               lineHeight: "normal",

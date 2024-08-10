@@ -21,5 +21,8 @@ declare namespace DynamicTable {
       | ApiTypes.CrawlingJobProps[];
     rowCount?: number;
     isLoading?: boolean;
+    getRowHeight?:
+      | import("react-data-table-component").GridRowHeightReturnValue
+      | undefined;
   };
 }

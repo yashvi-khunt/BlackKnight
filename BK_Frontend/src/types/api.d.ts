@@ -242,3 +242,22 @@ declare namespace productTypes {
   };
   type getProduct = Global.apiResponse<productDetails>;
 }
+
+declare namespace orderTypes {
+  type getOrders = Omit<Global.apiResponse, "data"> & {
+    data: {
+      count: number;
+      data: Array<{
+        primaryImage: string;
+        quantity: number;
+        orderDate: string;
+        boxName: string;
+        clientName: string;
+        jobWorkerName: string;
+        jobWorkerRate: number;
+        profitPercent: number;
+        finalRate: number;
+      }>;
+    };
+  };
+}

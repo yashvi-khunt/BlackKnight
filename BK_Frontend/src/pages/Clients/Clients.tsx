@@ -53,7 +53,7 @@ function Clients() {
       field: "gstNumber",
       headerName: "GST Number",
       renderCell: ({ value }) => {
-        return value === null ? "-" : value;
+        return value === null || value === "" ? "-" : value;
       },
       minWidth: 150,
       flex: 1,

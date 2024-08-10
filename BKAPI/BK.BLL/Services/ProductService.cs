@@ -131,11 +131,7 @@ public class ProductService : IProductService
         throw new Exception("Product not found");
     }
 }
-
-
-
-
-
+   
     public async Task<VMGetAll<VMAllProducts>> GetAllProducts()
         {
             var products = await _context.Products

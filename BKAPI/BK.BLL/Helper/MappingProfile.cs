@@ -47,5 +47,12 @@ public class MappingProfile : Profile
         CreateMap<Brand, VMBrandDetails>()
             .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.UserName)); 
 
+        
+        CreateMap<Order, VMGetAllOrder>()
+            .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.CompanyName)) 
+            .ForMember(dest => dest.PrimaryImage, opt => opt.MapFrom(src => src.Product.Images.FirstOrDefault(i => i.IsPrimary).ImagePath))
+            .ForMember(dest=>dest.JobWorkerName,opt=>opt.MapFrom(src => src.Product.JobWorker.User.CompanyName))
+            .ForMember(dest => dest.BoxName, opt => opt.MapFrom(src => src.Product.BoxName))
+            .ForMember(dest => dest.ProfitPercent, opt => opt.MapFrom(src => src.Product.ProfitPercent));
     }
 }

@@ -24,7 +24,7 @@ public class Product
     public int Top { get; set; }
     public int Flute { get; set; }
     public int Back { get; set; }
-    public int NoOfSheetPerBox { get; set; }
+    public double NoOfSheetPerBox { get; set; }
     [ForeignKey("PrintTypeId")]
     public int PrintTypeId { get; set; }
     public string? PrintingPlate { get; set; }

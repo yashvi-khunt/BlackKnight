@@ -4,6 +4,7 @@ using BK.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BK.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240803072257_Update_Type_Of_NoOfSheetsPerBox")]
+    partial class Update_Type_Of_NoOfSheetsPerBox
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,18 +109,18 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e86b7ea3-63b7-4bc4-bcf7-fd1a30c15fb9",
+                            Id = "c8c4936d-6f47-4dd8-aad4-19513f80e62e",
                             AccessFailedCount = 0,
                             CompanyName = "Black Knight Enterprise",
-                            ConcurrencyStamp = "52d0d980-a9d3-4aa1-8bbc-83b2bfa73e67",
-                            CreatedDate = new DateTime(2024, 8, 3, 22, 20, 20, 830, DateTimeKind.Local).AddTicks(5800),
+                            ConcurrencyStamp = "b8b498ea-9ba1-451f-bf8c-28a1909b85d9",
+                            CreatedDate = new DateTime(2024, 8, 3, 12, 52, 56, 811, DateTimeKind.Local).AddTicks(8430),
                             EmailConfirmed = false,
                             IsActivated = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAENTTtiTrqdjGFH1rgFiXPveaZZ3TZPXBESoVBUZO9xs/gxMb7zTz4de1u6Utfe6mMw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH2bzB/l/KNJ4Xp8J5LQ7t08otDDiB0g2VuQT3M3Mg5G+sQk8PdofM6s4FQvMUJ+lA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "94fe6abf-78c7-4cd3-a5b9-a8363b58a1ae",
+                            SecurityStamp = "4f4a717a-15d0-4f0a-af0e-df3b826c9837",
                             TwoFactorEnabled = false,
                             UserName = "admin",
                             UserPassword = "Admin@123"
@@ -208,9 +211,6 @@ namespace BK.DAL.Migrations
                     b.Property<float>("FinalRate")
                         .HasColumnType("real");
 
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
                     b.Property<float>("JobWorkerRate")
                         .HasColumnType("real");
 
@@ -277,32 +277,6 @@ namespace BK.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PrintTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsOffset = false,
-                            Name = "2 CLR"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsOffset = true,
-                            Name = "2 CLR"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsOffset = false,
-                            Name = "4 CLR"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsOffset = true,
-                            Name = "4 CLR"
-                        });
                 });
 
             modelBuilder.Entity("BK.DAL.Models.Product", b =>
@@ -474,19 +448,19 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1f1711f6-8dda-499e-932f-d339e8baeb6b",
+                            Id = "b0d33318-f5b5-4ae9-b10b-98de3705f2ef",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c3efd6bb-19c2-4251-9884-abb6c5f0deaf",
+                            Id = "ed9b53ae-074d-491e-8db9-4b666afc8142",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "e803cb67-f763-473b-9309-d6c783031dac",
+                            Id = "3337590a-f9f7-4d3a-8ee6-4d7221e5feb9",
                             Name = "JobWorker",
                             NormalizedName = "JOBWORKER"
                         });
@@ -581,8 +555,8 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "e86b7ea3-63b7-4bc4-bcf7-fd1a30c15fb9",
-                            RoleId = "1f1711f6-8dda-499e-932f-d339e8baeb6b"
+                            UserId = "c8c4936d-6f47-4dd8-aad4-19513f80e62e",
+                            RoleId = "b0d33318-f5b5-4ae9-b10b-98de3705f2ef"
                         });
                 });
 

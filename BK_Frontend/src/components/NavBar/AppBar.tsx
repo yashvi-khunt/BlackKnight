@@ -19,9 +19,11 @@ import ListItemText from "@mui/material/ListItemText";
 import Logo from "../Logo";
 import { adminRoutes } from "../../routes/AdminRoutes";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Tooltip } from "@mui/material";
+import { Avatar, Button, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useEffect } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { Person } from "@mui/icons-material";
+import { logout } from "../../redux/slice/authSlice";
 
 const drawerWidth = 240;
 
@@ -104,6 +106,29 @@ export default function MiniDrawer() {
 
   const userStatus = useAppSelector((state) => state.auth.status);
 
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    console.log("logout");
+    dispatch(logout());
+    navigate("/auth/login");
+  };
+  const settings = [
+    { name: "Profile" },
+    { name: "Logout", function: handleLogout },
+  ];
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   useEffect(() => {
     if (currentPath === "/") {
       userStatus ? navigate("/dashboard") : navigate("/login");
@@ -143,6 +168,38 @@ export default function MiniDrawer() {
               <Logo />
             )}
           </Typography>
+          <Box sx={{ flexGrow: 1, display: "flex" }}></Box>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar sx={{ bgcolor: "primary.main" }}>
+                <Person />
+              </Avatar>
+            </IconButton>
+
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={setting.function}>
+                  <Typography textAlign="center">{setting.name}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
         </Toolbar>
         <Divider />
       </AppBar>

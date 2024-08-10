@@ -13,6 +13,7 @@ public class Order
     public DateTime OrderDate { get; set; }
     public float JobWorkerRate { get; set; }
     public float FinalRate { get; set; }
+    // public bool IsCompleted { get; set; }
     
     public virtual ApplicationUser Client { get; set; }
     public virtual Product Product { get; set; }

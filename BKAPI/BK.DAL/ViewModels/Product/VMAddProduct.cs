@@ -17,13 +17,13 @@ public class VMAddProduct
     public int Top { get; set; }
     public int Flute { get; set; }
     public int Back { get; set; }
-    public int NoOfSheerPerBox { get; set; }
+    public double NoOfSheetPerBox { get; set; }
     public int PrintTypeId { get; set; }
     public string? PrintingPlate { get; set; }
     public int Ply { get; set; }
     public double PrintRate { get; set; }
     public bool IsLamination { get; set; }
-    public int DieCode { get; set; }
+    public int? DieCode { get; set; }
     public int JobWorkerId { get; set; }
     public int? LinerJobWorkerId { get; set; }
     public double ProfitPercent { get; set; }

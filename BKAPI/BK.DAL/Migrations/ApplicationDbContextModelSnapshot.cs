@@ -106,18 +106,18 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "924dc329-febc-41eb-b0ef-c47d46a5deea",
+                            Id = "e86b7ea3-63b7-4bc4-bcf7-fd1a30c15fb9",
                             AccessFailedCount = 0,
                             CompanyName = "Black Knight Enterprise",
-                            ConcurrencyStamp = "eadc98c4-52ea-4738-a243-a73764bf43f7",
-                            CreatedDate = new DateTime(2024, 7, 19, 15, 54, 38, 86, DateTimeKind.Local).AddTicks(3070),
+                            ConcurrencyStamp = "52d0d980-a9d3-4aa1-8bbc-83b2bfa73e67",
+                            CreatedDate = new DateTime(2024, 8, 3, 22, 20, 20, 830, DateTimeKind.Local).AddTicks(5800),
                             EmailConfirmed = false,
                             IsActivated = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMS1dZLsfdW9nK9u8hnp52sw/5sgiWvXtm7AKtuRzCu6Af/pVLmuQ1iPK8/Ut0dkGQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENTTtiTrqdjGFH1rgFiXPveaZZ3TZPXBESoVBUZO9xs/gxMb7zTz4de1u6Utfe6mMw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d1dbd71a-936e-47ec-a425-dd056d549298",
+                            SecurityStamp = "94fe6abf-78c7-4cd3-a5b9-a8363b58a1ae",
                             TwoFactorEnabled = false,
                             UserName = "admin",
                             UserPassword = "Admin@123"
@@ -208,6 +208,9 @@ namespace BK.DAL.Migrations
                     b.Property<float>("FinalRate")
                         .HasColumnType("real");
 
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
                     b.Property<float>("JobWorkerRate")
                         .HasColumnType("real");
 
@@ -274,6 +277,32 @@ namespace BK.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PrintTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsOffset = false,
+                            Name = "2 CLR"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsOffset = true,
+                            Name = "2 CLR"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsOffset = false,
+                            Name = "4 CLR"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsOffset = true,
+                            Name = "4 CLR"
+                        });
                 });
 
             modelBuilder.Entity("BK.DAL.Models.Product", b =>
@@ -306,7 +335,7 @@ namespace BK.DAL.Migrations
                     b.Property<double>("Deckle")
                         .HasColumnType("float");
 
-                    b.Property<int>("DieCode")
+                    b.Property<int?>("DieCode")
                         .HasColumnType("int");
 
                     b.Property<double?>("Flap1")
@@ -339,8 +368,8 @@ namespace BK.DAL.Migrations
                     b.Property<int?>("LinerJobWorkerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NoOfSheerPerBox")
-                        .HasColumnType("int");
+                    b.Property<double>("NoOfSheetPerBox")
+                        .HasColumnType("float");
 
                     b.Property<int>("Ply")
                         .HasColumnType("int");
@@ -445,19 +474,19 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e7aa90e3-5091-4523-a4a9-d0526d10287b",
+                            Id = "1f1711f6-8dda-499e-932f-d339e8baeb6b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a14fd53e-7c3b-4315-96cc-e7b17131b43c",
+                            Id = "c3efd6bb-19c2-4251-9884-abb6c5f0deaf",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "87121df0-ba26-49d4-86b7-d09597694a45",
+                            Id = "e803cb67-f763-473b-9309-d6c783031dac",
                             Name = "JobWorker",
                             NormalizedName = "JOBWORKER"
                         });
@@ -552,8 +581,8 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "924dc329-febc-41eb-b0ef-c47d46a5deea",
-                            RoleId = "e7aa90e3-5091-4523-a4a9-d0526d10287b"
+                            UserId = "e86b7ea3-63b7-4bc4-bcf7-fd1a30c15fb9",
+                            RoleId = "1f1711f6-8dda-499e-932f-d339e8baeb6b"
                         });
                 });
 
@@ -688,7 +717,7 @@ namespace BK.DAL.Migrations
             modelBuilder.Entity("BK.DAL.Models.ProductImage", b =>
                 {
                     b.HasOne("BK.DAL.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -750,6 +779,11 @@ namespace BK.DAL.Migrations
             modelBuilder.Entity("BK.DAL.Models.ApplicationUser", b =>
                 {
                     b.Navigation("JobWorkers");
+                });
+
+            modelBuilder.Entity("BK.DAL.Models.Product", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

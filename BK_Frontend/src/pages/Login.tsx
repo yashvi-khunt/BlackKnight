@@ -6,6 +6,7 @@ import {
   Button,
   Grid,
   Link,
+  CircularProgress,
 } from "@mui/material";
 import bgImg from "../assets/LoginBG.png";
 import Logo from "../assets/Logo.png";
@@ -22,7 +23,7 @@ function Login() {
   const [error, setError] = useState(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [loginApi, { data: loginResponse, error: loginError }] =
+  const [loginApi, { data: loginResponse, error: loginError, isLoading }] =
     useLoginMutation();
 
   useEffect(() => {
@@ -44,6 +45,7 @@ function Login() {
   const clearError = () => {
     setError(null);
   };
+
   return (
     <Box
       sx={{
@@ -128,14 +130,29 @@ function Login() {
               </Grid>
             )}
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Login
-          </Button>
+          <Box sx={{ position: "relative" }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
+            >
+              Login{" "}
+              {isLoading && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: "-12px",
+                    marginLeft: "-12px",
+                  }}
+                />
+              )}
+            </Button>
+          </Box>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/forgot-password" variant="body2">

@@ -52,8 +52,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         };
         builder.Entity<ApplicationUser>().HasData(admin);
 
+        builder.Entity<PrintType>().HasData(
+            new PrintType {Id = 1,Name = "2 CLR", IsOffset = false},
+            new PrintType{Id = 2,Name = "2 CLR", IsOffset = true},
+            new PrintType{Id = 3,Name = "4 CLR", IsOffset = false},
+            new PrintType{Id = 4,Name = "4 CLR", IsOffset = true});
 
-        //Seeding the relation between our user and role to AspNetUserRoles table
+
+         //Seeding the relation between our user and role to AspNetUserRoles table
         builder.Entity<IdentityUserRole<string>>().HasData(
             new IdentityUserRole<string>
             {

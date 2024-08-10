@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Typography, Button, Icon } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { useGetJobworkersQuery } from "../../redux/api/jobworkerApi";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Table from "../../components/dynamicTable/DynamicTable";
@@ -29,26 +29,31 @@ function Jobworkers() {
       field: "companyName",
       headerName: "Company Name",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "userName",
       headerName: "Username",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "userPassword",
       headerName: "Password",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "phoneNumber",
       headerName: "Phone",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "fluteRate",
       headerName: "Flute Rate",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "linerRate",
@@ -57,6 +62,7 @@ function Jobworkers() {
         return value === null ? "-" : value;
       },
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "gstNumber",
@@ -65,11 +71,14 @@ function Jobworkers() {
         return value === null || value === "" ? "-" : value;
       },
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "actions",
       type: "actions",
       headerName: "Actions",
+      minWidth: 150,
+      flex: 1,
       renderCell: (params) => (
         <Box display="flex" gap={1}>
           <GridActionsCellItem

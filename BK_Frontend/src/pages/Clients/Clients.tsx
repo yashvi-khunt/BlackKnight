@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Typography, Button, Icon } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { useGetClientsQuery } from "../../redux/api/clientApi";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Table from "../../components/dynamicTable/DynamicTable";
@@ -29,29 +29,34 @@ function Clients() {
       field: "companyName",
       headerName: "Company Name",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "userName",
       headerName: "Username",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "userPassword",
       headerName: "Password",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "phoneNumber",
       headerName: "Phone",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "gstNumber",
       headerName: "GST Number",
       renderCell: ({ value }) => {
-        return value === null ? "-" : value;
+        return value === null || value === "" ? "-" : value;
       },
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "actions",
@@ -84,6 +89,8 @@ function Clients() {
           />
         </Box>
       ),
+      minWidth: 150,
+      flex: 1,
     },
   ];
 

@@ -24,14 +24,14 @@ public class Product
     public int Top { get; set; }
     public int Flute { get; set; }
     public int Back { get; set; }
-    public int NoOfSheerPerBox { get; set; }
+    public double NoOfSheetPerBox { get; set; }
     [ForeignKey("PrintTypeId")]
     public int PrintTypeId { get; set; }
     public string? PrintingPlate { get; set; }
     public int Ply { get; set; }
     public double PrintRate { get; set; }
     public bool IsLamination { get; set; }
-    public int DieCode { get; set; }
+    public int? DieCode { get; set; }
     [ForeignKey("JobWorkerId")]
     public int JobWorkerId { get; set; }
     [ForeignKey("LinerJobWorkerId")]
@@ -49,4 +49,5 @@ public class Product
     public virtual PrintType PrintType { get; set; }
     public virtual JobWorker JobWorker { get; set; }
     public virtual JobWorker LinerJobWorker { get; set; }
+    public virtual List<ProductImage> Images { get; set; }
 }

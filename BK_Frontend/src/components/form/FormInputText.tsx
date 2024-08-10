@@ -11,6 +11,7 @@ const FormInputText = React.forwardRef(
       value,
       disabled,
       placeholder,
+      type,
     }: FormTypes.FormInputProps,
     ref
   ) => {
@@ -21,6 +22,7 @@ const FormInputText = React.forwardRef(
         control={control}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
+            type={type}
             helperText={error ? error.message : null}
             error={!!error}
             onChange={onChange}

@@ -15,7 +15,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
             .ForMember(dest => dest.UserPassword, opt => opt.MapFrom(src => src.User.UserPassword))
             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.User.PhoneNumber))
-            .ForMember(dest => dest.GSTNumber, opt => opt.MapFrom(src => src.User.GSTNumber))
             .ForMember(dest => dest.GSTNumber, opt => opt.MapFrom(src => src.User.GSTNumber));
 
         CreateMap<Product, VMAddProduct>().ReverseMap();
@@ -23,6 +22,8 @@ public class MappingProfile : Profile
 
         CreateMap<Product, VMProductDetails>()
             .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
+            .ForMember(dest => dest.Images,opt=>opt.MapFrom(src => src.Images))
+            .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.Brand.Client.Id))
             .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Brand.Client.UserName))
             .ForMember(dest => dest.JobWorkerName, opt => opt.MapFrom(src => src.JobWorker.User.CompanyName))
             .ForMember(dest => dest.TopPaperTypeName, opt => opt.MapFrom(src => src.TopPaperType.Type))
@@ -40,7 +41,18 @@ public class MappingProfile : Profile
 
         CreateMap<VMProductDetails, VMAllProducts>()
             .ForMember(dest => dest.PrimaryImage,
-                opt => opt.MapFrom(src => src.Images.FirstOrDefault(i => i.IsPrimary)));
+                opt => opt.MapFrom(src =>src.Images.FirstOrDefault(s => s.IsPrimary == true).ImagePath));
 
+        CreateMap<VMAddBrand, Brand>();
+        CreateMap<Brand, VMBrandDetails>()
+            .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.UserName)); 
+
+        
+        CreateMap<Order, VMGetAllOrder>()
+            .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.CompanyName)) 
+            .ForMember(dest => dest.PrimaryImage, opt => opt.MapFrom(src => src.Product.Images.FirstOrDefault(i => i.IsPrimary).ImagePath))
+            .ForMember(dest=>dest.JobWorkerName,opt=>opt.MapFrom(src => src.Product.JobWorker.User.CompanyName))
+            .ForMember(dest => dest.BoxName, opt => opt.MapFrom(src => src.Product.BoxName))
+            .ForMember(dest => dest.ProfitPercent, opt => opt.MapFrom(src => src.Product.ProfitPercent));
     }
 }

@@ -17,7 +17,7 @@ public class VMUpdateProduct
     public int? Top { get; set; }
     public int? Flute { get; set; }
     public int? Back { get; set; }
-    public int? NoOfSheerPerBox { get; set; }
+    public double? NoOfSheetPerBox { get; set; }
     public int? PrintTypeId { get; set; }
     public string? PrintingPlate { get; set; }
     public int? Ply { get; set; }
@@ -29,4 +29,5 @@ public class VMUpdateProduct
     public double? ProfitPercent { get; set; }
     public string? Remarks { get; set; }
     public bool? IsActive { get; set; }
+    public List<VMAddProductImage>? Images { get; set; }
 }

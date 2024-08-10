@@ -6,5 +6,6 @@ declare namespace FormTypes {
     value?: string | null | undefined;
     disabled?: boolean;
     placeholder?: string;
+    type?: HTMLInputTypeAttribute;
   };
 }

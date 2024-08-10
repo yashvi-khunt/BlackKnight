@@ -8,4 +8,5 @@ public interface IProductService
     Task UpdateProduct(int id, VMUpdateProduct updateProduct);
     Task<VMGetAll<VMAllProducts>> GetAllProducts();
     Task<VMProductDetails> GetProductById(int id);
+    Task<List<VMOptions>> GetPrintOptions();
 }

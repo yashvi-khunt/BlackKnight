@@ -20,7 +20,6 @@ public class ProductController : ControllerBase
         _logger = logger;
     }
     
-    
     //GET
     [HttpGet]
     public async Task<IActionResult> GetAllProducts()
@@ -58,7 +57,6 @@ public class ProductController : ControllerBase
             return StatusCode(500, new Response("An error occurred while retrieving the product.", false));
         }
     }
-    
     
     //POST
     [HttpPost]
@@ -106,5 +104,19 @@ public class ProductController : ControllerBase
             return StatusCode(500, new Response("An error occurred while updating the product.", false));
         }
     }
-
+    
+    
+    [HttpGet("/api/Print/Options")]
+    public async Task<ActionResult<List<VMOptions>>> GetPrintTypeOptions()
+    {
+        try
+        {
+            var printTypeOptions = await _productService.GetPrintOptions();
+            return Ok(new Response<List<VMOptions>>(printTypeOptions));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
 }

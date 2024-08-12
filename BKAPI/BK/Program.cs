@@ -69,7 +69,7 @@ namespace BKAPI
 
             //Identity
             builder.Services.AddDbContext<ApplicationDbContext>(
-               options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+               options => options.UseMySQL(builder.Configuration.GetConnectionString("Default")));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()

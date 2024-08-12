@@ -83,7 +83,7 @@ internal class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applica
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
         var connectionString = configuration.GetConnectionString("Default");
 
-        builder.UseSqlServer(connectionString);
+        builder.UseMySQL(connectionString);
 
         return new ApplicationDbContext(builder.Options);
     }

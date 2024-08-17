@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   Box,
   Grid,
@@ -23,14 +23,18 @@ import {
 import ClientBrandSelect from "./ClientBrandSelect";
 import { FormInputText, FormImageUpload } from "../../components/form";
 import SelectField from "./SelectField";
+import { openSnackbar } from "../../redux/slice/snackbarSlice";
+import { useAppDispatch } from "../../redux/hooks";
 
 const AddEditProducts = ({ isEdit, productData }) => {
   const { control, register, handleSubmit, setValue } = useForm({
     defaultValues: productData || {},
   });
 
-  const [addProductMutation] = useAddProductMutation();
-  const [updateProductMutation] = useUpdateProductMutation();
+  const [addProductMutation, { error: addError, data: addResponse }] =
+    useAddProductMutation();
+  const [updateProductMutation, { error: updateError, data: updateResponse }] =
+    useUpdateProductMutation();
   const { data: clients } = useGetClientOptionsQuery();
   const { data: jobworkers } = useGetJobworkerOptionsQuery();
   const [selectedClient, setSelectedClient] = useState(
@@ -45,14 +49,56 @@ const AddEditProducts = ({ isEdit, productData }) => {
   );
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    if (addResponse) {
+      dispatch(
+        openSnackbar({
+          severity: "success",
+          message: addResponse.message,
+        })
+      );
+      navigate("/products");
+    }
+    if (addError) {
+      dispatch(
+        openSnackbar({
+          severity: "error",
+          message: addError?.data?.message,
+        })
+      );
+      console.log("error"); /// toast
+    }
+  }, [addResponse, addError?.data]);
+
+  useEffect(() => {
+    if (updateResponse) {
+      dispatch(
+        openSnackbar({
+          severity: "success",
+          message: updateResponse?.message,
+        })
+      );
+      navigate("/products");
+    }
+    if (updateError) {
+      dispatch(
+        openSnackbar({
+          severity: "error",
+          message: updateError?.data?.message,
+        })
+      );
+      console.log("error");
+    }
+  }, [updateResponse, updateError?.data]);
   // Fetch paper types
   const { data: paperTypesData } = useGetPaperTypesQuery();
 
   // Fetch print types
   const { data: printTypesData } = useGetPrintTypesQuery();
 
-  const handleSubmitForm = async (data) => {
+  const handleSubmitForm = (data) => {
     console.log(data);
     const formData = {
       ...data,
@@ -71,13 +117,11 @@ const AddEditProducts = ({ isEdit, productData }) => {
 
     if (isEdit) {
       console.log("edit");
-      await updateProductMutation({ data: formData, id: productData.id });
+      // updateProductMutation({ data: formData, id: productData.id });
     } else {
-      console.log("add");
-      await addProductMutation(formData);
+      console.log("add", formData);
+      addProductMutation(formData);
     }
-
-    //navigate("/products");
   };
 
   return (

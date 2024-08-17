@@ -174,6 +174,7 @@ public class ProductService : IProductService
             .Include(p => p.JobWorker)
                 .ThenInclude(j=>j.User)
             .Include(p => p.LinerJobWorker)
+            .Include(p => p.Images)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (product == null)

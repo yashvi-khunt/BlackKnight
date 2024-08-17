@@ -22,7 +22,7 @@ public class MappingProfile : Profile
 
         CreateMap<Product, VMProductDetails>()
             .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
-            .ForMember(dest => dest.Images,opt=>opt.MapFrom(src => src.Images))
+            .ForMember(dest=>dest.Images,opt=>opt.MapFrom(src=>src.Images))
             .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.Brand.Client.Id))
             .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Brand.Client.UserName))
             .ForMember(dest => dest.JobWorkerName, opt => opt.MapFrom(src => src.JobWorker.User.CompanyName))
@@ -36,7 +36,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.LaminationPrice, opt => opt.MapFrom<LaminationPriceResolver>())
             .ForMember(dest => dest.JobWorkerPrice, opt => opt.MapFrom<JobWorkerPriceResolver>())
             .ForMember(dest => dest.FinalRate, opt => opt.MapFrom<FinalRateResolver>());
-        ;
+        
 
 
         CreateMap<VMProductDetails, VMAllProducts>()

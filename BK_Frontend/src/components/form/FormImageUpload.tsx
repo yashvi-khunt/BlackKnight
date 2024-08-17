@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Box, Button, IconButton } from "@mui/material";
 import { Upload as UploadIcon, Clear as ClearIcon } from "@mui/icons-material";
 
@@ -16,6 +16,7 @@ const FormImageUpload = ({
     // Set initial images and preview images when editing
     if (initialImages.length > 0) {
       setImages(initialImages);
+      console.log(initialImages);
     }
     if (initialPreviewImages.length > 0) {
       setPreviewImages(initialPreviewImages);
@@ -50,9 +51,9 @@ const FormImageUpload = ({
   };
 
   return (
-    <Box>
+    <Box display="flex" flexWrap="wrap" gap={5}>
       {[...Array(maxImages)].map((_, index) => (
-        <Box position="relative" key={index} mt={index > 0 ? 2 : 0}>
+        <Box position="relative" key={index}>
           <Button
             variant="contained"
             component="label"
@@ -81,8 +82,8 @@ const FormImageUpload = ({
                 src={previewImages[index]}
                 alt={`Preview ${index}`}
                 style={{
-                  maxWidth: index === primaryImageIndex ? "300px" : "100px",
-                  maxHeight: index === primaryImageIndex ? "300px" : "100px",
+                  maxWidth: "300px",
+                  maxHeight: "300px",
                 }}
               />
             </Box>

@@ -1,6 +1,6 @@
 import { Box, Typography, Modal, Button } from "@mui/material";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import capitalizeFirstLetter from "../../helperFunctions/capitalizeFirstLetter";
 import { FormInputPassword, FormInputText } from "../../components/form";
 import {
@@ -10,7 +10,19 @@ import {
 import { useAppDispatch } from "../../redux/hooks";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
 
-function ClientModal({ open, handleClose, clientData, mode }) {
+interface ClientModalProps {
+  open: boolean;
+  handleClose: () => void;
+  clientData?: clientTypes.getClients;
+  mode: "add" | "edit" | "view";
+}
+
+function ClientModal({
+  open,
+  handleClose,
+  clientData,
+  mode,
+}: clientTypes.getClients) {
   const { control, register, handleSubmit, reset, watch } = useForm();
   const [addClient, { error: addError, data: addResponse }] =
     useAddClientMutation();
@@ -46,12 +58,12 @@ function ClientModal({ open, handleClose, clientData, mode }) {
       dispatch(
         openSnackbar({
           severity: "error",
-          message: addError?.data?.message,
+          message: (addError as any)?.data?.message,
         })
       );
       console.log("error"); /// toast
     }
-  }, [addResponse, addError?.data]);
+  }, [addResponse, (addError as any)?.data]);
 
   useEffect(() => {
     if (updateResponse) {
@@ -67,18 +79,18 @@ function ClientModal({ open, handleClose, clientData, mode }) {
       dispatch(
         openSnackbar({
           severity: "error",
-          message: updateError?.data?.message,
+          message: (updateError as any)?.data?.message,
         })
       );
       console.log("error");
     }
-  }, [updateResponse, updateError?.data]);
+  }, [updateResponse, (updateError as any)?.data]);
 
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (mode === "add") {
-      await addClient(data);
+      addClient(data as clientTypes.addClient);
     } else if (mode === "edit") {
-      await updateClient({ data, id: clientData.id });
+      updateClient({ data, id: clientData.id });
     }
   };
 

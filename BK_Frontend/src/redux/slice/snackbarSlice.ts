@@ -1,8 +1,15 @@
+import { AlertColor } from "@mui/material";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface SnackbarState {
+  open: boolean;
+  severity: AlertColor; // Changed to AlertColor
+  message: string;
+}
+
+const initialState: SnackbarState = {
   open: false,
-  severity: "",
+  severity: "info",
   message: "",
 };
 

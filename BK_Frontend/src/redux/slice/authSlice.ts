@@ -6,8 +6,8 @@ const tokenFields = {
   id: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
   email: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
 };
-let data: Global.InitialUser = localStorage.getItem("user");
-data = data ? JSON.parse(data) : null;
+var ex_data = localStorage.getItem("user");
+var data: Global.InitialUser = ex_data ? JSON.parse(ex_data) : null;
 
 const initialState: Global.InitialUser = {
   status: data === null ? false : true,

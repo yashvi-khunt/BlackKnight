@@ -194,9 +194,11 @@ export default function MiniDrawer() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={setting.function}>
-                  <Typography textAlign="center">{setting.name}</Typography>
-                </MenuItem>
+                <div key={setting.name}>
+                  <MenuItem onClick={setting.function}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                </div>
               ))}
             </Menu>
           </Box>

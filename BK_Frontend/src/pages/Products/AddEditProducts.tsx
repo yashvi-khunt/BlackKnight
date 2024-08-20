@@ -65,12 +65,12 @@ const AddEditProducts = ({ isEdit, productData }) => {
       dispatch(
         openSnackbar({
           severity: "error",
-          message: addError?.data?.message,
+          message: (addError as any)?.data?.message,
         })
       );
       console.log("error"); /// toast
     }
-  }, [addResponse, addError?.data]);
+  }, [addResponse, (addError as any)?.data]);
 
   useEffect(() => {
     if (updateResponse) {
@@ -86,12 +86,12 @@ const AddEditProducts = ({ isEdit, productData }) => {
       dispatch(
         openSnackbar({
           severity: "error",
-          message: updateError?.data?.message,
+          message: (updateError as any)?.data?.message,
         })
       );
       console.log("error");
     }
-  }, [updateResponse, updateError?.data]);
+  }, [updateResponse, (updateError as any)?.data]);
   // Fetch paper types
   const { data: paperTypesData } = useGetPaperTypesQuery();
 
@@ -117,7 +117,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
 
     if (isEdit) {
       console.log("edit");
-      // updateProductMutation({ data: formData, id: productData.id });
+      updateProductMutation({ data: formData, id: productData.id });
     } else {
       console.log("add", formData);
       addProductMutation(formData);
@@ -498,7 +498,9 @@ const AddEditProducts = ({ isEdit, productData }) => {
               setValue={setValue}
               clients={clients?.data || []}
               sClient={selectedClient}
-              setSelectedClient={setSelectedClient}
+              // setSelectedClient={setSelectedClient}
+              isEdit={isEdit}
+              productData={productData}
             />
           </Grid>
           <Grid item xs={12}>

@@ -24,7 +24,7 @@ export const indexApi = createApi({
     "Brand",
     "Print",
   ],
-  endpoints: (builder) => ({}),
+  endpoints: () => ({}),
 });
 
 export const {} = indexApi;

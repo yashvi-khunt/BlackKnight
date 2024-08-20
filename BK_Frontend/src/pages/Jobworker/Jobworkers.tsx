@@ -6,14 +6,17 @@ import Table from "../../components/dynamicTable/DynamicTable";
 import { EditOutlined, InfoOutlined } from "@mui/icons-material";
 import JobworkerModal from "./JobworkerModel";
 
+type ModalMode = "add" | "edit" | "view";
 function Jobworkers() {
   const { data: jobworkers, isLoading } = useGetJobworkersQuery(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); // "add", "edit", "view"
+  const [modalMode, setModalMode] = useState<ModalMode>("add"); // "add", "edit", "view"
   const [selectedJobworker, setSelectedJobworker] = useState(null);
 
-  const handleOpenModal = (mode, jobworkerData = null) => {
-    console.log(jobworkerData);
+  const handleOpenModal = (
+    mode: ModalMode,
+    jobworkerData: jobworkerTypes.getJobworkers | null = null
+  ) => {
     setModalMode(mode);
     setSelectedJobworker(jobworkerData);
     setModalOpen(true);

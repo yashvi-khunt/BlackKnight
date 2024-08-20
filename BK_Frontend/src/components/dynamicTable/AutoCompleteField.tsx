@@ -11,7 +11,7 @@ const AutoCompleteField = ({
   renderIcon = false,
 }: DynamicTable.AutoCompleteFieldProps) => {
   const [value, setValue] = useState<Global.Option | Global.Option[] | null>(
-    multiple ? [] || {} : null
+    multiple ? [] : null
   );
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -54,7 +54,9 @@ const AutoCompleteField = ({
     const ids = searchParams.get(paramKey)?.split(",");
     var selectedOptions;
     if (paramKey === "UserIds") {
-      selectedOptions = options.filter((option) => ids?.includes(option.value));
+      selectedOptions = options.filter((option) =>
+        ids?.includes(option.value as string)
+      );
     } else {
       selectedOptions = options.filter((option) => ids?.includes(option.label));
     }
@@ -69,16 +71,16 @@ const AutoCompleteField = ({
       multiple={multiple}
       limitTags={2}
       value={value}
-      getOptionLabel={(option) => option.label}
-      renderOption={(props, option) => (
-        <Box component="li" {...props}>
-          {renderIcon ? (
-            <UserProfileAvatar name={option.label} />
-          ) : (
-            option.label
-          )}
-        </Box>
-      )}
+      // getOptionLabel={(option) => option.label}
+      // renderOption={(props, option) => (
+      //   <Box component="li" {...props}>
+      //     {renderIcon ? (
+      //       <UserProfileAvatar name={option.label} />
+      //     ) : (
+      //       option.label
+      //     )}
+      //   </Box>
+      // )}
       renderInput={(params) => (
         <TextField
           {...params}

@@ -27,7 +27,7 @@ function Login() {
     useLoginMutation();
 
   useEffect(() => {
-    setError(loginError?.data.message);
+    setError((loginError as any)?.data.message);
   }, [loginError]);
 
   const onSubmit = (data) => {

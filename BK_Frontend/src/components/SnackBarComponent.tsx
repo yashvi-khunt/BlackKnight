@@ -1,9 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import { closeSnackbar } from "../redux/slice/snackbarSlice";
 import { Alert, Snackbar } from "@mui/material";
+import { RootState } from "../redux/store";
 
 const SnackBarComponent = () => {
-  const { open, severity, message } = useSelector((state) => state.snackbar);
+  const { open, severity, message } = useSelector(
+    (state: RootState) => state.snackbar
+  );
   const dispatch = useDispatch();
 
   const handleClose = () => {

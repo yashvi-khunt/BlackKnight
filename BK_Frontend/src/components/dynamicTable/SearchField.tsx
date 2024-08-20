@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
-import capitalizeFirstLetter from "../../utils/helperFunctions/capitalizeFirstLetter";
+import capitalizeFirstLetter from "../../helperFunctions/capitalizeFirstLetter";
 const SearchField = ({ label, placeholder }: DynamicTable.SearchField) => {
   const [value, setValue] = useState<string | null>("" || null);
   const [searchParams, setSearchParams] = useSearchParams();

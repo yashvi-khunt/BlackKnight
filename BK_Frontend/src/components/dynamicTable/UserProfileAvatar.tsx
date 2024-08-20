@@ -1,12 +1,12 @@
 import { Stack, Avatar } from "@mui/material";
-import { stringToColor } from "../../utils/helperFunctions/stringToColor";
+// import { stringToColor } from "../../utils/helperFunctions/stringToColor";
 
 const UserProfileAvatar = ({ name }: { name: string }) => {
   const initials = `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`;
 
   return (
     <>
-      <Stack spacing={1} direction="row" alignItems="center" sx={{ gap: 1 }}>
+      {/* <Stack spacing={1} direction="row" alignItems="center" sx={{ gap: 1 }}>
         <Avatar
           sx={{
             bgcolor: stringToColor(name),
@@ -18,7 +18,7 @@ const UserProfileAvatar = ({ name }: { name: string }) => {
           {initials}
         </Avatar>
         {name}
-      </Stack>
+      </Stack> */}
     </>
   );
 };

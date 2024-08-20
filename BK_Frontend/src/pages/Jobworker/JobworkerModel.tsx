@@ -1,6 +1,6 @@
 import { Box, Typography, Modal, Button } from "@mui/material";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import capitalizeFirstLetter from "../../helperFunctions/capitalizeFirstLetter";
 import { FormInputPassword, FormInputText } from "../../components/form";
 import {
@@ -10,7 +10,31 @@ import {
 import { useAppDispatch } from "../../redux/hooks";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
 
-function JobworkerModal({ open, handleClose, jobworkerData, mode }) {
+interface JobworkerModalProps {
+  open: boolean;
+  handleClose: () => void;
+  jobworkerData?: jobworkerTypes.getJobworkers;
+  mode: "add" | "edit" | "view";
+} // Define the types for the form data
+
+// Define the types for the form data
+interface JobworkerFormData {
+  companyName: string;
+  userName: string;
+  userPassword: string;
+  phoneNumber: string;
+  fluteRate: number;
+  linerRate?: number;
+  gstNumber?: string;
+  id: string;
+}
+
+const JobworkerModal: React.FC<JobworkerModalProps> = ({
+  open,
+  handleClose,
+  jobworkerData,
+  mode,
+}) => {
   const { control, register, handleSubmit, reset, watch } = useForm();
   const [addJobworker, { error: addError, data: addResponse }] =
     useAddJobworkerMutation();
@@ -20,6 +44,7 @@ function JobworkerModal({ open, handleClose, jobworkerData, mode }) {
 
   useEffect(() => {
     if (jobworkerData) {
+      console.log(jobworkerData);
       reset({ ...jobworkerData, confirmPassword: jobworkerData.userPassword });
     } else {
       reset({
@@ -48,12 +73,12 @@ function JobworkerModal({ open, handleClose, jobworkerData, mode }) {
       dispatch(
         openSnackbar({
           severity: "error",
-          message: addError?.data?.message,
+          message: (addError as any)?.data?.message,
         })
       );
       console.log("error"); /// toast
     }
-  }, [addResponse, addError?.data]);
+  }, [addResponse, (addError as any)?.data]);
 
   useEffect(() => {
     if (updateResponse) {
@@ -69,25 +94,25 @@ function JobworkerModal({ open, handleClose, jobworkerData, mode }) {
       dispatch(
         openSnackbar({
           severity: "error",
-          message: updateError?.data?.message,
+          message: (updateError as any)?.data?.message,
         })
       );
       console.log("error");
     }
-  }, [updateResponse, updateError?.data]);
+  }, [updateResponse, (updateError as any)?.data]);
 
-  const onSubmit = async (data) => {
-    const jobworkerData = {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const jwData = {
       ...data,
-      linerRate: data.linerRate ? parseFloat(data.linerRate) : null,
+      linerRate: data.linerRate,
     };
 
-    console.log(jobworkerData);
+    console.log(jwData);
 
     if (mode === "add") {
-      await addJobworker(jobworkerData);
+      addJobworker(jwData as JobworkerFormData);
     } else if (mode === "edit") {
-      await updateJobworker({ data: jobworkerData, id: jobworkerData.id });
+      updateJobworker({ data: jwData, id: jobworkerData?.id });
     }
   };
   return (
@@ -247,6 +272,6 @@ function JobworkerModal({ open, handleClose, jobworkerData, mode }) {
       </Box>
     </Modal>
   );
-}
+};
 
 export default JobworkerModal;

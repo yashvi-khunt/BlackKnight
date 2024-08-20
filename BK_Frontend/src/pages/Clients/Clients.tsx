@@ -122,6 +122,7 @@ function Clients() {
         handleClose={handleCloseModal}
         clientData={selectedClient}
         mode={modalMode}
+        data={null}
       />
     </>
   );

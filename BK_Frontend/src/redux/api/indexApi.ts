@@ -4,7 +4,7 @@ import { RootState } from "../store";
 export const indexApi = createApi({
   reducerPath: "indexApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5063/api/",
+    baseUrl: "http://api.synqron.in/api/",
     prepareHeaders: (headers, { getState }) => {
       const { token: token } = (getState() as RootState).auth;
 

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BK.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240810082929_Initial")]
+    [Migration("20240829143218_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -105,18 +105,18 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4f7250e0-4c76-4b3a-a495-cad4cbfac3bf",
+                            Id = "bd453085-ed03-434b-b6bc-43100504e615",
                             AccessFailedCount = 0,
                             CompanyName = "Black Knight Enterprise",
-                            ConcurrencyStamp = "d13ced31-4285-406a-9448-9704e6d55b48",
-                            CreatedDate = new DateTime(2024, 8, 10, 13, 59, 29, 657, DateTimeKind.Local).AddTicks(5660),
+                            ConcurrencyStamp = "3e1bedf3-38bb-4bd7-8230-25d4aabe827d",
+                            CreatedDate = new DateTime(2024, 8, 29, 20, 2, 18, 413, DateTimeKind.Local).AddTicks(8420),
                             EmailConfirmed = false,
                             IsActivated = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJfcNTqs12CrAsPASOgDKNpJfMkEqcYQf+3TmLC1iKJ3j9BPjUkjJ2/5uS+fXBAU7Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHdnXv01NQXNNO9TzliT4lgPLMDJJVQZrOWUkQcVZ42zzB12A8yUznxDKwQaJUjqBQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b5ee0f00-4d02-4964-af92-60c1d9822395",
+                            SecurityStamp = "f236af2d-5295-4c10-83e5-4389d29f0d66",
                             TwoFactorEnabled = false,
                             UserName = "admin",
                             UserPassword = "Admin@123"
@@ -192,12 +192,11 @@ namespace BK.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("ClientId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.Property<float>("FinalRate")
                         .HasColumnType("float");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<float>("JobWorkerRate")
                         .HasColumnType("float");
@@ -212,8 +211,6 @@ namespace BK.DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
 
                     b.HasIndex("ProductId");
 
@@ -453,19 +450,19 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b7446ef0-b5dd-4b5d-90d7-be44e3981e3d",
+                            Id = "4dea8007-a999-45e2-9bbe-14fbd193cc4c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1fcc2f8e-f6a1-47f1-b969-822369ab5ce3",
+                            Id = "53e3b7cc-9737-490d-8c04-70ab90088a04",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "ac3e162c-2e5a-4a5c-86cb-fbddb28b9b5f",
+                            Id = "9bcbe280-168b-4e93-bacf-31203e7ebbb1",
                             Name = "JobWorker",
                             NormalizedName = "JOBWORKER"
                         });
@@ -556,8 +553,8 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "4f7250e0-4c76-4b3a-a495-cad4cbfac3bf",
-                            RoleId = "b7446ef0-b5dd-4b5d-90d7-be44e3981e3d"
+                            UserId = "bd453085-ed03-434b-b6bc-43100504e615",
+                            RoleId = "4dea8007-a999-45e2-9bbe-14fbd193cc4c"
                         });
                 });
 
@@ -615,19 +612,11 @@ namespace BK.DAL.Migrations
 
             modelBuilder.Entity("BK.DAL.Models.Order", b =>
                 {
-                    b.HasOne("BK.DAL.Models.ApplicationUser", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BK.DAL.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Client");
 
                     b.Navigation("Product");
                 });

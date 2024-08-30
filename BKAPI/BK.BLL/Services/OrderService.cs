@@ -60,7 +60,7 @@ public class OrderService:IOrderService
         public async Task<VMGetAll<VMGetAllOrder>> GetAllOrders()
         {
             var orders = await _context.Orders
-                .Include(o => o.Client)
+                .Include(o => o.Product).ThenInclude(p => p.Brand).ThenInclude(b => b.Client)
                 .Include(o => o.Product)
                     .ThenInclude(p => p.Images).Include(p => p.Product).ThenInclude(p=>p.JobWorker).ThenInclude(j=>j.User)
                 .ToListAsync();

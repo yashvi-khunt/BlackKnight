@@ -49,7 +49,8 @@ public class MappingProfile : Profile
 
         
         CreateMap<Order, VMGetAllOrder>()
-            .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.CompanyName)) 
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id)) 
+            .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Product.Brand.Client.CompanyName)) 
             .ForMember(dest => dest.PrimaryImage, opt => opt.MapFrom(src => src.Product.Images.FirstOrDefault(i => i.IsPrimary).ImagePath))
             .ForMember(dest=>dest.JobWorkerName,opt=>opt.MapFrom(src => src.Product.JobWorker.User.CompanyName))
             .ForMember(dest => dest.BoxName, opt => opt.MapFrom(src => src.Product.BoxName))

@@ -381,22 +381,16 @@ namespace BK.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    ClientId = table.Column<string>(type: "varchar(255)", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     JobWorkerRate = table.Column<float>(type: "float", nullable: false),
-                    FinalRate = table.Column<float>(type: "float", nullable: false)
+                    FinalRate = table.Column<float>(type: "float", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Products_ProductId",
                         column: x => x.ProductId,
@@ -411,15 +405,15 @@ namespace BK.DAL.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1fcc2f8e-f6a1-47f1-b969-822369ab5ce3", null, "Client", "CLIENT" },
-                    { "ac3e162c-2e5a-4a5c-86cb-fbddb28b9b5f", null, "JobWorker", "JOBWORKER" },
-                    { "b7446ef0-b5dd-4b5d-90d7-be44e3981e3d", null, "Admin", "ADMIN" }
+                    { "4dea8007-a999-45e2-9bbe-14fbd193cc4c", null, "Admin", "ADMIN" },
+                    { "53e3b7cc-9737-490d-8c04-70ab90088a04", null, "Client", "CLIENT" },
+                    { "9bcbe280-168b-4e93-bacf-31203e7ebbb1", null, "JobWorker", "JOBWORKER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "CompanyName", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "GSTNumber", "IsActivated", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "UserPassword" },
-                values: new object[] { "4f7250e0-4c76-4b3a-a495-cad4cbfac3bf", 0, "Black Knight Enterprise", "d13ced31-4285-406a-9448-9704e6d55b48", new DateTime(2024, 8, 10, 13, 59, 29, 657, DateTimeKind.Local).AddTicks(5660), null, false, null, true, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEJfcNTqs12CrAsPASOgDKNpJfMkEqcYQf+3TmLC1iKJ3j9BPjUkjJ2/5uS+fXBAU7Q==", null, false, "b5ee0f00-4d02-4964-af92-60c1d9822395", false, "admin", "Admin@123" });
+                values: new object[] { "bd453085-ed03-434b-b6bc-43100504e615", 0, "Black Knight Enterprise", "3e1bedf3-38bb-4bd7-8230-25d4aabe827d", new DateTime(2024, 8, 29, 20, 2, 18, 413, DateTimeKind.Local).AddTicks(8420), null, false, null, true, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEHdnXv01NQXNNO9TzliT4lgPLMDJJVQZrOWUkQcVZ42zzB12A8yUznxDKwQaJUjqBQ==", null, false, "f236af2d-5295-4c10-83e5-4389d29f0d66", false, "admin", "Admin@123" });
 
             migrationBuilder.InsertData(
                 table: "PrintTypes",
@@ -435,7 +429,7 @@ namespace BK.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "b7446ef0-b5dd-4b5d-90d7-be44e3981e3d", "4f7250e0-4c76-4b3a-a495-cad4cbfac3bf" });
+                values: new object[] { "4dea8007-a999-45e2-9bbe-14fbd193cc4c", "bd453085-ed03-434b-b6bc-43100504e615" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -493,11 +487,6 @@ namespace BK.DAL.Migrations
                 name: "IX_Liners_ProductId",
                 table: "Liners",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_ClientId",
-                table: "Orders",
-                column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ProductId",

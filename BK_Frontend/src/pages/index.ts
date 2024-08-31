@@ -1,5 +1,5 @@
 export { default as Dashboard } from "./Dashboard";
-export { default as Jobworkers } from "./Jobworker/Jobworkers";
+export { default as JobWorkers } from "./JobWorkers/JobWorkers";
 export { default as Clients } from "./Clients/Clients";
 export { default as Orders } from "./Orders/Orders";
 export { default as OrderDetails } from "./Orders/OrderDetails";

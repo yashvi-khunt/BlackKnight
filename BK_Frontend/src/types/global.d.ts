@@ -9,7 +9,7 @@ declare namespace Global {
   };
   type RouteConfig = Array<route>;
 
-  type Role = "Admin" | "Client" | "Jobworker";
+  type Role = "Admin" | "Client" | "JobWorker";
 
   type AuthRoutes = Array<{
     path: string;

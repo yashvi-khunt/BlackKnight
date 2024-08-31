@@ -11,7 +11,7 @@ export const authApi = indexApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Admin", "Client", "Jobworker"],
+      invalidatesTags: ["Admin", "Client", "JobWorker"],
     }),
   }),
 });

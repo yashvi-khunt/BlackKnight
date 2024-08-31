@@ -30,12 +30,12 @@ const otherApis = indexApi.injectEndpoints({
       }),
       providesTags: ["Client"],
     }),
-    getJobworkerOptions: builder.query<Global.dropDownOptions, void>({
+    getJobWorkerOptions: builder.query<Global.dropDownOptions, void>({
       query: () => ({
         method: "GET",
-        url: "User/Get-jobworker-options",
+        url: "User/Get-jobWorker-options",
       }),
-      providesTags: ["Jobworker"],
+      providesTags: ["JobWorker"],
     }),
   }),
 });
@@ -44,6 +44,6 @@ export const {
   useGetPaperTypesQuery,
   useGetBrandsQuery,
   useGetClientOptionsQuery,
-  useGetJobworkerOptionsQuery,
+  useGetJobWorkerOptionsQuery,
   useGetPrintTypesQuery,
 } = otherApis;

@@ -2,11 +2,11 @@ import { Box, Typography, Modal, Button } from "@mui/material";
 import { useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import capitalizeFirstLetter from "../../helperFunctions/capitalizeFirstLetter";
-import { FormInputPassword, FormInputText } from "../../components/form";
+import { FormInputPassword, FormInputText } from "../form";
 import {
   useAddJobworkerMutation,
   useUpdateJobworkerMutation,
-} from "../../redux/api/jobworkerApi";
+} from "../../redux/api/jobWorkerApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
 
@@ -104,7 +104,7 @@ const JobworkerModal: React.FC<JobworkerModalProps> = ({
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const jwData = {
       ...data,
-      linerRate: data.linerRate,
+      linerRate: parseInt(data.linerRate),
     };
 
     console.log(jwData);
@@ -231,6 +231,7 @@ const JobworkerModal: React.FC<JobworkerModalProps> = ({
           <FormInputText
             control={control}
             label="Liner Rate"
+            type={"number"}
             {...register("linerRate", {
               pattern: {
                 value: /^\d+(\.\d{1,2})?$/,

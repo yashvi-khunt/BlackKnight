@@ -77,7 +77,7 @@ function orders() {
     },
     {
       field: "jobWorkerName",
-      headerName: "Jobworker Name",
+      headerName: "JobWorker Name",
       renderCell: ({ value }) => (
         <Grid
           container
@@ -110,8 +110,8 @@ function orders() {
       flex: 1,
     },
     {
-      field: "jobWorkerPrice",
-      headerName: "Jobworker Price",
+      field: "jobWorkerRate",
+      headerName: "JobWorker Price",
       renderCell: ({ value }) => (
         <Grid
           container
@@ -120,7 +120,7 @@ function orders() {
           //justifyContent="center"
           alignItems="center"
         >
-          {Math.round(value)}
+          {parseFloat(value).toFixed(2)}
         </Grid>
       ),
       minWidth: 150,

@@ -2,7 +2,7 @@ import {
   AddEditProducts,
   Clients,
   Dashboard,
-  Jobworkers,
+  JobWorkers,
   OrderDetails,
   Orders,
   ProductDetails,
@@ -23,24 +23,24 @@ export const adminRoutes: Global.RouteConfig = [
     path: "/dashboard",
     element: <Dashboard />,
     iconClass: <HomeOutlined fontSize="small" />,
-    roles: ["Admin"],
+    roles: ["Admin", "JobWorker", "Client"],
   },
   {
     name: "Orders",
     path: "/orders",
     element: null,
-    roles: ["Admin"],
+    roles: ["Admin", "JobWorker", "Client"],
     iconClass: <ShoppingCartOutlined fontSize="small" />,
     children: [
       {
         path: "",
         element: <Orders />,
-        roles: ["Admin"],
+        roles: ["Admin", "JobWorker", "Client"],
       },
       {
         path: "details/:id",
         element: <OrderDetails />,
-        roles: ["Admin"],
+        roles: ["Admin", "JobWorker", "Client"],
       },
     ],
   },
@@ -48,13 +48,13 @@ export const adminRoutes: Global.RouteConfig = [
     name: "Products",
     path: "/products",
     element: null,
-    roles: ["Admin"],
+    roles: ["Admin", "JobWorker", "Client"],
     iconClass: <WidgetsOutlined fontSize="small" />,
     children: [
       {
         path: "",
         element: <Products />,
-        roles: ["Admin"],
+        roles: ["Admin", "JobWorker", "Client"],
       },
       {
         path: "add",
@@ -69,7 +69,7 @@ export const adminRoutes: Global.RouteConfig = [
       {
         path: "details/:id",
         element: <ProductDetails />,
-        roles: ["Admin"],
+        roles: ["Admin", "JobWorker", "Client"],
       },
     ],
   },
@@ -83,7 +83,7 @@ export const adminRoutes: Global.RouteConfig = [
   {
     name: "Job Workers",
     path: "/job-workers",
-    element: <Jobworkers />,
+    element: <JobWorkers />,
     roles: ["Admin"],
     iconClass: <ManageAccountsOutlined fontSize="small" />,
   },

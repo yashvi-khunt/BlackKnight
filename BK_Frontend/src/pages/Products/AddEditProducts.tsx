@@ -16,7 +16,7 @@ import {
 } from "../../redux/api/productApi";
 import {
   useGetClientOptionsQuery,
-  useGetJobworkerOptionsQuery,
+  useGetJobWorkerOptionsQuery,
   useGetPaperTypesQuery,
   useGetPrintTypesQuery,
 } from "../../redux/api/helperApi";
@@ -36,7 +36,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
   const [updateProductMutation, { error: updateError, data: updateResponse }] =
     useUpdateProductMutation();
   const { data: clients } = useGetClientOptionsQuery();
-  const { data: jobworkers } = useGetJobworkerOptionsQuery();
+  const { data: jobWorkers } = useGetJobWorkerOptionsQuery();
   const [selectedClient, setSelectedClient] = useState(
     productData?.clientId || null
   );
@@ -106,7 +106,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
       flutePaperTypeId: data.flutePaperTypeId.value,
       backPaperTypeId: data.backPaperTypeId.value,
       jobWorkerId: data.jobWorkerId.value,
-      linerJobworkerId: data.linerJobworkerId?.value || null,
+      linerJobWorkerId: data.linerJobWorkerId?.value || null,
       printTypeId: data.printTypeId.value,
       images: images
         .map((image, idx) => ({ imagePath: image, isPrimary: idx === 0 }))
@@ -441,12 +441,12 @@ const AddEditProducts = ({ isEdit, productData }) => {
             <SelectField
               value={productData?.jobWorkerId}
               control={control}
-              options={jobworkers?.data || []}
+              options={jobWorkers?.data || []}
               label="Job Worker"
               {...register("jobWorkerId", {
                 required: {
                   value: true,
-                  message: "Jobworker is required.",
+                  message: "JobWorker is required.",
                 },
               })}
             />
@@ -454,13 +454,13 @@ const AddEditProducts = ({ isEdit, productData }) => {
           <Grid item xs={12} sm={6}>
             <SelectField
               control={control}
-              options={jobworkers?.data || []}
-              label="Liner Jobworker"
-              value={productData?.linerJobworkerId}
-              {...register("linerJobworkerId", {
+              options={jobWorkers?.data || []}
+              label="Liner JobWorker"
+              value={productData?.linerJobWorkerId}
+              {...register("linerJobWorkerId", {
                 // required: {
                 //   value: true,
-                //   message: "Jobworker is required.",
+                //   message: "JobWorker is required.",
                 // },
               })}
             />

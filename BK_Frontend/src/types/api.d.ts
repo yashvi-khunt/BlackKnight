@@ -75,8 +75,8 @@ declare namespace clientTypes {
   type getClient = Global.apiResponse<addClient>;
 }
 
-declare namespace jobworkerTypes {
-  type addJobworker = {
+declare namespace jobWorkerTypes {
+  type addJobWorker = {
     companyName: string;
     userName: string;
     userPassword: string;
@@ -86,7 +86,7 @@ declare namespace jobworkerTypes {
     gstNumber?: string;
   };
 
-  type updateJobworker = {
+  type updateJobWorker = {
     companyName?: string;
     userName?: string;
     userPassword?: string;
@@ -96,7 +96,7 @@ declare namespace jobworkerTypes {
     gstNumber?: string;
   };
 
-  type jobworkerDetails = {
+  type jobWorkerDetails = {
     id: string;
     companyName: string;
     userName: string;
@@ -107,13 +107,13 @@ declare namespace jobworkerTypes {
     gstNumber: string;
   };
 
-  type getJobworkers = Omit<Global.apiResponse, "data"> & {
+  type getJobWorkers = Omit<Global.apiResponse, "data"> & {
     data: {
       count: number;
-      data: jobworkerDetails[];
+      data: jobWorkerDetails[];
     };
   };
-  type getJobworker = Global.apiResponse<addJobworker>;
+  type getJobWorker = Global.apiResponse<addJobWorker>;
 }
 
 declare namespace productTypes {
@@ -140,8 +140,8 @@ declare namespace productTypes {
     printRate: number;
     isLamination: boolean;
     dieCode?: number;
-    jobworkerId: number;
-    linerJobworkerId?: number;
+    jobWorkerId: number;
+    linerJobWorkerId?: number;
     profitPercent: number;
     remarks?: string;
     images: {
@@ -173,8 +173,8 @@ declare namespace productTypes {
     printRate?: number;
     isLamination?: boolean;
     dieCode?: number;
-    jobworkerId?: number;
-    linerJobworkerId?: number;
+    jobWorkerId?: number;
+    linerJobWorkerId?: number;
     profitPercent?: number;
     remarks?: string;
     images?: {
@@ -221,7 +221,7 @@ declare namespace productTypes {
     backPrice: number;
     printRate: number;
     laminationPrice: number;
-    jobworkerPrice: number;
+    jobWorkerPrice: number;
     finalRate: number;
   };
 

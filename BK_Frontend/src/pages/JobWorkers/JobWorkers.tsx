@@ -1,30 +1,30 @@
 import { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { useGetJobworkersQuery } from "../../redux/api/jobworkerApi";
+import { useGetJobWorkersQuery } from "../../redux/api/jobWorkerApi";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Table from "../../components/dynamicTable/DynamicTable";
 import { EditOutlined, InfoOutlined } from "@mui/icons-material";
-import JobworkerModal from "./JobworkerModel";
+import JobWorkerModal from "./JobWorkerModel";
 
 type ModalMode = "add" | "edit" | "view";
-function Jobworkers() {
-  const { data: jobworkers, isLoading } = useGetJobworkersQuery(null);
+function JobWorkers() {
+  const { data: jobWorkers, isLoading } = useGetJobWorkersQuery(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ModalMode>("add"); // "add", "edit", "view"
-  const [selectedJobworker, setSelectedJobworker] = useState(null);
+  const [selectedJobWorker, setSelectedJobWorker] = useState(null);
 
   const handleOpenModal = (
     mode: ModalMode,
-    jobworkerData: jobworkerTypes.getJobworkers | null = null
+    jobWorkerData: jobWorkerTypes.getJobWorkers | null = null
   ) => {
     setModalMode(mode);
-    setSelectedJobworker(jobworkerData);
+    setSelectedJobWorker(jobWorkerData);
     setModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
-    setSelectedJobworker(null);
+    setSelectedJobWorker(null);
   };
 
   const columns: GridColDef[] = [
@@ -114,8 +114,8 @@ function Jobworkers() {
 
   const pageInfo: DynamicTable.TableProps = {
     columns: columns,
-    rows: jobworkers?.data.data,
-    rowCount: jobworkers?.data.count,
+    rows: jobWorkers?.data.data,
+    rowCount: jobWorkers?.data.count,
     isLoading: isLoading,
   };
 
@@ -130,19 +130,19 @@ function Jobworkers() {
         <Typography variant="h5" color="initial"></Typography>
         <Box>
           <Button variant="contained" onClick={() => handleOpenModal("add")}>
-            + Add Jobworker
+            + Add JobWorker
           </Button>
         </Box>
       </Box>
       <Table {...pageInfo}></Table>
-      <JobworkerModal
+      <JobWorkerModal
         open={modalOpen}
         handleClose={handleCloseModal}
-        jobworkerData={selectedJobworker}
+        jobWorkerData={selectedJobWorker}
         mode={modalMode}
       />
     </>
   );
 }
 
-export default Jobworkers;
+export default JobWorkers;

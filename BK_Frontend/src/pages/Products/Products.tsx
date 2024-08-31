@@ -77,7 +77,7 @@ function Products() {
     },
     {
       field: "jobWorkerName",
-      headerName: "Jobworker Name",
+      headerName: "JobWorker Name",
       renderCell: ({ value }) => (
         <Grid
           container
@@ -94,7 +94,7 @@ function Products() {
     },
     {
       field: "jobWorkerPrice",
-      headerName: "Jobworker Price",
+      headerName: "JobWorker Price",
       renderCell: ({ value }) => (
         <Grid
           container
@@ -103,7 +103,7 @@ function Products() {
           //justifyContent="center"
           alignItems="center"
         >
-          {Math.round(value)}
+          {parseFloat(value).toFixed(2)}
         </Grid>
       ),
       minWidth: 150,

@@ -105,7 +105,7 @@ export default function MiniDrawer() {
   const currentPath = location.pathname;
 
   const userStatus = useAppSelector((state) => state.auth.status);
-
+  const userRole = useAppSelector((state) => state.auth.userData.role);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -218,45 +218,15 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List sx={{ pt: 2 }}>
-          {adminRoutes.map((route) => (
-            <ListItem key={route.path} disablePadding sx={{ display: "block" }}>
-              {open ? (
-                <ListItemButton
-                  onClick={() => navigate(route.path)}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: "center",
-                    px: 2.5,
-                    m: 1,
-                    borderRadius: "10px",
-                    backgroundColor: currentPath.includes(route.path)
-                      ? "secondary.light"
-                      : "inherit",
-                    boxShadow: currentPath.includes(route.path) ? 3 : 0,
-                    ":hover": {
-                      backgroundColor: "secondary.light",
-                    },
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 2 : "auto",
-                      justifyContent: "center",
-                      color: "black",
-                    }}
-                  >
-                    {route.iconClass}
-                  </ListItemIcon>
-
-                  <ListItemText
-                    primary={route.name}
-                    primaryTypographyProps={{ fontWeight: 600 }}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              ) : (
-                <Tooltip title={route.name} placement="right" arrow>
+          {adminRoutes
+            .filter((x) => x.roles.includes(userRole as Global.Role))
+            .map((route) => (
+              <ListItem
+                key={route.path}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                {open ? (
                   <ListItemButton
                     onClick={() => navigate(route.path)}
                     sx={{
@@ -291,10 +261,46 @@ export default function MiniDrawer() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
-                </Tooltip>
-              )}
-            </ListItem>
-          ))}
+                ) : (
+                  <Tooltip title={route.name} placement="right" arrow>
+                    <ListItemButton
+                      onClick={() => navigate(route.path)}
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: "center",
+                        px: 2.5,
+                        m: 1,
+                        borderRadius: "10px",
+                        backgroundColor: currentPath.includes(route.path)
+                          ? "secondary.light"
+                          : "inherit",
+                        boxShadow: currentPath.includes(route.path) ? 3 : 0,
+                        ":hover": {
+                          backgroundColor: "secondary.light",
+                        },
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 2 : "auto",
+                          justifyContent: "center",
+                          color: "black",
+                        }}
+                      >
+                        {route.iconClass}
+                      </ListItemIcon>
+
+                      <ListItemText
+                        primary={route.name}
+                        primaryTypographyProps={{ fontWeight: 600 }}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Tooltip>
+                )}
+              </ListItem>
+            ))}
         </List>
       </Drawer>
       <Box sx={{ flexGrow: 1, p: 3 }}>

@@ -1,41 +1,41 @@
 import { indexApi } from "./indexApi";
 
-const jobworkerApi = indexApi.injectEndpoints({
+const jobWorkerApi = indexApi.injectEndpoints({
   endpoints: (builder) => ({
-    addJobworker: builder.mutation<
+    addJobWorker: builder.mutation<
       Global.apiResponse<object>,
-      jobworkerTypes.addJobworker
+      jobWorkerTypes.addJobWorker
     >({
       query: (data) => ({
         method: "POST",
-        url: "User/Add-jobworker",
+        url: "User/Add-jobWorker",
         body: data,
       }),
-      invalidatesTags: ["Jobworker"],
+      invalidatesTags: ["JobWorker"],
     }),
-    getJobworkers: builder.query<jobworkerTypes.getJobworkers, null>({
+    getJobWorkers: builder.query<jobWorkerTypes.getJobWorkers, null>({
       query: () => ({
         method: "GET",
-        url: "User/Get-all-jobworkers",
+        url: "User/Get-all-jobWorkers",
       }),
-      providesTags: ["Jobworker"],
+      providesTags: ["JobWorker"],
     }),
-    updateJobworker: builder.mutation<
+    updateJobWorker: builder.mutation<
       Global.apiResponse<string>,
-      { data: jobworkerTypes.updateJobworker; id: string }
+      { data: jobWorkerTypes.updateJobWorker; id: string }
     >({
       query: ({ data, id }) => ({
         method: "PUT",
-        url: `User/Update-jobworker/${id}`,
+        url: `User/Update-jobWorker/${id}`,
         body: data,
       }),
-      invalidatesTags: ["Jobworker"],
+      invalidatesTags: ["JobWorker"],
     }),
   }),
 });
 
 export const {
-  useAddJobworkerMutation,
-  useGetJobworkersQuery,
-  useUpdateJobworkerMutation,
-} = jobworkerApi;
+  useAddJobWorkerMutation,
+  useGetJobWorkersQuery,
+  useUpdateJobWorkerMutation,
+} = jobWorkerApi;

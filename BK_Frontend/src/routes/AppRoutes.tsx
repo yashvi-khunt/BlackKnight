@@ -3,6 +3,7 @@ import { adminRoutes } from "./AdminRoutes";
 import { authRoutes } from "./AuthRoutes";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
+import NotFound from "../pages/NotFound";
 
 const AppRoutes = () => {
   const protectedRoutes = [...adminRoutes];
@@ -62,6 +63,7 @@ const AppRoutes = () => {
           <Route path="/" element={<Layout />}>
             {filterRoute(protectedRoutes)}
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

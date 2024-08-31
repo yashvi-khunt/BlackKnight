@@ -91,6 +91,50 @@ public class OrderService:IOrderService
         //     return orderDetails;
         // }
 
+        public async Task<VMGetAll<VMOrderDashboard>> GetOrderDashboardData()
+        {
+            // Fetch all orders from the database
+            var orders = await _context.Orders
+                .Include(o => o.Product).ThenInclude(p => p.Brand).ThenInclude(b => b.Client)
+                .Include(o => o.Product)
+                .ThenInclude(p => p.Images)
+                .Include(o => o.Product).ThenInclude(p => p.JobWorker)
+                .ThenInclude(j => j.User)
+                .ToListAsync();
+
+            // Map the orders to ViewModel
+            var orderViewModels = _mapper.Map<List<VMGetAllOrder>>(orders);
+
+            // Segregate orders based on their status
+            var pendingOrders = orderViewModels.Where(o => !o.IsCompleted).ToList();
+            var completedOrders = orderViewModels.Where(o => o.IsCompleted).ToList();
+
+            // Calculate flash card data
+            var flashCards = new List<VMFlashCard>
+            {
+                new VMFlashCard { Title = "Total Orders", Count = orderViewModels.Count },
+                new VMFlashCard { Title = "Pending Orders", Count = pendingOrders.Count },
+                new VMFlashCard { Title = "Completed Orders", Count = completedOrders.Count }
+            };
+
+            // Construct the response
+            var dashboardData = new VMOrderDashboard
+            {
+                FlashCards = flashCards,
+                Orders = new VMOrderData
+                {
+                    Pending = pendingOrders,
+                    Completed = completedOrders
+                }
+            };
+
+            return new VMGetAll<VMOrderDashboard>
+            {
+                Count = 1,  // Since we are returning a single object with all data
+                Data = new List<VMOrderDashboard> { dashboardData }
+            };
+        }
+
        
     
 

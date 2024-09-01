@@ -24,5 +24,6 @@ declare namespace DynamicTable {
     getRowHeight?:
       | import("react-data-table-component").GridRowHeightReturnValue
       | undefined;
+    isHeight?: boolean;
   };
 }

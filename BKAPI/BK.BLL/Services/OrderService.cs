@@ -1,6 +1,7 @@
 using AutoMapper;
 using BK.BLL.Repositories;
 using BK.DAL.Context;
+using BK.DAL.Models;
 using BK.DAL.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +18,18 @@ public class OrderService:IOrderService
             _mapper = mapper;
             _context = context;
         }
-    public Task AddOrder()
+    public async Task AddOrder(VMAddOrder vmAddOrder)
     {
-        throw new NotImplementedException();
+        var orders = _mapper.Map<List<Order>>(vmAddOrder.Orders);
+
+        foreach (var order in orders)
+        {
+            order.OrderDate = DateTime.UtcNow; // Set the current date for each order
+            order.IsCompleted = false; // Set default value for new orders
+            _context.Set<Order>().Add(order);
+        }
+
+        await _context.SaveChangesAsync();
     }
 
     public Task UpdateOrder()
@@ -91,7 +101,7 @@ public class OrderService:IOrderService
         //     return orderDetails;
         // }
 
-        public async Task<VMGetAll<VMOrderDashboard>> GetOrderDashboardData()
+        public async Task<VMOrderDashboard> GetOrderDashboardData()
         {
             // Fetch all orders from the database
             var orders = await _context.Orders
@@ -128,11 +138,7 @@ public class OrderService:IOrderService
                 }
             };
 
-            return new VMGetAll<VMOrderDashboard>
-            {
-                Count = 1,  // Since we are returning a single object with all data
-                Data = new List<VMOrderDashboard> { dashboardData }
-            };
+            return dashboardData;
         }
 
        

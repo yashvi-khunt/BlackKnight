@@ -105,7 +105,7 @@ export default function MiniDrawer() {
   const currentPath = location.pathname;
 
   const userStatus = useAppSelector((state) => state.auth.status);
-  const userRole = useAppSelector((state) => state.auth.userData.role);
+  const userRole = useAppSelector((state) => state.auth?.userData?.role);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );

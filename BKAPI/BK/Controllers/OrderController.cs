@@ -33,39 +33,43 @@ public class OrderController:ControllerBase
         }
     }
     
-    [HttpGet("dashboard")]
+    [HttpGet("Dashboard")]
     public async Task<IActionResult> GetOrderDashboard()
     {
         try
         {
-            var result = await _orderService.GetAllOrders();
+            var result = await _orderService.GetOrderDashboardData();
 
             if (result == null)
             {
                 return NotFound(new { message = "No orders found" });
             }
 
-            // Transform the result into the desired JSON format
-            var response = new
-            {
-                flashCards = new[]
-                {
-                    new { title = "Total Orders", count = result.Data.Count },
-                    new { title = "Pending Orders", count = result.Data.Count(o => !o.IsCompleted) },
-                    new { title = "Completed Orders", count = result.Data.Count(o => o.IsCompleted) }
-                },
-                orders = new
-                {
-                    pending = result.Data.Where(o => !o.IsCompleted).ToList(),
-                    completed = result.Data.Where(o => o.IsCompleted).ToList()
-                }
-            };
-
-            return Ok(new { data = new[] { response } });
+            return Ok(new Response<object>(result,true,"Data loaded successfully"));
         }
         catch (Exception ex)
         {
             return StatusCode(500, new { message = ex.Message });
+        }
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> AddOrder([FromBody] VMAddOrder vmAddOrder)
+    {
+        if (vmAddOrder == null || vmAddOrder.Orders == null || !vmAddOrder.Orders.Any())
+        {
+            return BadRequest(new Response("Invalid order data.", false));
+        }
+
+        try
+        {
+            await _orderService.AddOrder(vmAddOrder);
+            return Ok(new  Response( "Orders added successfully." ));
+        }
+        catch (Exception ex)
+        {
+            //_logger.LogError(ex, "An error occurred while adding the orders.");
+            return StatusCode(500, new Response(  "Internal server error." ));
         }
     }
 }

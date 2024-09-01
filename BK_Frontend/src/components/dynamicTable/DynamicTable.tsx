@@ -85,6 +85,7 @@ function CustomNoRowsOverlay() {
 const Table = ({
   children,
   getRowHeight,
+  isHeight = true,
   ...props
 }: PropsWithChildren<DynamicTable.TableProps>) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -135,8 +136,9 @@ const Table = ({
       {children}
       <Box
         sx={{
-          height: "800px",
+          height: props.rowCount === 0 ? "400px" : isHeight && "800px",
           // overflow: "hidden",
+          maxHeight: "800px",
           display: "grid",
         }}
       >

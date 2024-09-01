@@ -1,6 +1,6 @@
 import { useGetOrdersQuery } from "../../redux/api/orderApi";
 import Table from "../../components/dynamicTable/DynamicTable";
-import { EditOutlined, InfoOutlined } from "@mui/icons-material";
+import { Add, EditOutlined, InfoOutlined } from "@mui/icons-material";
 import { Box, Typography, Button, Grid } from "@mui/material";
 import { GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
@@ -168,18 +168,18 @@ function orders() {
       headerName: "Actions",
       renderCell: (params) => (
         <Box display="flex" gap={1}>
-          <GridActionsCellItem
+          {/* <GridActionsCellItem
             sx={{
               border: "1px solid",
               borderRadius: "5px",
               borderColor: "secondary.main",
             }}
             color="primary"
-            icon={<EditOutlined />}
-            label="Edit"
+            icon={<Add />}
+            label="Add"
             className="textPrimary"
-            onClick={() => navigate(`edit/${params.row.id}`)}
-          />
+            //onClick={() => navigate(`edit/${params.row.id}`)}
+          /> */}
           <GridActionsCellItem
             sx={{
               border: "1px solid",
@@ -216,9 +216,9 @@ function orders() {
       >
         <Typography variant="h5" color="initial"></Typography>
         <Box>
-          {/* <Button variant="contained" onClick={() => navigate("add")}>
+          <Button variant="contained" onClick={() => navigate("add")}>
             + Add order
-          </Button> */}
+          </Button>
         </Box>
       </Box>
       <Table {...pageInfo}></Table>

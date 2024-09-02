@@ -55,5 +55,8 @@ public class MappingProfile : Profile
             .ForMember(dest=>dest.JobWorkerName,opt=>opt.MapFrom(src => src.Product.JobWorker.User.CompanyName))
             .ForMember(dest => dest.BoxName, opt => opt.MapFrom(src => src.Product.BoxName))
             .ForMember(dest => dest.ProfitPercent, opt => opt.MapFrom(src => src.Product.ProfitPercent));
+
+
+        CreateMap<Order, VMOrderDetails>().ReverseMap();
     }
 }

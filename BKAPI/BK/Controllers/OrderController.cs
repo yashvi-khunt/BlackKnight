@@ -33,6 +33,20 @@ public class OrderController:ControllerBase
         }
     }
     
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOrderById(int id)
+    {
+        try
+        {
+            var result = await _orderService.GetOrderById(id);
+            return Ok(new Response<VMOrderDetails>(result,true,"Data loaded successfully."));
+        }
+        catch (Exception ex)
+        {
+            //_logger.LogError(ex, "An error occurred while getting all orders.");
+            return StatusCode(500, "Internal server error.");
+        }
+    }
     [HttpGet("Dashboard")]
     public async Task<IActionResult> GetOrderDashboard()
     {

@@ -18,6 +18,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductImage> Images { get; set; }
     
+    public DbSet<CartItem> CartItems { get; set; }
+    
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     
     protected override void OnModelCreating(ModelBuilder builder)

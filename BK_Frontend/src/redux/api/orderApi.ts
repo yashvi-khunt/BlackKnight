@@ -10,9 +10,21 @@ const clientApi = indexApi.injectEndpoints({
       providesTags: ["Order"],
     }),
     getOrderDashboard: builder.query({
-      query: () => "order/Dashboard", // The endpoint in your backend controller
+      query: () => "order/Dashboard",
+      providesTags: ["Order"], // The endpoint in your backend controller
+    }),
+    getOrderById: builder.query<orderTypes.getOrderById, { id: number }>({
+      query: ({ id }) => ({
+        method: "GET",
+        url: `Order/${id}`,
+        providesTags: ["Order"],
+      }),
     }),
   }),
 });
 
-export const { useGetOrdersQuery, useGetOrderDashboardQuery } = clientApi;
+export const {
+  useGetOrdersQuery,
+  useGetOrderDashboardQuery,
+  useGetOrderByIdQuery,
+} = clientApi;

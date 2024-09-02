@@ -29,7 +29,7 @@ const FlashCard: React.FC<FlashCardProps> = ({ title, count }) => {
 
   return (
     <Card sx={{ minWidth: 275 }}>
-      <CardContent>
+      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
         <ListItem>
           <ListItemIcon
             sx={{
@@ -44,7 +44,7 @@ const FlashCard: React.FC<FlashCardProps> = ({ title, count }) => {
 
           <ListItemText
             primary={title}
-            primaryTypographyProps={{ fontWeight: 600 }}
+            primaryTypographyProps={{ fontWeight: 600, fontSize: 20 }}
           />
         </ListItem>
         <ListItem>
@@ -53,6 +53,7 @@ const FlashCard: React.FC<FlashCardProps> = ({ title, count }) => {
             primaryTypographyProps={{
               fontWeight: 600,
               fontSize: 40,
+              textAlign: "right",
             }}
           />
         </ListItem>

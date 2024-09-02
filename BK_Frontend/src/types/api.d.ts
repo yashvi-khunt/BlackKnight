@@ -260,4 +260,16 @@ declare namespace orderTypes {
       }>;
     };
   };
+
+  type getOrderById = Omit<Global.apiResponse, "data"> & {
+    data: {
+      quantity: number;
+      orderDate: string;
+      id: number;
+      productId: number;
+      jobWorkerRate: number;
+      isCompleted: boolean;
+      finalRate: number;
+    };
+  };
 }

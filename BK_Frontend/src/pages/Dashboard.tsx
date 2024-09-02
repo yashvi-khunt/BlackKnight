@@ -1,6 +1,6 @@
 import React from "react";
 import { useGetOrderDashboardQuery } from "../redux/api/orderApi";
-import FlashCard from "./FlashCard"; // Assuming you have a FlashCard component
+import FlashCard from "./FlashCard";
 import { CircularProgress, Box, Typography, Grid } from "@mui/material";
 import Table from "../components/dynamicTable/DynamicTable";
 import DefaultImage from "../assets/defaultBox.png";
@@ -36,13 +36,7 @@ const Dashboard = () => {
       headerAlign: "center",
       flex: 1,
       renderCell: ({ value }) => (
-        <Grid
-          container
-          height="100%"
-          direction="row"
-          //justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container height="100%" direction="row" alignItems="center">
           <Box
             component="img"
             src={value || DefaultImage}
@@ -63,13 +57,7 @@ const Dashboard = () => {
       headerName: "Box Name",
       minWidth: 150,
       renderCell: ({ value }) => (
-        <Grid
-          container
-          height="100%"
-          direction="row"
-          //justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container height="100%" direction="row" alignItems="center">
           {value}
         </Grid>
       ),
@@ -79,13 +67,7 @@ const Dashboard = () => {
       field: "clientName",
       headerName: "Client Name",
       renderCell: ({ value }) => (
-        <Grid
-          container
-          height="100%"
-          direction="row"
-          //justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container height="100%" direction="row" alignItems="center">
           {value}
         </Grid>
       ),
@@ -96,13 +78,7 @@ const Dashboard = () => {
       field: "jobWorkerName",
       headerName: "JobWorker Name",
       renderCell: ({ value }) => (
-        <Grid
-          container
-          height="100%"
-          direction="row"
-          //justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container height="100%" direction="row" alignItems="center">
           {value}
         </Grid>
       ),
@@ -113,13 +89,7 @@ const Dashboard = () => {
       field: "quantity",
       headerName: "Quantity",
       renderCell: ({ value }) => (
-        <Grid
-          container
-          height="100%"
-          direction="row"
-          //justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container height="100%" direction="row" alignItems="center">
           {value}
         </Grid>
       ),
@@ -130,13 +100,7 @@ const Dashboard = () => {
       field: "jobWorkerRate",
       headerName: "JobWorker Price",
       renderCell: ({ value }) => (
-        <Grid
-          container
-          height="100%"
-          direction="row"
-          //justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container height="100%" direction="row" alignItems="center">
           {parseFloat(value).toFixed(2)}
         </Grid>
       ),
@@ -147,13 +111,7 @@ const Dashboard = () => {
       field: "profitPercent",
       headerName: "Profit Percentage",
       renderCell: ({ value }) => (
-        <Grid
-          container
-          height="100%"
-          direction="row"
-          //justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container height="100%" direction="row" alignItems="center">
           {value + "%"}
         </Grid>
       ),
@@ -165,54 +123,12 @@ const Dashboard = () => {
       headerName: "Final Price",
       minWidth: 150,
       renderCell: ({ value }) => (
-        <Grid
-          container
-          height="100%"
-          direction="row"
-          //justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container height="100%" direction="row" alignItems="center">
           {value}
         </Grid>
       ),
       flex: 1,
     },
-    // {
-    //   field: "actions",
-    //   type: "actions",
-    //   align: "left",
-    //   headerAlign: "left",
-    //   headerName: "Actions",
-    //   renderCell: (params) => (
-    //     <Box display="flex" gap={1}>
-    //       <GridActionsCellItem
-    //         sx={{
-    //           border: "1px solid",
-    //           borderRadius: "5px",
-    //           borderColor: "secondary.main",
-    //         }}
-    //         color="primary"
-    //         icon={<EditOutlined />}
-    //         label="Edit"
-    //         className="textPrimary"
-    //         onClick={() => navigate(`edit/${params.row.id}`)}
-    //       />
-    //       <GridActionsCellItem
-    //         sx={{
-    //           border: "1px solid",
-    //           borderRadius: "5px",
-    //           borderColor: "secondary.main",
-    //         }}
-    //         color="primary"
-    //         icon={<InfoOutlined />}
-    //         label="View"
-    //         onClick={() => navigate(`details/${params.row.id}`)}
-    //       />
-    //     </Box>
-    //   ),
-    //   minWidth: 150,
-    //   flex: 1,
-    // },
   ];
 
   const flashCards = data?.data.flashCards || [];
@@ -228,9 +144,6 @@ const Dashboard = () => {
     isHeight: false,
   };
 
-  console.log("p : ", pendingOrders, pendingOrders.count);
-  console.log("c : ", completedOrders, completedOrders.count);
-
   const completedInfo: DynamicTable.TableProps = {
     columns: columns,
     rows: completedOrders,
@@ -242,18 +155,14 @@ const Dashboard = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-
-          flexWrap: "wrap",
-        }}
-      >
+      <Grid container spacing={2} sx={{ mb: 4 }}>
         {flashCards.map((card, index) => (
-          <FlashCard key={index} title={card.title} count={card.count} />
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <FlashCard title={card.title} count={card.count} />
+          </Grid>
         ))}
-      </Box>
+      </Grid>
+
       <Box sx={{ my: 4 }}>
         <Typography variant="h6">Pending Orders</Typography>
         <Table {...pendingInfo} />

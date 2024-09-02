@@ -84,22 +84,18 @@ public class OrderService:IOrderService
             };
         }
 
-        // public async Task<VMOrderDetails> GetOrderById(int id)
-        // {
-        //     var order = await _context.Orders
-        //         .Include(o => o.Client)
-        //         .Include(o => o.Product)
-        //             .ThenInclude(p => p.Images)
-        //         .FirstOrDefaultAsync(o => o.Id == id);
-        //
-        //     if (order == null)
-        //     {
-        //         return null;
-        //     }
-        //
-        //     var orderDetails = _mapper.Map<VMOrderDetails>(order);
-        //     return orderDetails;
-        // }
+        public async Task<VMOrderDetails> GetOrderById(int id)
+        {
+            var order = await _context.Orders
+                .FirstOrDefaultAsync(o => o.Id == id);
+            if (order == null)
+            {
+                return null;
+            }
+        
+            var orderDetails = _mapper.Map<VMOrderDetails>(order);
+            return orderDetails;
+        }
 
         public async Task<VMOrderDashboard> GetOrderDashboardData()
         {
@@ -140,12 +136,4 @@ public class OrderService:IOrderService
 
             return dashboardData;
         }
-
-       
-    
-
-    public Task GetOrderById(int id)
-    {
-        throw new NotImplementedException();
-    }
 }

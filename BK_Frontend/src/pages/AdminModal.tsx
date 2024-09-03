@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { Box, Typography, Modal } from "@mui/material";
+import { Box, Typography, Modal, Button } from "@mui/material";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
-import { FormInputText, FormInputPassword } from "../../components/form";
-import { useAppDispatch } from "../../redux/hooks";
-import { openSnackbar } from "../../redux/slice/snackbarSlice";
+import { FormInputText, FormInputPassword } from "../components/form";
+import { useAppDispatch } from "../redux/hooks";
+import capitalizeFirstLetter from "../helperFunctions/capitalizeFirstLetter";
 
 interface AdminModalProps {
   open: boolean;
@@ -18,7 +18,7 @@ function AdminModal({ open, handleClose, adminData, mode }: AdminModalProps) {
 
   useEffect(() => {
     if (adminData) {
-      reset({ ...adminData });
+      reset({ ...adminData, confirmPassword: adminData.userPassword });
     } else {
       reset({
         userName: "",
@@ -48,7 +48,7 @@ function AdminModal({ open, handleClose, adminData, mode }: AdminModalProps) {
         }}
       >
         <Typography variant="h6" component="h2">
-          Edit Admin
+          {`${capitalizeFirstLetter("edit")} Admin`}
         </Typography>
         <Box
           component="form"
@@ -65,40 +65,84 @@ function AdminModal({ open, handleClose, adminData, mode }: AdminModalProps) {
             {...register("userName", {
               required: {
                 value: true,
-                message: "Username is required.",
+                message: "User name is required.",
               },
             })}
           />
           <FormInputPassword
             control={control}
             label="Password"
-            {...register("password", {
+            {...register("userPassword", {
               required: {
                 value: true,
-                message: "Password is required.",
+                message: "Password field is required.",
+              },
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@+._-])[a-zA-Z@+._-\d]{8,}$/,
+                message:
+                  "Password should have at least one uppercase, one lowercase, one special character and should be of the minimum length 8.",
               },
             })}
           />
+
+          <FormInputPassword
+            control={control}
+            label="Confirm password"
+            {...register("confirmPassword", {
+              required: {
+                value: true,
+                message: "Confirm Password field is required.",
+              },
+              validate: (val) => {
+                if (watch("userPassword") !== val) {
+                  return "Password and Confirm password should be the same.";
+                }
+              },
+            })}
+          />
+
           <FormInputText
             control={control}
-            label="Number"
-            {...register("number", {
+            label="Phone"
+            {...register("phoneNumber", {
               required: {
                 value: true,
-                message: "Number is required.",
+                message: "Phone number is required.",
+              },
+              pattern: {
+                value: /^\d{10}$/,
+                message: "Please enter a 10-digit  number.",
               },
             })}
           />
+
           <FormInputText
             control={control}
             label="GST Number"
+            placeholder="11AAAAA1111A1AA"
             {...register("gstNumber", {
-              required: {
-                value: true,
-                message: "GST Number is required.",
+              pattern: {
+                value: /^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d{1}[A-Z]{2}$/,
+                message: "Please enter a valid GST Number",
               },
             })}
           />
+
+          <Box mt={2} display="flex" justifyContent="flex-end">
+            <Button variant="contained" onClick={handleClose}>
+              Cancel
+            </Button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ ml: 2 }}
+              type="submit"
+            >
+              Save
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Modal>

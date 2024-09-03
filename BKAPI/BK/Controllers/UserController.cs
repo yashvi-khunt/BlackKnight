@@ -12,7 +12,7 @@ namespace BKAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "Admin")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -87,6 +87,37 @@ public class UserController : ControllerBase
 
             return StatusCode(500, new Response("Internal server error", false));
         }
+    }
+    
+    [Authorize(Roles = "Admin,Client,JobWorker")]
+    [HttpGet("Profile")]
+    public async Task<IActionResult> GetProfileDetails()
+    {
+        var userId = _userManager.GetUserId(User);
+        var user = await _userManager.FindByIdAsync(userId);
+            
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        if (await _userManager.IsInRoleAsync(user, "Admin"))
+        {
+            var adminDetails = await _userService.GetAdminDetails(userId);
+            return Ok(adminDetails);
+        }
+        else if (await _userManager.IsInRoleAsync(user, "Client"))
+        {
+            var clientDetails = await _userService.GetClientById(user.UserName);
+            return Ok(clientDetails);
+        }
+        else if (await _userManager.IsInRoleAsync(user, "JobWorker"))
+        {
+            var jobworkerDetails = await _userService.GetJobworkerById(user.UserName);
+            return Ok(jobworkerDetails);
+        }
+
+        return Unauthorized("User role not recognized");
     }
 
     [HttpPost("Add-client")]

@@ -24,7 +24,15 @@ export const indexApi = createApi({
     "Brand",
     "Print",
   ],
-  endpoints: () => ({}),
+  endpoints: (builder) => ({
+    getProfile: builder.query<object, null>({
+      query: () => ({
+        method: "GET",
+        url: "User/Profile",
+      }),
+      providesTags: ["Admin", "Client", "JobWorker"],
+    }),
+  }),
 });
 
-export const {} = indexApi;
+export const { useGetProfileQuery } = indexApi;

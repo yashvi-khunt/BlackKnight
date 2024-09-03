@@ -45,6 +45,17 @@ public class UserService : IUserService
         }
     }
 
+    public async Task<VMUpdateAdmin> GetAdminDetails(string userId)
+    {
+        var admin = await _userManager.FindByIdAsync(userId);
+        if (admin == null)
+        {
+            throw new Exception("Admin not found");
+        }
+        var vmAdmin = _mapper.Map<VMUpdateAdmin>(admin);
+        return vmAdmin;
+    }
+
     public async Task<ApplicationUser> AddClient(VMAddClient addClient)
     {
         var newClient = new ApplicationUser

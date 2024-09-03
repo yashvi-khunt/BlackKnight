@@ -8,7 +8,8 @@ public interface IUserService
 {
     //admin methods
     Task UpdateAdmin(string id,VMUpdateAdmin updateAdmin);
-    
+
+    Task<VMUpdateAdmin> GetAdminDetails(string userId);
     //client methods
     Task<ApplicationUser> AddClient(VMAddClient addClient);
     Task UpdateClient(string id,VMUpdateClient updateClient);

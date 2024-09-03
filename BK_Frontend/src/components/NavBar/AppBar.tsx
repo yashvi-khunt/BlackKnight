@@ -20,10 +20,14 @@ import Logo from "../Logo";
 import { adminRoutes } from "../../routes/AdminRoutes";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Avatar, Button, Menu, MenuItem, Tooltip } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Person } from "@mui/icons-material";
 import { logout } from "../../redux/slice/authSlice";
+import AdminModal from "../../pages/AdminModal";
+import ClientModal from "../../pages/Clients/ClientModal";
+import { useGetProfileQuery } from "../../redux/api/indexApi";
+import JobWorkerModal from "../../pages/JobWorkers/JobWorkerModel";
 
 const drawerWidth = 240;
 
@@ -111,14 +115,26 @@ export default function MiniDrawer() {
   );
 
   const dispatch = useAppDispatch();
-
+  const { data, isLoading } = useGetProfileQuery(null);
+  console.log(data);
   const handleLogout = () => {
     console.log("logout");
     dispatch(logout());
     navigate("/auth/login");
   };
+
+  const handleOpenUserRoleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    if (userRole === "Admin") {
+      setOpenAdminModal(true);
+    } else if (userRole === "Client") {
+      setOpenClientModal(true);
+    } else if (userRole === "JobWorker") {
+      setOpenJobWorkerModal(true);
+    }
+  };
+
   const settings = [
-    { name: "Profile" },
+    { name: "Profile", function: handleOpenUserRoleMenu },
     { name: "Logout", function: handleLogout },
   ];
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -127,6 +143,22 @@ export default function MiniDrawer() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const [openAdminModal, setOpenAdminModal] = useState(false);
+  const [openClientModal, setOpenClientModal] = useState(false);
+  const [openJobWorkerModal, setOpenJobWorkerModal] = useState(false);
+
+  const handleCloseAdminModal = () => {
+    setOpenAdminModal(false);
+  };
+
+  const handleCloseClientModal = () => {
+    setOpenClientModal(false);
+  };
+
+  const handleCloseJobWorkerModal = () => {
+    setOpenJobWorkerModal(false);
   };
 
   useEffect(() => {
@@ -307,6 +339,27 @@ export default function MiniDrawer() {
         <DrawerHeader />
         <Outlet />
       </Box>
+      <AdminModal
+        open={openAdminModal}
+        handleClose={handleCloseAdminModal}
+        adminData={data && data}
+        mode="edit"
+      />
+
+      {/* Add Client Modal */}
+      <ClientModal
+        open={openClientModal}
+        handleClose={handleCloseClientModal}
+        clientData={data && data}
+        mode="edit" // or "view", based on the context
+        data={null}
+      />
+      <JobWorkerModal
+        open={openJobWorkerModal}
+        handleClose={handleCloseJobWorkerModal}
+        jobWorkerData={data && data}
+        mode={"edit"}
+      />
     </Box>
   );
 }

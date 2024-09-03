@@ -175,21 +175,6 @@ function AdminModal({ open, handleClose, adminData }: AdminModalProps) {
               Save
             </Button>
           </Box>
-
-          <Box mt={2} display="flex" justifyContent="flex-end">
-            <Button variant="contained" onClick={handleClose}>
-              Cancel
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ ml: 2 }}
-              type="submit"
-            >
-              Save
-            </Button>
-          </Box>
         </Box>
       </Box>
     </Modal>

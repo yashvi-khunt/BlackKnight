@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Grid } from "@mui/material";
 import { useGetJobWorkersQuery } from "../../redux/api/jobWorkerApi";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Table from "../../components/dynamicTable/DynamicTable";
@@ -49,30 +49,72 @@ function JobWorkers() {
     {
       field: "phoneNumber",
       headerName: "Phone",
+      headerAlign: "center",
       minWidth: 150,
+      renderCell: ({ value }) => (
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {value}
+        </Grid>
+      ),
       flex: 1,
     },
     {
       field: "fluteRate",
       headerName: "Flute Rate",
+      headerAlign: "center",
       minWidth: 150,
+      renderCell: ({ value }) => (
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {value}
+        </Grid>
+      ),
       flex: 1,
     },
     {
       field: "linerRate",
       headerName: "Liner Rate",
-      renderCell: ({ value }) => {
-        return value === null ? "-" : value;
-      },
+      headerAlign: "center",
+      renderCell: ({ value }) => (
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {value === null ? "-" : value}
+        </Grid>
+      ),
       minWidth: 150,
       flex: 1,
     },
     {
       field: "gstNumber",
+      headerAlign: "center",
       headerName: "GST Number",
-      renderCell: ({ value }) => {
-        return value === null || value === "" ? "-" : value;
-      },
+      renderCell: ({ value }) => (
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {value === null || value === "" ? "-" : value}
+        </Grid>
+      ),
       minWidth: 150,
       flex: 1,
     },

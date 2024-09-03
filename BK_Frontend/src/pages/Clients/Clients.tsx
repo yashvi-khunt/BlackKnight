@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Grid } from "@mui/material";
 import { useGetClientsQuery } from "../../redux/api/clientApi";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Table from "../../components/dynamicTable/DynamicTable";
@@ -45,16 +45,37 @@ function Clients() {
     },
     {
       field: "phoneNumber",
+      headerAlign: "center",
       headerName: "Phone",
+      renderCell: ({ value }) => (
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {value}
+        </Grid>
+      ),
       minWidth: 150,
       flex: 1,
     },
     {
       field: "gstNumber",
+      headerAlign: "center",
       headerName: "GST Number",
-      renderCell: ({ value }) => {
-        return value === null || value === "" ? "-" : value;
-      },
+      renderCell: ({ value }) => (
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {value === null || value === "" ? "-" : value}
+        </Grid>
+      ),
       minWidth: 150,
       flex: 1,
     },

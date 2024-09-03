@@ -95,12 +95,13 @@ function Products() {
     {
       field: "jobWorkerPrice",
       headerName: "JobWorker Price",
+      headerAlign: "center",
       renderCell: ({ value }) => (
         <Grid
           container
           height="100%"
           direction="row"
-          //justifyContent="center"
+          justifyContent="center"
           alignItems="center"
         >
           {parseFloat(value).toFixed(2)}
@@ -112,12 +113,13 @@ function Products() {
     {
       field: "profitPercent",
       headerName: "Profit Percentage",
+      headerAlign: "center",
       renderCell: ({ value }) => (
         <Grid
           container
           height="100%"
           direction="row"
-          //justifyContent="center"
+          justifyContent="center"
           alignItems="center"
         >
           {value + "%"}
@@ -129,13 +131,14 @@ function Products() {
     {
       field: "finalRate",
       headerName: "Final Price",
+      headerAlign: "center",
       minWidth: 150,
       renderCell: ({ value }) => (
         <Grid
           container
           height="100%"
           direction="row"
-          //justifyContent="center"
+          justifyContent="center"
           alignItems="center"
         >
           {value}
@@ -146,8 +149,8 @@ function Products() {
     {
       field: "actions",
       type: "actions",
-      align: "left",
-      headerAlign: "left",
+      align: "center",
+      headerAlign: "center",
       headerName: "Actions",
       renderCell: (params) => (
         <Box display="flex" gap={1}>

@@ -4,7 +4,7 @@ import FlashCard from "./FlashCard";
 import { CircularProgress, Box, Typography, Grid } from "@mui/material";
 import Table from "../components/dynamicTable/DynamicTable";
 import DefaultImage from "../assets/defaultBox.png";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 
 const Dashboard = () => {
   const { data, error, isLoading } = useGetOrderDashboardQuery({});
@@ -36,7 +36,13 @@ const Dashboard = () => {
       headerAlign: "center",
       flex: 1,
       renderCell: ({ value }) => (
-        <Grid container height="100%" direction="row" alignItems="center">
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          //justifyContent="center"
+          alignItems="center"
+        >
           <Box
             component="img"
             src={value || DefaultImage}
@@ -57,7 +63,13 @@ const Dashboard = () => {
       headerName: "Box Name",
       minWidth: 150,
       renderCell: ({ value }) => (
-        <Grid container height="100%" direction="row" alignItems="center">
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          //justifyContent="center"
+          alignItems="center"
+        >
           {value}
         </Grid>
       ),
@@ -67,7 +79,13 @@ const Dashboard = () => {
       field: "clientName",
       headerName: "Client Name",
       renderCell: ({ value }) => (
-        <Grid container height="100%" direction="row" alignItems="center">
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          //justifyContent="center"
+          alignItems="center"
+        >
           {value}
         </Grid>
       ),
@@ -78,7 +96,13 @@ const Dashboard = () => {
       field: "jobWorkerName",
       headerName: "JobWorker Name",
       renderCell: ({ value }) => (
-        <Grid container height="100%" direction="row" alignItems="center">
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          //justifyContent="center"
+          alignItems="center"
+        >
           {value}
         </Grid>
       ),
@@ -88,8 +112,15 @@ const Dashboard = () => {
     {
       field: "quantity",
       headerName: "Quantity",
+      headerAlign: "center",
       renderCell: ({ value }) => (
-        <Grid container height="100%" direction="row" alignItems="center">
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
           {value}
         </Grid>
       ),
@@ -99,8 +130,15 @@ const Dashboard = () => {
     {
       field: "jobWorkerRate",
       headerName: "JobWorker Price",
+      headerAlign: "center",
       renderCell: ({ value }) => (
-        <Grid container height="100%" direction="row" alignItems="center">
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
           {parseFloat(value).toFixed(2)}
         </Grid>
       ),
@@ -110,8 +148,15 @@ const Dashboard = () => {
     {
       field: "profitPercent",
       headerName: "Profit Percentage",
+      headerAlign: "center",
       renderCell: ({ value }) => (
-        <Grid container height="100%" direction="row" alignItems="center">
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
           {value + "%"}
         </Grid>
       ),
@@ -121,14 +166,57 @@ const Dashboard = () => {
     {
       field: "finalRate",
       headerName: "Final Price",
+      headerAlign: "center",
       minWidth: 150,
       renderCell: ({ value }) => (
-        <Grid container height="100%" direction="row" alignItems="center">
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
           {value}
         </Grid>
       ),
       flex: 1,
     },
+    // {
+    //   field: "actions",
+    //   type: "actions",
+    //   align: "left",
+    //   headerAlign: "left",
+    //   headerName: "Actions",
+    //   renderCell: (params) => (
+    //     <Box display="flex" gap={1}>
+    //       {/* <GridActionsCellItem
+    //         sx={{
+    //           border: "1px solid",
+    //           borderRadius: "5px",
+    //           borderColor: "secondary.main",
+    //         }}
+    //         color="primary"
+    //         icon={<Add />}
+    //         label="Add"
+    //         className="textPrimary"
+    //         //onClick={() => navigate(`edit/${params.row.id}`)}
+    //       /> */}
+    //       <GridActionsCellItem
+    //         sx={{
+    //           border: "1px solid",
+    //           borderRadius: "5px",
+    //           borderColor: "secondary.main",
+    //         }}
+    //         color="primary"
+    //         icon={<InfoOutlined />}
+    //         label="View"
+    //         onClick={() => navigate(`details/${params.row.id}`)}
+    //       />
+    //     </Box>
+    //   ),
+    //   minWidth: 150,
+    //   flex: 1,
+    // },
   ];
 
   const flashCards = data?.data.flashCards || [];

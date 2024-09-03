@@ -95,12 +95,13 @@ function orders() {
     {
       field: "quantity",
       headerName: "Quantity",
+      headerAlign: "center",
       renderCell: ({ value }) => (
         <Grid
           container
           height="100%"
           direction="row"
-          //justifyContent="center"
+          justifyContent="center"
           alignItems="center"
         >
           {value}
@@ -112,12 +113,13 @@ function orders() {
     {
       field: "jobWorkerRate",
       headerName: "JobWorker Price",
+      headerAlign: "center",
       renderCell: ({ value }) => (
         <Grid
           container
           height="100%"
           direction="row"
-          //justifyContent="center"
+          justifyContent="center"
           alignItems="center"
         >
           {parseFloat(value).toFixed(2)}
@@ -129,12 +131,13 @@ function orders() {
     {
       field: "profitPercent",
       headerName: "Profit Percentage",
+      headerAlign: "center",
       renderCell: ({ value }) => (
         <Grid
           container
           height="100%"
           direction="row"
-          //justifyContent="center"
+          justifyContent="center"
           alignItems="center"
         >
           {value + "%"}
@@ -146,13 +149,14 @@ function orders() {
     {
       field: "finalRate",
       headerName: "Final Price",
+      headerAlign: "center",
       minWidth: 150,
       renderCell: ({ value }) => (
         <Grid
           container
           height="100%"
           direction="row"
-          //justifyContent="center"
+          justifyContent="center"
           alignItems="center"
         >
           {value}

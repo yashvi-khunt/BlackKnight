@@ -357,7 +357,7 @@ export default function MiniDrawer() {
       <JobWorkerModal
         open={openJobWorkerModal}
         handleClose={handleCloseJobWorkerModal}
-        jobWorkerData={data && data}
+        jobWorkerData={data && (data as jobWorkerTypes.getJobWorkers)}
         mode={"edit"}
       />
     </Box>

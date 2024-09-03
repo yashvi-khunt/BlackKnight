@@ -32,7 +32,15 @@ export const indexApi = createApi({
       }),
       providesTags: ["Admin", "Client", "JobWorker"],
     }),
+    updateAdmin: builder.mutation<Global.apiResponse<string>, object>({
+      query: ({ data }) => ({
+        method: "PUT",
+        url: "User/Update-admin",
+        body: data,
+      }),
+      invalidatesTags: ["Admin"],
+    }),
   }),
 });
 
-export const { useGetProfileQuery } = indexApi;
+export const { useGetProfileQuery, useUpdateAdminMutation } = indexApi;

@@ -273,3 +273,41 @@ declare namespace orderTypes {
     };
   };
 }
+declare namespace paperTypes {
+  type addPaperType = {
+    type: string;
+    bf: string;
+    price: number;
+    laminationPercent?: number;
+  };
+
+  type PaperTypeOptions = {
+    inputValue?: string;
+    label: string;
+    value?: string | null;
+  };
+
+  type updatePaperType = {
+    type?: string;
+    bf?: string;
+    price?: number;
+    laminationPercent?: number;
+  };
+
+  type paperTypeDetails = {
+    id: number;
+    type: string;
+    bf: string;
+    price: number;
+    laminationPercent: number;
+  };
+
+  type getPaperTypes = Omit<Global.apiResponse, "data"> & {
+    data: {
+      count: number;
+      data: paperTypeDetails[];
+    };
+  };
+
+  type getPaperType = Global.apiResponse<paperTypeDetails>;
+}

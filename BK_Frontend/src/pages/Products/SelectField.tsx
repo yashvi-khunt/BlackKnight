@@ -1,18 +1,23 @@
 import { Controller } from "react-hook-form";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, createFilterOptions, TextField } from "@mui/material";
 import { useEffect, useState, forwardRef } from "react";
+
+const filter = createFilterOptions<paperTypes.PaperTypeOptions>();
 
 const SelectField = forwardRef<
   unknown,
   {
     name: string;
     control: any;
-    options: Global.Option[];
+    options: paperTypes.PaperTypeOptions[];
     label: string;
     value?: string | null;
+    onAddClick?: () => void; // Ensure onAddClick is part of the props
   }
->(({ name, control, options, label, value }, ref) => {
-  const [selectedValue, setValue] = useState<Global.Option | null>(null);
+>(({ name, control, options, label, value, onAddClick }, ref) => {
+  // Destructure onAddClick from props
+  const [selectedValue, setValue] =
+    useState<paperTypes.PaperTypeOptions | null>(null);
 
   useEffect(() => {
     if (!value || !options) return;
@@ -33,11 +38,34 @@ const SelectField = forwardRef<
           value={selectedValue}
           getOptionLabel={(option) => option.label || ""}
           renderInput={(params) => <TextField {...params} label={label} />}
-          onChange={(_, newValue) => {
-            setValue(newValue);
-            field.onChange(newValue); // Update the value in the form control
+          onChange={(event, newValue) => {
+            if (typeof newValue === "string") {
+              console.log("1st");
+              // Timeout to avoid instant validation of the dialog's form.
+              setTimeout(() => {
+                if (onAddClick) onAddClick(); // Call onAddClick if defined
+              });
+            } else if (newValue && newValue.inputValue) {
+              console.log("2nd");
+              if (onAddClick) onAddClick(); // Call onAddClick if defined
+            } else {
+              setValue(newValue);
+              field.onChange(newValue);
+            }
           }}
-          ref={ref} // Forward ref to the Autocomplete component
+          filterOptions={(options, params) => {
+            const filtered = filter(options, params);
+
+            if (params.inputValue !== "") {
+              filtered.push({
+                inputValue: params.inputValue,
+                label: `Add "${params.inputValue}"`,
+              });
+            }
+
+            return filtered;
+          }}
+          ref={ref}
         />
       )}
     />

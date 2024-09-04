@@ -219,11 +219,11 @@ function orders() {
         alignItems="right"
       >
         <Typography variant="h5" color="initial"></Typography>
-        <Box>
+        {/* <Box>
           <Button variant="contained" onClick={() => navigate("add")}>
             + Add order
           </Button>
-        </Box>
+        </Box> */}
       </Box>
       <Table {...pageInfo}></Table>
     </>

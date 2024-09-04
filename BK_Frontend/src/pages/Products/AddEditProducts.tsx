@@ -25,6 +25,7 @@ import { FormInputText, FormImageUpload } from "../../components/form";
 import SelectField from "./SelectField";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
 import { useAppDispatch } from "../../redux/hooks";
+import PaperSelectField from "./PaperDD/PaperSelectField";
 
 const AddEditProducts = ({ isEdit, productData }) => {
   const { control, register, handleSubmit, setValue } = useForm({
@@ -148,11 +149,14 @@ const AddEditProducts = ({ isEdit, productData }) => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <SelectField
+            <PaperSelectField
               value={productData?.topPaperTypeId}
               control={control}
-              options={paperTypesData?.data || []}
+              name="topPaperTypeId"
               label="Top Paper Type"
+              options={
+                (paperTypesData?.data as paperTypes.PaperTypeOptions[]) || []
+              }
               {...register("topPaperTypeId", {
                 required: {
                   value: true,

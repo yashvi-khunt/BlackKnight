@@ -9,7 +9,7 @@ const FormImageUpload = ({
   setPreviewImages,
   initialImages = [],
   initialPreviewImages = [],
-  maxImages = 4,
+  maxImages = 2,
   primaryImageIndex = 0,
 }) => {
   useEffect(() => {
@@ -69,7 +69,7 @@ const FormImageUpload = ({
           >
             {index === primaryImageIndex
               ? "Upload Primary Image"
-              : `Upload Secondary Image ${index}`}
+              : `Upload Secondary Image`}
             <input
               type="file"
               hidden
@@ -88,7 +88,7 @@ const FormImageUpload = ({
               </IconButton>
               <img
                 src={previewImages[index]}
-                alt={`Preview ${index}`}
+                alt={`Preview`}
                 style={{
                   maxWidth: "300px",
                   maxHeight: "300px",

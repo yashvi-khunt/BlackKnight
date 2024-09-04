@@ -38,7 +38,7 @@ public class PaperTypeService : IPaperTypeService
     {
         try
         {
-            var paperTypes = await _context.PaperTypes.ToListAsync();
+            var paperTypes = await _context.PaperTypes.OrderBy(pt => pt.Type).ThenBy(pt=>pt.BF).ToListAsync();
             var paperTypeOptions = paperTypes.Select(pt => new VMOptions
             {
                 Value = pt.Id.ToString(),

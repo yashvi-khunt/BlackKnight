@@ -1,6 +1,7 @@
 using AutoMapper;
 using BK.DAL.Models;
 using BK.DAL.ViewModels;
+using BK.DAL.ViewModels.PaperType;
 
 namespace BK.BLL.Helper;
 
@@ -65,5 +66,8 @@ public class MappingProfile : Profile
 
 
         CreateMap<Order, VMOrderDetails>().ReverseMap();
+
+        CreateMap<PaperType,VMAddPaperType>().ReverseMap();
+        CreateMap<PaperType, VMPaperTypeDetails>().ReverseMap();
     }
 }

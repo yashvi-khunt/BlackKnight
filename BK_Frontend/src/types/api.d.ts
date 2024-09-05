@@ -281,12 +281,6 @@ declare namespace paperTypes {
     laminationPercent?: number;
   };
 
-  type PaperTypeOptions = {
-    inputValue?: string;
-    label: string;
-    value?: string | null;
-  };
-
   type updatePaperType = {
     type?: string;
     bf?: string;
@@ -310,4 +304,23 @@ declare namespace paperTypes {
   };
 
   type getPaperType = Global.apiResponse<paperTypeDetails>;
+}
+
+declare namespace brandTypes {
+  type addBrand = {
+    clientId: string;
+    name: string;
+  };
+
+  type updateBrand = {
+    clientId?: string;
+    name?: string;
+  };
+
+  type brandDetails = {
+    id: string;
+    clientId: string;
+    name: string;
+    clientName: string;
+  };
 }

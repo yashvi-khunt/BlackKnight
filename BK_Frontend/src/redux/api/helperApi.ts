@@ -12,7 +12,7 @@ const otherApis = indexApi.injectEndpoints({
     getBrands: builder.query<Global.dropDownOptions, { id: string }>({
       query: (id) => ({
         method: "GET",
-        url: `Brands/Options/${id}`,
+        url: `Brand/Options/${id}`,
       }),
       providesTags: ["Brand"],
     }),

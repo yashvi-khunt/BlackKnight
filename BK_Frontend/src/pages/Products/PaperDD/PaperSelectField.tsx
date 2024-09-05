@@ -5,31 +5,33 @@ import {
   createFilterOptions,
   TextField,
   IconButton,
+  Box,
 } from "@mui/material";
 import { useEffect, useState, forwardRef } from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
 import PaperSelectFieldModal from "./PaperSelectFieldModal"; // Import the modal component
 
-const filter = createFilterOptions<paperTypes.PaperTypeOptions>();
+const filter = createFilterOptions<Global.EditableDDOptions>();
 
 const PaperSelectField = forwardRef<
   unknown,
   {
     name: string;
     control: any;
-    options: paperTypes.PaperTypeOptions[];
+    options: Global.EditableDDOptions[];
     label: string;
     value?: string | null;
     onAddClick?: () => void;
-    onEditClick?: (option: paperTypes.PaperTypeOptions) => void;
+    onEditClick?: (option: Global.EditableDDOptions) => void;
   }
 >(({ name, control, options, label, value, onAddClick, onEditClick }, ref) => {
-  const [selectedValue, setValue] =
-    useState<paperTypes.PaperTypeOptions | null>(null);
+  const [selectedValue, setValue] = useState<Global.EditableDDOptions | null>(
+    null
+  );
   const [openModal, setOpenModal] = useState(false);
-  const [modalData, setModalData] =
-    useState<paperTypes.PaperTypeOptions | null>(null);
+  const [modalData, setModalData] = useState<Global.EditableDDOptions | null>(
+    null
+  );
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const PaperSelectField = forwardRef<
     setOpenModal(true);
   };
 
-  const handleEditClick = (option: paperTypes.PaperTypeOptions) => {
+  const handleEditClick = (option: Global.EditableDDOptions) => {
     setModalData(option);
     setModalMode("edit");
     setOpenModal(true);
@@ -63,11 +65,12 @@ const PaperSelectField = forwardRef<
             getOptionLabel={(option) => option.label || ""}
             renderInput={(params) => <TextField {...params} label={label} />}
             onChange={(event, newValue) => {
-              if (typeof newValue === "string") {
-                setTimeout(() => {
-                  if (onAddClick) onAddClick();
-                });
-              } else if (newValue && newValue.inputValue) {
+              // if (typeof newValue === "string") {
+              //   setTimeout(() => {
+              //     if (onAddClick) onAddClick();
+              //   });
+              // } else
+              if (newValue && newValue.inputValue) {
                 handleAddClick();
               } else {
                 setValue(newValue);
@@ -86,16 +89,25 @@ const PaperSelectField = forwardRef<
             }}
             renderOption={(props, option) => (
               <li {...props}>
-                {option.label}
-                {option.inputValue ? null : (
-                  <IconButton
-                    edge="end"
-                    aria-label="edit"
-                    onClick={() => handleEditClick(option)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  <span>{option.label}</span>
+                  {!option.inputValue && (
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      onClick={() => handleEditClick(option)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  )}
+                </Box>
               </li>
             )}
             ref={ref}

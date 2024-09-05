@@ -8,12 +8,12 @@ namespace BK.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandsController : ControllerBase
+    public class BrandController : ControllerBase
     {
         private readonly IBrandService _brandService;
         private readonly IMapper _mapper;
 
-        public BrandsController(IBrandService brandService, IMapper mapper)
+        public BrandController(IBrandService brandService, IMapper mapper)
         {
             _brandService = brandService;
             _mapper = mapper;

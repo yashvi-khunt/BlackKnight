@@ -165,7 +165,7 @@ function ProductDetails({
             <Typography variant="h6" gutterBottom>
               Jobworker: {productDet?.jobWorkerName || "Jobworker Name"}
             </Typography>
-            {quantity !== null && (
+            {quantity && (
               <Typography variant="h6" gutterBottom>
                 Quantity: {quantity}
               </Typography>

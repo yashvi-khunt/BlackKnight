@@ -133,7 +133,7 @@ function PaperSelectFieldModal({
             // {...register("laminationPercent", { required: "Price is required" })}
           />
           <Box mt={2} display="flex" justifyContent="flex-end">
-            <Button variant="contained" onClick={handleClose}>
+            <Button color="inherit" variant="contained" onClick={handleClose}>
               Cancel
             </Button>
             <Button

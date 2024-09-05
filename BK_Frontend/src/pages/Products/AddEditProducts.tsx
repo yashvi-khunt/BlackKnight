@@ -20,7 +20,7 @@ import {
   useGetPaperTypesQuery,
   useGetPrintTypesQuery,
 } from "../../redux/api/helperApi";
-import ClientBrandSelect from "./ClientBrandSelect";
+import ClientBrandSelect from "./ClientBrandSelect/ClientBrandSelect";
 import { FormInputText, FormImageUpload } from "../../components/form";
 import SelectField from "./SelectField";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
@@ -116,13 +116,13 @@ const AddEditProducts = ({ isEdit, productData }) => {
 
     console.log(formData);
 
-    if (isEdit) {
-      console.log("edit");
-      updateProductMutation({ data: formData, id: productData.id });
-    } else {
-      console.log("add", formData);
-      addProductMutation(formData);
-    }
+    // if (isEdit) {
+    //   console.log("edit");
+    //   updateProductMutation({ data: formData, id: productData.id });
+    // } else {
+    //   console.log("add", formData);
+    //   addProductMutation(formData);
+    // }
   };
 
   return (
@@ -155,7 +155,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
               name="topPaperTypeId"
               label="Top Paper Type"
               options={
-                (paperTypesData?.data as paperTypes.PaperTypeOptions[]) || []
+                (paperTypesData?.data as Global.EditableDDOptions[]) || []
               }
               {...register("topPaperTypeId", {
                 required: {
@@ -166,29 +166,35 @@ const AddEditProducts = ({ isEdit, productData }) => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <SelectField
-              value={productData?.flutePaperTypeId}
+            <PaperSelectField
+              value={productData?.topPaperTypeId}
               control={control}
-              options={paperTypesData?.data || []}
+              name="flutePaperTypeId"
               label="Flute Paper Type"
+              options={
+                (paperTypesData?.data as Global.EditableDDOptions[]) || []
+              }
               {...register("flutePaperTypeId", {
                 required: {
                   value: true,
-                  message: "Top Paper type is required.",
+                  message: "Flute Paper type is required.",
                 },
               })}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <SelectField
+            <PaperSelectField
               value={productData?.backPaperTypeId}
               control={control}
-              options={paperTypesData?.data || []}
+              name="backPaperTypeId"
               label="Back Paper Type"
+              options={
+                (paperTypesData?.data as Global.EditableDDOptions[]) || []
+              }
               {...register("backPaperTypeId", {
                 required: {
                   value: true,
-                  message: "Top Paper type is required.",
+                  message: "Back Paper type is required.",
                 },
               })}
             />

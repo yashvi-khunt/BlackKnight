@@ -35,6 +35,11 @@ declare namespace Global {
   };
 
   type dropDownOptions = Global.apiResponse<Global.Option[]>;
+  type EditableDDOptions = {
+    inputValue?: string;
+    label: string;
+    value?: string | null;
+  };
 
   type SearchParams = {
     page?: number;

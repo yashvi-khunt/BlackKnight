@@ -29,6 +29,7 @@ const BrandSelectModal = ({
     control,
     handleSubmit,
     reset,
+    register,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -64,7 +65,10 @@ const BrandSelectModal = ({
     }
     if (addError) {
       dispatch(
-        openSnackbar({ severity: "error", message: addError.data?.message })
+        openSnackbar({
+          severity: "error",
+          message: (addError as any).data?.message,
+        })
       );
     }
   }, [addResponse, addError, dispatch, handleClose]);
@@ -78,7 +82,10 @@ const BrandSelectModal = ({
     }
     if (updateError) {
       dispatch(
-        openSnackbar({ severity: "error", message: updateError.data?.message })
+        openSnackbar({
+          severity: "error",
+          message: (updateError as any).data?.message,
+        })
       );
     }
   }, [updateResponse, updateError, dispatch, handleClose]);
@@ -113,8 +120,9 @@ const BrandSelectModal = ({
                     SelectProps={{
                       native: true,
                     }}
-                    error={!!errors.clientId}
-                    helperText={errors.clientId?.message}
+                    {...register("clientId", {
+                      required: "Client is required.",
+                    })}
                   >
                     <option value="">Select Client</option>
                     {options.map((client) => (
@@ -139,8 +147,9 @@ const BrandSelectModal = ({
                     label="Brand Name"
                     variant="outlined"
                     fullWidth
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
+                    {...register("name", {
+                      required: "Brand name is required.",
+                    })}
                   />
                 )}
               />

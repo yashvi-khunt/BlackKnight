@@ -9,15 +9,16 @@ const SelectField = forwardRef<
   {
     name: string;
     control: any;
-    options: paperTypes.PaperTypeOptions[];
+    options: Global.EditableDDOptions[];
     label: string;
     value?: string | null;
     onAddClick?: () => void; // Ensure onAddClick is part of the props
   }
 >(({ name, control, options, label, value, onAddClick }, ref) => {
   // Destructure onAddClick from props
-  const [selectedValue, setValue] =
-    useState<paperTypes.PaperTypeOptions | null>(null);
+  const [selectedValue, setValue] = useState<Global.EditableDDOptions | null>(
+    null
+  );
 
   useEffect(() => {
     if (!value || !options) return;

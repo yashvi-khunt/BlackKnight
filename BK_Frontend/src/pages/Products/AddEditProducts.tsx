@@ -383,7 +383,9 @@ const AddEditProducts = ({ isEdit, productData }) => {
             <SelectField
               value={productData?.printTypeId}
               control={control}
-              options={printTypesData?.data || []}
+              options={
+                (printTypesData?.data as Global.EditableDDOptions[]) || []
+              }
               label="Print Type"
               {...register("printTypeId", {
                 required: {
@@ -451,7 +453,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
             <SelectField
               value={productData?.jobWorkerId}
               control={control}
-              options={jobWorkers?.data || []}
+              options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
               label="Job Worker"
               {...register("jobWorkerId", {
                 required: {
@@ -464,7 +466,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
           <Grid item xs={12} sm={6}>
             <SelectField
               control={control}
-              options={jobWorkers?.data || []}
+              options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
               label="Liner JobWorker"
               value={productData?.linerJobWorkerId}
               {...register("linerJobWorkerId", {

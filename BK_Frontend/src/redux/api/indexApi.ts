@@ -33,7 +33,7 @@ export const indexApi = createApi({
       providesTags: ["Admin", "Client", "JobWorker"],
     }),
     updateAdmin: builder.mutation<Global.apiResponse<string>, object>({
-      query: ({ data }) => ({
+      query: (data) => ({
         method: "PUT",
         url: "User/Update-admin",
         body: data,

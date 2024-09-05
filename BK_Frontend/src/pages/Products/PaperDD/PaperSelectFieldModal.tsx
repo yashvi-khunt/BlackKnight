@@ -56,7 +56,10 @@ function PaperSelectFieldModal({
     }
     if (addError) {
       dispatch(
-        openSnackbar({ severity: "error", message: addError.data?.message })
+        openSnackbar({
+          severity: "error",
+          message: (addError as any).data?.message,
+        })
       );
     }
   }, [addResponse, addError, dispatch, handleClose]);
@@ -70,7 +73,10 @@ function PaperSelectFieldModal({
     }
     if (updateError) {
       dispatch(
-        openSnackbar({ severity: "error", message: updateError.data?.message })
+        openSnackbar({
+          severity: "error",
+          message: (updateError as any).data?.message,
+        })
       );
     }
   }, [updateResponse, updateError, dispatch, handleClose]);

@@ -13,10 +13,11 @@ const clientApi = indexApi.injectEndpoints({
       }),
       invalidatesTags: ["Product"],
     }),
-    getProducts: builder.query<productTypes.getProducts, null>({
-      query: () => ({
+    getProducts: builder.query<productTypes.getProducts, object>({
+      query: (queryParams) => ({
         method: "GET",
         url: "Product",
+        params: queryParams,
       }),
       providesTags: ["Product"],
     }),

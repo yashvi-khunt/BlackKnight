@@ -3,11 +3,15 @@ import Table from "../../components/dynamicTable/DynamicTable";
 import { EditOutlined, InfoOutlined } from "@mui/icons-material";
 import { Box, Typography, Button, Grid } from "@mui/material";
 import { GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultImage from "../../assets/defaultBox.png";
+import SearchField from "../../components/dynamicTable/SearchField";
 
 function Products() {
-  const { data: products, isLoading } = useGetProductsQuery(null);
+  const [searchParams] = useSearchParams();
+  const { data: products, isLoading } = useGetProductsQuery({
+    ...Object.fromEntries(searchParams.entries()),
+  });
 
   const navigate = useNavigate();
 
@@ -16,6 +20,7 @@ function Products() {
       field: "primaryImage",
       headerName: "Image",
       minWidth: 200,
+      sortable: false,
       headerAlign: "center",
       flex: 1,
       renderCell: ({ value }) => (
@@ -207,7 +212,20 @@ function Products() {
           </Button>
         </Box>
       </Box>
-      <Table {...pageInfo}></Table>
+      <Table {...pageInfo}>
+        <Box
+          sx={{
+            paddingBottom: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "10px",
+          }}
+        >
+          <Box sx={{ width: "100%" }}>
+            <SearchField label="Search here ..." placeholder="BoxName" />
+          </Box>
+        </Box>
+      </Table>
     </>
   );
 }

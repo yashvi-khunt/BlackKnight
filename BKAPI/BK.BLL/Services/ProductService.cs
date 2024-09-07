@@ -132,33 +132,64 @@ public class ProductService : IProductService
     }
 }
    
-    public async Task<VMGetAll<VMAllProducts>> GetAllProducts()
-        {
-            var products = await _context.Products
-                .Include(p => p.Brand)
-                .ThenInclude(b => b.Client)
-                .Include(x => x.Images)
-                .Include(p => p.TopPaperType)
-                .Include(p => p.FlutePaperType)
-                .Include(p => p.BackPaperType)
-                .Include(p => p.PrintType)
-                .Include(p => p.JobWorker)
-                    .ThenInclude(j=>j.User)
-                .Include(p => p.LinerJobWorker)
-                .ToListAsync();
+   public async Task<VMGetAll<VMAllProducts>> GetAllProducts(string? search = null, string? field = "boxName", string? sort = "asc", int page = 1, int pageSize = 10)
+{
+    // Fetch products including necessary relationships
+    var products = await _context.Products
+        .Include(p => p.Brand).ThenInclude(b => b.Client)
+        .Include(x => x.Images)
+        .Include(p => p.TopPaperType)
+        .Include(p => p.FlutePaperType)
+        .Include(p => p.BackPaperType)
+        .Include(p => p.PrintType)
+        .Include(p => p.JobWorker).ThenInclude(j => j.User)
+        .Include(p => p.LinerJobWorker)
+        .ToListAsync();
 
-            // Map to VMProductDetails
-            var productDetailsList = _mapper.Map<List<VMProductDetails>>(products);
+    // Map to VMProductDetails
+    var productDetailsList = _mapper.Map<List<VMProductDetails>>(products);
 
-            // Map to VMAllProducts
-            var productViewModels = _mapper.Map<List<VMAllProducts>>(productDetailsList);
+    // Convert to IQueryable for sorting and filtering
+    var query = productDetailsList.AsQueryable();
 
-            return new VMGetAll<VMAllProducts>
-            {
-                Count = productViewModels.Count,
-                Data = productViewModels
-            };
-        }
+    // Filtering
+    if (!string.IsNullOrEmpty(search))
+    {
+        query = query.Where(p => 
+            p.BoxName.Contains(search) ||
+            p.JobWorkerName.Contains(search) || 
+            p.ClientName.Contains(search));
+    }
+
+    // Sorting logic based on mapped fields
+    query = field switch
+    {
+        "clientName" => sort == "asc" ? query.OrderBy(p => p.ClientName) : query.OrderByDescending(p => p.ClientName),
+        "boxName" => sort == "asc" ? query.OrderBy(p => p.BoxName) : query.OrderByDescending(p => p.BoxName),
+        "jobWorkerName" => sort == "asc" ? query.OrderBy(p => p.JobWorkerName) : query.OrderByDescending(p => p.JobWorkerName),
+        "jobWorkerPrice" => sort == "asc" ? query.OrderBy(p => p.JobWorkerPrice) : query.OrderByDescending(p => p.JobWorkerPrice),
+        "profitPercent" => sort == "asc" ? query.OrderBy(p => p.ProfitPercent) : query.OrderByDescending(p => p.ProfitPercent),
+        "finalRate" => sort == "asc" ? query.OrderBy(p => p.FinalRate) : query.OrderByDescending(p => p.FinalRate),
+        _ => sort == "asc" ? query.OrderBy(p => p.FinalRate) : query.OrderByDescending(p => p.FinalRate) // Default sorting by FinalRate
+    };
+
+    // Pagination
+    var paginatedProducts = query
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+    // Further mapping to VMAllProducts
+    var vmAllProducts = _mapper.Map<List<VMAllProducts>>(paginatedProducts);
+
+    return new VMGetAll<VMAllProducts>
+    {
+        Count = vmAllProducts.Count, // Total count of products
+        Data = vmAllProducts
+    };
+}
+
+
     
 
     public async Task<VMProductDetails> GetProductById(int id)

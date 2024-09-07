@@ -22,11 +22,11 @@ public class ProductController : ControllerBase
     
     //GET
     [HttpGet]
-    public async Task<IActionResult> GetAllProducts()
+    public async Task<ActionResult<VMGetAll<VMAllProducts>>> GetAllProducts([FromQuery] string? search = null, [FromQuery] string? field = "ClientName", [FromQuery] string? sort = "asc", [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         try
         {
-            var products = await _productService.GetAllProducts();
+            var products = await _productService.GetAllProducts(search, field, sort, page, pageSize);
             return Ok(new Response<VMGetAll<VMAllProducts>>(products, true, "Products retrieved successfully."));
         }
         catch (Exception ex)

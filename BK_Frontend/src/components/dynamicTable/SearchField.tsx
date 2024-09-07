@@ -6,7 +6,7 @@ const SearchField = ({ label, placeholder }: DynamicTable.SearchField) => {
   const [value, setValue] = useState<string | null>("" || null);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const paramKey = `Text`;
+  const paramKey = `search`;
   const newLabel = capitalizeFirstLetter(label);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

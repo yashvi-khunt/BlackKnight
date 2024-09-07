@@ -42,7 +42,7 @@ public class PaperTypeService : IPaperTypeService
             var paperTypeOptions = paperTypes.Select(pt => new VMOptions
             {
                 Value = pt.Id.ToString(),
-                Label = $"{pt.Type} - {pt.BF}BF"
+                Label = pt.Type + (pt.BF != null ? $" - {pt.BF}" : null)
             }).ToList();
 
             return paperTypeOptions;

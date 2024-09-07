@@ -13,10 +13,11 @@ const clientApi = indexApi.injectEndpoints({
       }),
       invalidatesTags: ["Client"],
     }),
-    getClients: builder.query<clientTypes.getClients, null>({
-      query: () => ({
+    getClients: builder.query<clientTypes.getClients, object>({
+      query: (queryParams) => ({
         method: "GET",
         url: "User/Get-all-clients",
+        params: queryParams,
       }),
       providesTags: ["Client"],
     }),

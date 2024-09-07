@@ -5,9 +5,14 @@ import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Table from "../../components/dynamicTable/DynamicTable";
 import ClientModal from "./ClientModal";
 import { EditOutlined, InfoOutlined } from "@mui/icons-material";
+import { useSearchParams } from "react-router-dom";
+import SearchField from "../../components/dynamicTable/SearchField";
 
 function Clients() {
-  const { data: clients, isLoading } = useGetClientsQuery(null);
+  const [searchParams] = useSearchParams();
+  const { data: clients, isLoading } = useGetClientsQuery({
+    ...Object.fromEntries(searchParams.entries()),
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("add"); // "add", "edit", "view"
   const [selectedClient, setSelectedClient] = useState(null);
@@ -128,9 +133,15 @@ function Clients() {
         mb={2}
         display="flex"
         justifyContent="space-between"
-        alignItems="right"
+        alignItems="center"
       >
-        <Typography variant="h5" color="initial"></Typography>
+        <Box>
+          <SearchField
+            size={"small"}
+            label="Search here ..."
+            placeholder="Company Name"
+          />
+        </Box>
         <Box>
           <Button variant="contained" onClick={() => handleOpenModal("add")}>
             + Add Client

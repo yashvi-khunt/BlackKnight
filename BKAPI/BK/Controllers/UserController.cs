@@ -27,11 +27,11 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("Get-all-clients")]
-    public async Task<ActionResult<VMGetAll<VMClientDetails>>> GetAllClients()
+    public async Task<ActionResult<VMGetAll<VMClientDetails>>> GetAllClients([FromQuery] string? search = null, [FromQuery] string? field = "ClientName", [FromQuery] string? sort = "asc", [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         try
         {
-            var result = await _userService.GetAllClients();
+            var result = await _userService.GetAllClients(search, field, sort, page, pageSize);
             return Ok(new Response<VMGetAll<VMClientDetails>>(result, true, "Clients loaded successfully!"));
         }
         catch (Exception ex)
@@ -219,11 +219,11 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("Get-all-jobworkers")]
-    public async Task<ActionResult<VMGetAll<VMJobworkerDetails>>> GetAllJobworkers()
+    public async Task<ActionResult<VMGetAll<VMJobworkerDetails>>> GetAllJobworkers([FromQuery] string? search = null, [FromQuery] string? field = "ClientName", [FromQuery] string? sort = "asc", [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         try
         {
-            var result = await _userService.GetAllJobworkers();
+            var result = await _userService.GetAllJobworkers(search, field, sort, page, pageSize);
             return Ok(new Response<VMGetAll<VMJobworkerDetails>>(result, true, "Jobworkers loaded successfully!"));
         }
         catch (Exception ex)

@@ -13,13 +13,16 @@ public interface IUserService
     //client methods
     Task<ApplicationUser> AddClient(VMAddClient addClient);
     Task UpdateClient(string id,VMUpdateClient updateClient);
-    Task<VMGetAll<VMClientDetails>> GetAllClients();
+
+    Task<VMGetAll<VMClientDetails>> GetAllClients(string? search , string? field,
+        string? sort , int page , int pageSize );
     Task<VMAddClient> GetClientById(string uname);
     
     //jobworker methods
     Task<ApplicationUser> AddJobworker(VMAddJobworker addJobworker);
     Task UpdateJobworker(string id, VMUpdateJobworker updateJobworker);
-    Task<VMGetAll<VMJobworkerDetails>> GetAllJobworkers();
+
+    Task<VMGetAll<VMJobworkerDetails>> GetAllJobworkers(string? search, string? field, string? sort, int page, int pageSize);
     Task<VMAddJobworker> GetJobworkerById(string uname);
 
     Task<List<VMOptions>> GetClientOptions();

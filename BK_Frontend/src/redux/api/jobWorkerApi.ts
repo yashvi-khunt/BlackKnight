@@ -13,10 +13,11 @@ const jobWorkerApi = indexApi.injectEndpoints({
       }),
       invalidatesTags: ["JobWorker"],
     }),
-    getJobWorkers: builder.query<jobWorkerTypes.getJobWorkers, null>({
-      query: () => ({
+    getJobWorkers: builder.query<jobWorkerTypes.getJobWorkers, object>({
+      query: (queryParams) => ({
         method: "GET",
         url: "User/Get-all-jobWorkers",
+        params: queryParams,
       }),
       providesTags: ["JobWorker"],
     }),

@@ -2,6 +2,10 @@ declare namespace DynamicTable {
   type SearchField = {
     label: string;
     placeholder: string;
+    size?: OverridableStringUnion<
+      "small" | "medium",
+      TextFieldPropsSizeOverrides
+    >;
   };
   type AutoCompleteFieldProps = {
     options: Global.Option[];

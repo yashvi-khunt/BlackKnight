@@ -137,10 +137,33 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<VMGetAll<VMClientDetails>> GetAllClients()
+    public async Task<VMGetAll<VMClientDetails>> GetAllClients(string? search = null, string? field = "companyName", string? sort = "asc", int page = 1, int pageSize = 10)
     {
         var clients = await _userManager.GetUsersInRoleAsync("Client");
-        var vmClients = clients.Select(client => new VMClientDetails
+
+        // Filtering
+        if (!string.IsNullOrEmpty(search))
+        {
+            clients = clients.Where(c => 
+                c.CompanyName.Contains(search) || 
+                c.UserName.Contains(search) || 
+                c.PhoneNumber.Contains(search)).ToList();
+        }
+
+        // Sorting
+        clients = field switch
+        {
+            "companyName" => sort == "asc" ? clients.OrderBy(c => c.CompanyName).ToList() : clients.OrderByDescending(c => c.CompanyName).ToList(),
+            "userName" => sort == "asc" ? clients.OrderBy(c => c.UserName).ToList() : clients.OrderByDescending(c => 
+                c.UserName).ToList(),
+            "phoneNumber" => sort == "asc" ? clients.OrderBy(c => c.PhoneNumber).ToList() : clients.OrderByDescending(c => c.PhoneNumber).ToList(),
+            _ => clients.OrderBy(c => c.CompanyName).ToList() // Default sorting by ClientName
+        };
+
+        // Pagination
+        var paginatedClients = clients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+        var vmClients = paginatedClients.Select(client => new VMClientDetails
         {
             Id = client.Id,
             CompanyName = client.CompanyName,
@@ -150,13 +173,13 @@ public class UserService : IUserService
             GSTNumber = client.GSTNumber
         }).ToList();
 
-        var obj = new VMGetAll<VMClientDetails>
+        return new VMGetAll<VMClientDetails>
         {
             Count = clients.Count,
             Data = vmClients
         };
-        return obj;
     }
+
 
     public async Task<VMAddClient> GetClientById(string uname)
     {
@@ -230,25 +253,57 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<VMGetAll<VMJobworkerDetails>> GetAllJobworkers()
+    public async Task<VMGetAll<VMJobworkerDetails>> GetAllJobworkers(string? search = null, string? field = "ClientName", string? sort = "asc", int page = 1, int pageSize = 10)
     {
         var jobworkers = await _userManager.GetUsersInRoleAsync("JobWorker");
-        var vmJobworkers = new List<VMJobworkerDetails>();
 
+        var vmJobworkers = new List<VMJobworkerDetails>();
         foreach (var jobworker in jobworkers)
         {
             var jw = await _context.JobWorkers.Include(u => u.User).FirstOrDefaultAsync(jw => jw.UserId == jobworker.Id);
+            
             var vmJobworker = _mapper.Map<VMJobworkerDetails>(jw);
             vmJobworkers.Add(vmJobworker);
         }
-        
-        var obj = new VMGetAll<VMJobworkerDetails>
+        // Filtering
+        if (!string.IsNullOrEmpty(search))
         {
-            Count = jobworkers.Count,
-            Data = vmJobworkers,
+            vmJobworkers = vmJobworkers.Where(j => 
+                j.UserName.Contains(search) || 
+                j.PhoneNumber.Contains(search)).ToList();
+        }
+
+        // Sorting
+        vmJobworkers = field switch
+        {
+            "clientName" => sort == "asc" ? vmJobworkers.OrderBy(j => j.UserName).ToList() : vmJobworkers.OrderByDescending(j => 
+                j.UserName).ToList(),
+            "userName" => sort == "asc" ? vmJobworkers.OrderBy(j => j.UserName).ToList() : vmJobworkers.OrderByDescending(j
+                => j.UserName)
+                .ToList(),
+            "mobileNumber" => sort == "asc" ? vmJobworkers.OrderBy(j => j.PhoneNumber).ToList() : vmJobworkers.OrderByDescending
+                (j => j.PhoneNumber).ToList(),
+            "companyName" => sort == "asc" ? vmJobworkers.OrderBy(j => j.CompanyName).ToList() : vmJobworkers
+                .OrderByDescending(j => j.CompanyName).ToList(),
+            "fluteRate" => sort == "asc" ? vmJobworkers.OrderBy(j => j.FluteRate).ToList() : vmJobworkers
+                .OrderByDescending(j => j.FluteRate).ToList(),
+            "linerRate" => sort == "asc" ? vmJobworkers.OrderBy(j => j.LinerRate).ToList() : vmJobworkers
+                .OrderByDescending(j => j.LinerRate).ToList(),
+            _ => vmJobworkers.OrderBy(j => j.UserName).ToList() // Default sorting by UserName
         };
-        return obj;
+
+        // Pagination
+        var paginatedJobworkers = vmJobworkers.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+       
+
+        return new VMGetAll<VMJobworkerDetails>
+        {
+            Count = paginatedJobworkers.Count,
+            Data = paginatedJobworkers
+        };
     }
+
     public async Task<VMAddJobworker> GetJobworkerById(string uname)
     {
         var jobworker = await _userManager.FindByNameAsync(uname);

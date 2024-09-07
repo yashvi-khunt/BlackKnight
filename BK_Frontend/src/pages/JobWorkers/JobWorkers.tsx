@@ -5,10 +5,15 @@ import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Table from "../../components/dynamicTable/DynamicTable";
 import { EditOutlined, InfoOutlined } from "@mui/icons-material";
 import JobWorkerModal from "./JobWorkerModel";
+import { useSearchParams } from "react-router-dom";
+import SearchField from "../../components/dynamicTable/SearchField";
 
 type ModalMode = "add" | "edit" | "view";
 function JobWorkers() {
-  const { data: jobWorkers, isLoading } = useGetJobWorkersQuery(null);
+  const [searchParams] = useSearchParams();
+  const { data: jobWorkers, isLoading } = useGetJobWorkersQuery({
+    ...Object.fromEntries(searchParams.entries()),
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ModalMode>("add"); // "add", "edit", "view"
   const [selectedJobWorker, setSelectedJobWorker] = useState(null);
@@ -43,6 +48,7 @@ function JobWorkers() {
     {
       field: "userPassword",
       headerName: "Password",
+      sortable: false,
       minWidth: 150,
       flex: 1,
     },
@@ -103,6 +109,7 @@ function JobWorkers() {
     {
       field: "gstNumber",
       headerAlign: "center",
+      sortable: false,
       headerName: "GST Number",
       renderCell: ({ value }) => (
         <Grid
@@ -167,9 +174,15 @@ function JobWorkers() {
         mb={2}
         display="flex"
         justifyContent="space-between"
-        alignItems="right"
+        alignItems="center"
       >
-        <Typography variant="h5" color="initial"></Typography>
+        <Box>
+          <SearchField
+            size="small"
+            label="Search here ..."
+            placeholder="Company Name"
+          />
+        </Box>
         <Box>
           <Button variant="contained" onClick={() => handleOpenModal("add")}>
             + Add JobWorker

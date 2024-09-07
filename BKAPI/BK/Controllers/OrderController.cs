@@ -19,19 +19,24 @@ public class OrderController:ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllOrders()
+    public async Task<IActionResult> GetAllOrders([FromQuery] DateTime? fromDate = null, [FromQuery] DateTime? toDate = null,
+        [FromQuery] string? search = null, [FromQuery] string? field = "ClientName", 
+        [FromQuery] string? sort = "asc", [FromQuery] int page = 1, 
+        [FromQuery] int pageSize = 10)
     {
         try
         {
-            var result = await _orderService.GetAllOrders();
-            return Ok(new Response<VMGetAll<VMGetAllOrder>>(result));
+            var result = await _orderService.GetAllOrders(fromDate, toDate, search, field, sort, page, pageSize);
+            return Ok(new Response<VMGetAll<VMGetAllOrder>>(result, true, "Orders retrieved successfully."));
         }
         catch (Exception ex)
         {
-            //_logger.LogError(ex, "An error occurred while getting all orders.");
-            return StatusCode(500, "Internal server error.");
+            // _logger.Error(ex, "An error occurred while retrieving all orders.");
+            return StatusCode(500, new Response("An error occurred while retrieving orders.", false));
         }
     }
+
+
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrderById(int id)

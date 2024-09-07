@@ -2,10 +2,11 @@ import { indexApi } from "./indexApi";
 
 const clientApi = indexApi.injectEndpoints({
   endpoints: (builder) => ({
-    getOrders: builder.query<orderTypes.getOrders, null>({
-      query: () => ({
+    getOrders: builder.query<orderTypes.getOrders, object>({
+      query: (queryParams) => ({
         method: "GET",
         url: "Order",
+        params: queryParams,
       }),
       providesTags: ["Order"],
     }),

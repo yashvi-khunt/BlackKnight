@@ -3,18 +3,42 @@ import Table from "../../components/dynamicTable/DynamicTable";
 import { Add, EditOutlined, InfoOutlined } from "@mui/icons-material";
 import { Box, Typography, Button, Grid } from "@mui/material";
 import { GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultImage from "../../assets/defaultBox.png";
+import SearchField from "../../components/dynamicTable/SearchField";
+import dayjs from "dayjs";
+import DatePickerField from "../../components/dynamicTable/DatePickerField";
 
 function orders() {
-  const { data: orders, isLoading } = useGetOrdersQuery(null);
+  const [searchParams] = useSearchParams();
+  const { data: orders, isLoading } = useGetOrdersQuery({
+    ...Object.fromEntries(searchParams.entries()),
+  });
 
   const navigate = useNavigate();
 
   const columns: GridColDef[] = [
     {
+      field: "orderDate",
+      headerName: "Order Date",
+      minWidth: 150,
+      renderCell: ({ value }) => (
+        <Grid
+          container
+          height="100%"
+          direction="row"
+          //justifyContent="center"
+          alignItems="center"
+        >
+          {dayjs(value).format("DD/MM/YYYY")}
+        </Grid>
+      ),
+      flex: 1,
+    },
+    {
       field: "primaryImage",
       headerName: "Image",
+      sortable: false,
       minWidth: 200,
       headerAlign: "center",
       flex: 1,
@@ -216,16 +240,31 @@ function orders() {
         mb={2}
         display="flex"
         justifyContent="space-between"
-        alignItems="right"
+        alignItems="center"
       >
-        <Typography variant="h5" color="initial"></Typography>
-        {/* <Box>
-          <Button variant="contained" onClick={() => navigate("add")}>
+        <Box>
+          <SearchField
+            size={"small"}
+            label="Search here ..."
+            placeholder="Company Name"
+          />
+        </Box>
+        <Box>
+          <Button variant="contained" onClick={() => {}}>
             + Add order
           </Button>
-        </Box> */}
+        </Box>
       </Box>
-      <Table {...pageInfo}></Table>
+      <Table {...pageInfo}>
+        <Grid container spacing={2} paddingBottom={2}>
+          <Grid item xs={6} md={3}>
+            <DatePickerField label="From" />
+          </Grid>
+          <Grid item xs={6} md={3}>
+            <DatePickerField to label="To" />
+          </Grid>
+        </Grid>
+      </Table>
     </>
   );
 }

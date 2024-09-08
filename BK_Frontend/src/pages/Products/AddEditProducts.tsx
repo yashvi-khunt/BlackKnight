@@ -116,13 +116,13 @@ const AddEditProducts = ({ isEdit, productData }) => {
 
     console.log(formData);
 
-    // if (isEdit) {
-    //   console.log("edit");
-    //   updateProductMutation({ data: formData, id: productData.id });
-    // } else {
-    //   console.log("add", formData);
-    //   addProductMutation(formData);
-    // }
+    if (isEdit) {
+      console.log("edit");
+      updateProductMutation({ data: formData, id: productData.id });
+    } else {
+      console.log("add", formData);
+      addProductMutation(formData);
+    }
   };
 
   return (

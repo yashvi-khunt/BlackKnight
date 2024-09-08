@@ -142,11 +142,14 @@ public class OrderService:IOrderService
         {
             // Fetch all orders from the database
             var orders = await _context.Orders
-                .Include(o => o.Product).ThenInclude(p => p.Brand).ThenInclude(b => b.Client)
                 .Include(o => o.Product)
-                .ThenInclude(p => p.Images)
-                .Include(o => o.Product).ThenInclude(p => p.JobWorker)
-                .ThenInclude(j => j.User)
+                    .ThenInclude(p => p.Brand)
+                    .ThenInclude(b => b.Client)
+                .Include(o => o.Product)
+                    .ThenInclude(p => p.Images)
+                .Include(o => o.Product)
+                    .ThenInclude(p => p.JobWorker)
+                    .ThenInclude(j => j.User)
                 .ToListAsync();
 
             // Map the orders to ViewModel

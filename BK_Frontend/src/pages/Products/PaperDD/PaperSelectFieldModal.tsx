@@ -117,18 +117,23 @@ function PaperSelectFieldModal({
           <FormInputText
             control={control}
             label="Type"
+            value={paperTypeData?.data?.type}
             {...register("type", { required: "Type is required" })}
           />
           <FormInputText
             control={control}
+            value={paperTypeData?.data?.bf}
             label="BF"
             type="number"
-            {...register("bf", { required: "BF is required" })}
+            placeholder="16"
+            // {...register("bf", { required: "BF is required" })}
+            {...register("bf", {})}
           />
           <FormInputText
             control={control}
             label="Price"
             type="number"
+            value={paperTypeData?.data?.price.toString()}
             {...register("price", { required: "Price is required" })}
           />
           <FormInputText
@@ -136,6 +141,7 @@ function PaperSelectFieldModal({
             control={control}
             label="Lamination Percent"
             type="number"
+            value={paperTypeData?.data?.laminationPercent.toString()}
             // {...register("laminationPercent", { required: "Price is required" })}
           />
           <Box mt={2} display="flex" justifyContent="flex-end">

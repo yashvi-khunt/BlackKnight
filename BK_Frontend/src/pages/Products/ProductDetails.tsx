@@ -120,7 +120,7 @@ function ProductDetails({
                 <TableRow>
                   <TableCell>Lamination</TableCell>
                   <TableCell>
-                    {productDet?.laminationPrice.toFixed(2) || "0.00"}
+                    {productDet?.laminationPrice?.toFixed(2) || "0.00"}
                   </TableCell>
                 </TableRow>
                 <TableRow>

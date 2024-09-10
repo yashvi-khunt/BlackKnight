@@ -48,13 +48,21 @@ const FormImageUpload = ({
     }
   };
 
+  // const handleRemoveImage = (index: number) => {
+  //   const newImages = [...images];
+  //   newImages[index] = null;
+  //   setImages(newImages);
+
+  //   const newPreviewImages = [...previewImages];
+  //   newPreviewImages[index] = "";
+  //   setPreviewImages(newPreviewImages);
+  // };
+
   const handleRemoveImage = (index: number) => {
-    const newImages = [...images];
-    newImages[index] = null;
+    const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
 
-    const newPreviewImages = [...previewImages];
-    newPreviewImages[index] = "";
+    const newPreviewImages = previewImages.filter((_, i) => i !== index);
     setPreviewImages(newPreviewImages);
   };
 

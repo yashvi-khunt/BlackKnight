@@ -26,6 +26,7 @@ import SelectField from "./SelectField";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import PaperSelectField from "./PaperDD/PaperSelectField";
+import IsLaminationSwitch from "./IsLaminatonSwitch";
 
 const AddEditProducts = ({ isEdit, productData }) => {
   const { control, register, handleSubmit, setValue } = useForm({
@@ -530,10 +531,11 @@ const AddEditProducts = ({ isEdit, productData }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Switch {...register("isLamination")} />}
               label="Is Lamination"
-            />
+            /> */}
+            <IsLaminationSwitch control={control} />
           </Grid>
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary">

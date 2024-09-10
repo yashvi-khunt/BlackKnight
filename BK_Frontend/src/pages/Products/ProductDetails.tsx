@@ -243,7 +243,7 @@ function ProductDetails({
                 />
                 <TableElement
                   field={"Lamination"}
-                  value={productDet?.isLaminatiom ? "Yes" : "No"}
+                  value={productDet?.isLamination ? "Yes" : "No"}
                 />
               </TableBody>
             </Table>

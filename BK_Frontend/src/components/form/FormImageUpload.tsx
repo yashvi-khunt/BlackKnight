@@ -52,7 +52,6 @@ const FormImageUpload = ({
   //   const newImages = [...images];
   //   newImages[index] = null;
   //   setImages(newImages);
-
   //   const newPreviewImages = [...previewImages];
   //   newPreviewImages[index] = "";
   //   setPreviewImages(newPreviewImages);

@@ -212,7 +212,7 @@ declare namespace productTypes {
     back: number;
     ply: number;
     noOfSheetPerBox: number;
-    isLaminatiom: boolean;
+    isLamination: boolean;
     dieCode?: number;
     printTypeName: string;
     printingPlate: string;
@@ -322,5 +322,26 @@ declare namespace brandTypes {
     clientId: string;
     name: string;
     clientName: string;
+  };
+}
+
+declare namespace wishListTypes {
+  type VMGetCartItem = {
+    id: number;
+    productId: number;
+    clientId: string;
+    quantity: number;
+    dateAdded: string;
+    image: string;
+    boxName: string;
+    clientName: string;
+    brandName: string;
+    jobWorkerRate: number;
+    finalRate: number;
+  };
+
+  type VMWishlistItem = Omit<Global.apiResponse, "data"> & {
+    productId: number;
+    quantity: number;
   };
 }

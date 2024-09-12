@@ -168,7 +168,6 @@ public class OrderService:IOrderService
             // Calculate flash card data
             var flashCards = new List<VMFlashCard>
             {
-                new VMFlashCard { Title = "Total Orders", Count = orderViewModels.Count },
                 new VMFlashCard { Title = "Pending Orders", Count = pendingOrders.Count },
                 new VMFlashCard { Title = "Completed Orders", Count = completedOrders.Count },
                 new VMFlashCard { Title = "Total Products", Count = products.Count },

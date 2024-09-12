@@ -245,7 +245,7 @@ const Dashboard = () => {
     <Box>
       <Grid container spacing={2} sx={{ mb: 4 }}>
         {flashCards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
+          <Grid item xs={12} sm={6} md={3} key={index}>
             <FlashCard title={card.title} count={card.count} />
           </Grid>
         ))}

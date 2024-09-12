@@ -3,6 +3,7 @@ using BK.BLL.Repositories;
 using BK.DAL.Context;
 using BK.DAL.Models;
 using BK.DAL.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -11,12 +12,13 @@ namespace BK.BLL.Services;
 public class OrderService:IOrderService
 {
     private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _context; 
-
-        public OrderService(IMapper mapper , ApplicationDbContext context)
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public OrderService(IMapper mapper , ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _mapper = mapper;
             _context = context;
+            _userManager = userManager;
         }
     public async Task AddOrder(VMAddOrder vmAddOrder)
     {
@@ -143,14 +145,18 @@ public class OrderService:IOrderService
             // Fetch all orders from the database
             var orders = await _context.Orders
                 .Include(o => o.Product)
-                    .ThenInclude(p => p.Brand)
-                    .ThenInclude(b => b.Client)
+                .ThenInclude(p => p.Brand)
+                .ThenInclude(b => b.Client)
                 .Include(o => o.Product)
-                    .ThenInclude(p => p.Images)
+                .ThenInclude(p => p.Images)
                 .Include(o => o.Product)
-                    .ThenInclude(p => p.JobWorker)
-                    .ThenInclude(j => j.User)
+                .ThenInclude(p => p.JobWorker)
+                .ThenInclude(j => j.User)
                 .ToListAsync();
+
+            // Fetch products and clients data
+            var products = await _context.Products.ToListAsync();
+            var clients = await _userManager.GetUsersInRoleAsync("Client");
 
             // Map the orders to ViewModel
             var orderViewModels = _mapper.Map<List<VMGetAllOrder>>(orders);
@@ -164,7 +170,9 @@ public class OrderService:IOrderService
             {
                 new VMFlashCard { Title = "Total Orders", Count = orderViewModels.Count },
                 new VMFlashCard { Title = "Pending Orders", Count = pendingOrders.Count },
-                new VMFlashCard { Title = "Completed Orders", Count = completedOrders.Count }
+                new VMFlashCard { Title = "Completed Orders", Count = completedOrders.Count },
+                new VMFlashCard { Title = "Total Products", Count = products.Count },
+                new VMFlashCard { Title = "Total Clients", Count = clients.Count }
             };
 
             // Construct the response
@@ -180,4 +188,5 @@ public class OrderService:IOrderService
 
             return dashboardData;
         }
+
 }

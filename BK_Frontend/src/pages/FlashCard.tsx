@@ -11,7 +11,9 @@ import {
 import {
   AssignmentTurnedIn,
   HourglassTop,
+  PermContactCalendarOutlined,
   ShoppingCart,
+  WidgetsOutlined,
 } from "@mui/icons-material";
 
 interface FlashCardProps {
@@ -25,6 +27,8 @@ const FlashCard: React.FC<FlashCardProps> = ({ title, count }) => {
     "Total Orders": <ShoppingCart />,
     "Pending Orders": <HourglassTop />,
     "Completed Orders": <AssignmentTurnedIn />,
+    "Total Products": <WidgetsOutlined />,
+    "Total Clients": <PermContactCalendarOutlined />,
   };
 
   return (

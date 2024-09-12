@@ -238,4 +238,30 @@ public class ProductService : IProductService
             throw new Exception("Error fetching paper type options", ex);
         }
     }
+    
+    public async Task DeleteProduct(int id)
+    {
+        // Retrieve the product including any related entities (like images) if necessary
+        var product = await _context.Products
+            .Include(p => p.Images) // Include related product images if needed
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (product == null)
+        {
+            throw new Exception("Product not found");
+        }
+
+        // Remove any related images if applicable
+        if (product.Images != null && product.Images.Any())
+        {
+            _context.Images.RemoveRange(product.Images);
+        }
+
+        // Remove the product
+        _context.Products.Remove(product);
+
+        // Save the changes to the database
+        await _context.SaveChangesAsync();
+    }
+
 }

@@ -119,4 +119,30 @@ public class ProductController : ControllerBase
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
+    
+    
+    // DELETE
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        if (id <= 0)
+            return BadRequest(new Response("Invalid product ID.", false));
+
+        try
+        {
+            await _productService.DeleteProduct(id);
+            return Ok(new Response("Product deleted successfully.", true));
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the database during product deletion.");
+            return StatusCode(500, new Response("An error occurred while updating the database.", false));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while deleting the product with ID {ProductId}.", id);
+            return StatusCode(500, new Response("An error occurred while deleting the product.", false));
+        }
+    }
+
 }

@@ -39,6 +39,15 @@ const clientApi = indexApi.injectEndpoints({
       }),
       providesTags: ["Product"],
     }),
+    deleteProduct: builder.mutation<Global.apiResponse<string>, { id: string }>(
+      {
+        query: ({ id }) => ({
+          method: "DELETE",
+          url: `Product/${id}`,
+        }),
+        invalidatesTags: ["Product"],
+      }
+    ),
   }),
 });
 
@@ -47,4 +56,5 @@ export const {
   useGetProductsQuery,
   useUpdateProductMutation,
   useAddProductMutation,
+  useDeleteProductMutation,
 } = clientApi;

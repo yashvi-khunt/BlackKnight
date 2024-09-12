@@ -11,4 +11,5 @@ public interface IProductService
         string? sort , int page , int pageSize);
     Task<VMProductDetails> GetProductById(int id);
     Task<List<VMOptions>> GetPrintOptions();
+    Task DeleteProduct(int id);
 }

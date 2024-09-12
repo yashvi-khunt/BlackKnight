@@ -127,424 +127,429 @@ const AddEditProducts = ({ isEdit, productData }) => {
   };
 
   return (
-    <Container
-      maxWidth="lg"
-      component="form"
-      noValidate
-      onSubmit={handleSubmit(handleSubmitForm)}
-    >
-      <Box p={2}>
+    <>
+      <Box
+        mb={2}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="right"
+      >
         <Typography variant="h4">
           {isEdit ? "Edit Product" : "Add Product"}
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Box Name"
-              value={productData?.boxName}
-              placeholder="Enter Box Name"
-              {...register("boxName", {
-                required: { value: true, message: "Box name is required." },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <PaperSelectField
-              value={productData?.topPaperTypeId}
-              control={control}
-              name="topPaperTypeId"
-              label="Top Paper Type"
-              options={
-                (paperTypesData?.data as Global.EditableDDOptions[]) || []
-              }
-              {...register("topPaperTypeId", {
-                required: {
-                  value: true,
-                  message: "Top Paper type is required.",
-                },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <PaperSelectField
-              value={productData?.topPaperTypeId}
-              control={control}
-              name="flutePaperTypeId"
-              label="Flute Paper Type"
-              options={
-                (paperTypesData?.data as Global.EditableDDOptions[]) || []
-              }
-              {...register("flutePaperTypeId", {
-                required: {
-                  value: true,
-                  message: "Flute Paper type is required.",
-                },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <PaperSelectField
-              value={productData?.backPaperTypeId}
-              control={control}
-              name="backPaperTypeId"
-              label="Back Paper Type"
-              options={
-                (paperTypesData?.data as Global.EditableDDOptions[]) || []
-              }
-              {...register("backPaperTypeId", {
-                required: {
-                  value: true,
-                  message: "Back Paper type is required.",
-                },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              name="length"
-              control={control}
-              label="Length"
-              value={productData?.length}
-              placeholder="Enter Length"
-              // {...register("flutePaperTypeId", {
-              //   pattern: {
-              //     value: ,
-              //     message: "Enter a decimal value",
-              //   },
-              // })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              name="width"
-              control={control}
-              label="Width"
-              value={productData?.width}
-              placeholder="Enter Width"
-              // {...register("flutePaperTypeId", {
-              //   pattern: {
-              //     value: ,
-              //     message: "Enter a decimal value",
-              //   },
-              // })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              name="height"
-              control={control}
-              label="Height"
-              value={productData?.height}
-              placeholder="Enter Height"
-              // {...register("flutePaperTypeId", {
-              //   pattern: {
-              //     value: ,
-              //     message: "Enter a decimal value",
-              //   },
-              // })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              name="flap1"
-              control={control}
-              label="Flap 1"
-              value={productData?.flap1}
-              placeholder="Enter Flap 1"
-              // {...register("flutePaperTypeId", {
-              //   pattern: {
-              //     value: ,
-              //     message: "Enter a decimal value",
-              //   },
-              // })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              name="flap2"
-              control={control}
-              label="Flap 2"
-              value={productData?.flap2}
-              placeholder="Enter Flap 2"
-              // {...register("flutePaperTypeId", {
-              //   pattern: {
-              //     value: ,
-              //     message: "Enter a decimal value",
-              //   },
-              // })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Deckle"
-              value={productData?.deckle}
-              placeholder="Enter Deckle"
-              {...register("deckle", {
-                required: {
-                  value: true,
-                  message: "Deckle is required.",
-                },
-                // pattern: {
-                //   value: ,
-                //   message: "Enter a decimal value",
-                // },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Cutting"
-              value={productData?.cutting}
-              placeholder="Enter Cutting"
-              {...register("cutting", {
-                required: {
-                  value: true,
-                  message: "Cutting is required.",
-                },
-                // pattern: {
-                //   value: ,
-                //   message: "Enter a decimal value",
-                // },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Top(GSM)"
-              value={productData?.top}
-              placeholder="Enter Top"
-              {...register("top", {
-                required: {
-                  value: true,
-                  message: "Top is required.",
-                },
-                // pattern: {
-                //   value: ,
-                //   message: "Enter a decimal value",
-                // },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Flute(GSM)"
-              value={productData?.flute}
-              placeholder="Enter Flute"
-              {...register("flute", {
-                required: {
-                  value: true,
-                  message: "Flute is required.",
-                },
-                // pattern: {
-                //   value: ,
-                //   message: "Enter a decimal value",
-                // },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Bottom(GSM)"
-              value={productData?.back}
-              placeholder="Enter Bottom"
-              {...register("back", {
-                required: {
-                  value: true,
-                  message: "Bottom is required.",
-                },
-                // pattern: {
-                //   value: ,
-                //   message: "Enter a decimal value",
-                // },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              type="number"
-              control={control}
-              label="Sheets per Box"
-              value={productData?.noOfSheetPerBox}
-              placeholder="Enter Sheets per Box"
-              {...register("noOfSheetPerBox", {
-                required: {
-                  value: true,
-                  message: "No of Sheets per Box is required.",
-                },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <SelectField
-              value={productData?.printTypeId}
-              control={control}
-              options={
-                (printTypesData?.data as Global.EditableDDOptions[]) || []
-              }
-              label="Print Type"
-              {...register("printTypeId", {
-                required: {
-                  value: true,
-                  message: "Print type is required.",
-                },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              name="printingPlate"
-              control={control}
-              label="Printing Plate"
-              value={productData?.printingPlate}
-              placeholder="Enter Printing Plate"
-              //{...register("back", {
-
+        <Button variant="contained" onClick={() => navigate("/products")}>
+          Back
+        </Button>
+      </Box>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={4}>
+          <FormInputText
+            control={control}
+            label="Box Name"
+            value={productData?.boxName}
+            placeholder="Enter Box Name"
+            {...register("boxName", {
+              required: { value: true, message: "Box name is required." },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={8}>
+          <ClientBrandSelect
+            control={control}
+            setValue={setValue}
+            clients={clients?.data || []}
+            sClient={selectedClient}
+            // setSelectedClient={setSelectedClient}
+            isEdit={isEdit}
+            productData={productData}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <PaperSelectField
+            value={productData?.topPaperTypeId}
+            control={control}
+            name="topPaperTypeId"
+            label="Top Paper Type"
+            options={(paperTypesData?.data as Global.EditableDDOptions[]) || []}
+            {...register("topPaperTypeId", {
+              required: {
+                value: true,
+                message: "Top Paper type is required.",
+              },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <PaperSelectField
+            value={productData?.topPaperTypeId}
+            control={control}
+            name="flutePaperTypeId"
+            label="Flute Paper Type"
+            options={(paperTypesData?.data as Global.EditableDDOptions[]) || []}
+            {...register("flutePaperTypeId", {
+              required: {
+                value: true,
+                message: "Flute Paper type is required.",
+              },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <PaperSelectField
+            value={productData?.backPaperTypeId}
+            control={control}
+            name="backPaperTypeId"
+            label="Back Paper Type"
+            options={(paperTypesData?.data as Global.EditableDDOptions[]) || []}
+            {...register("backPaperTypeId", {
+              required: {
+                value: true,
+                message: "Back Paper type is required.",
+              },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <FormInputText
+            name="length"
+            control={control}
+            label="Length"
+            value={productData?.length}
+            placeholder="Enter Length"
+            // {...register("flutePaperTypeId", {
+            //   pattern: {
+            //     value: ,
+            //     message: "Enter a decimal value",
+            //   },
+            // })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <FormInputText
+            name="width"
+            control={control}
+            label="Width"
+            value={productData?.width}
+            placeholder="Enter Width"
+            // {...register("flutePaperTypeId", {
+            //   pattern: {
+            //     value: ,
+            //     message: "Enter a decimal value",
+            //   },
+            // })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <FormInputText
+            name="height"
+            control={control}
+            label="Height"
+            value={productData?.height}
+            placeholder="Enter Height"
+            // {...register("flutePaperTypeId", {
+            //   pattern: {
+            //     value: ,
+            //     message: "Enter a decimal value",
+            //   },
+            // })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormInputText
+            name="flap1"
+            control={control}
+            label="Flap 1"
+            value={productData?.flap1}
+            placeholder="Enter Flap 1"
+            // {...register("flutePaperTypeId", {
+            //   pattern: {
+            //     value: ,
+            //     message: "Enter a decimal value",
+            //   },
+            // })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormInputText
+            name="flap2"
+            control={control}
+            label="Flap 2"
+            value={productData?.flap2}
+            placeholder="Enter Flap 2"
+            // {...register("flutePaperTypeId", {
+            //   pattern: {
+            //     value: ,
+            //     message: "Enter a decimal value",
+            //   },
+            // })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormInputText
+            control={control}
+            label="Deckle"
+            value={productData?.deckle}
+            placeholder="Enter Deckle"
+            {...register("deckle", {
+              required: {
+                value: true,
+                message: "Deckle is required.",
+              },
               // pattern: {
               //   value: ,
               //   message: "Enter a decimal value",
               // },
-              // })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Ply"
-              value={productData?.ply}
-              placeholder="Enter Ply"
-              type="number"
-              {...register("ply", {
-                required: {
-                  value: true,
-                  message: "Ply is required.",
-                },
-                // pattern: {
-                //   value: ,
-                //   message: "Enter a decimal value",
-                // },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Print Rate"
-              value={productData?.printRate}
-              placeholder="Enter Print Rate"
-              {...register("printRate", {
-                required: {
-                  value: true,
-                  message: "Bottom is required.",
-                },
-                // pattern: {
-                //   value: ,
-                //   message: "Enter a decimal value",
-                // },
-              })}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <SelectField
-              value={productData?.jobWorkerId}
-              control={control}
-              options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
-              label="Job Worker"
-              {...register("jobWorkerId", {
-                required: {
-                  value: true,
-                  message: "JobWorker is required.",
-                },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <SelectField
-              control={control}
-              options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
-              label="Liner JobWorker"
-              value={productData?.linerJobWorkerId}
-              {...register("linerJobWorkerId", {
-                // required: {
-                //   value: true,
-                //   message: "JobWorker is required.",
-                // },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormInputText
-              control={control}
-              label="Profit Percent"
-              value={productData?.profitPercent}
-              placeholder="Enter Profit Percent"
-              {...register("profitPercent", {
-                required: {
-                  value: true,
-                  message: "Profit percent is required.",
-                },
-                // pattern: {
-                //   value: ,
-                //   message: "Enter a decimal value",
-                // },
-              })}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormInputText
-              name="remarks"
-              control={control}
-              label="Remarks"
-              value={productData?.remarks}
-              placeholder="Enter Remarks"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <ClientBrandSelect
-              control={control}
-              setValue={setValue}
-              clients={clients?.data || []}
-              sClient={selectedClient}
-              // setSelectedClient={setSelectedClient}
-              isEdit={isEdit}
-              productData={productData}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormImageUpload
-              images={images}
-              setImages={setImages}
-              previewImages={previewImages}
-              setPreviewImages={setPreviewImages}
-              initialImages={
-                productData?.images?.map((img) => img.imagePath) || []
-              }
-              initialPreviewImages={
-                productData?.images?.map((img) => img.imagePath) || []
-              }
-            />
-          </Grid>
-          <Grid item xs={12}>
-            {/* <FormControlLabel
-              control={<Switch {...register("isLamination")} />}
-              label="Is Lamination"
-            /> */}
-            <IsLaminationSwitch control={control} />
-          </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
-              {isEdit ? "Update Product" : "Add Product"}
-            </Button>
-          </Grid>
+            })}
+          />
         </Grid>
-      </Box>
-    </Container>
+        <Grid item xs={12} sm={3}>
+          <FormInputText
+            control={control}
+            label="Cutting"
+            value={productData?.cutting}
+            placeholder="Enter Cutting"
+            {...register("cutting", {
+              required: {
+                value: true,
+                message: "Cutting is required.",
+              },
+              // pattern: {
+              //   value: ,
+              //   message: "Enter a decimal value",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <FormInputText
+            control={control}
+            label="Top(GSM)"
+            value={productData?.top}
+            placeholder="Enter Top"
+            {...register("top", {
+              required: {
+                value: true,
+                message: "Top is required.",
+              },
+              // pattern: {
+              //   value: ,
+              //   message: "Enter a decimal value",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <FormInputText
+            control={control}
+            label="Flute(GSM)"
+            value={productData?.flute}
+            placeholder="Enter Flute"
+            {...register("flute", {
+              required: {
+                value: true,
+                message: "Flute is required.",
+              },
+              // pattern: {
+              //   value: ,
+              //   message: "Enter a decimal value",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <FormInputText
+            control={control}
+            label="Bottom(GSM)"
+            value={productData?.back}
+            placeholder="Enter Bottom"
+            {...register("back", {
+              required: {
+                value: true,
+                message: "Bottom is required.",
+              },
+              // pattern: {
+              //   value: ,
+              //   message: "Enter a decimal value",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <SelectField
+            value={productData?.printTypeId}
+            control={control}
+            options={(printTypesData?.data as Global.EditableDDOptions[]) || []}
+            label="Print Type"
+            {...register("printTypeId", {
+              required: {
+                value: true,
+                message: "Print type is required.",
+              },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormInputText
+            name="printingPlate"
+            control={control}
+            label="Printing Plate"
+            value={productData?.printingPlate}
+            placeholder="Enter Printing Plate"
+            //{...register("back", {
+
+            // pattern: {
+            //   value: ,
+            //   message: "Enter a decimal value",
+            // },
+            // })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormInputText
+            control={control}
+            label="Print Rate"
+            value={productData?.printRate}
+            placeholder="Enter Print Rate"
+            {...register("printRate", {
+              required: {
+                value: true,
+                message: "Bottom is required.",
+              },
+              // pattern: {
+              //   value: ,
+              //   message: "Enter a decimal value",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormInputText
+            type="number"
+            control={control}
+            label="Die Code"
+            value={productData?.noOfSheetPerBox}
+            placeholder="Enter Die Code"
+            {...register("dieCode", {})}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <FormInputText
+            type="number"
+            control={control}
+            label="Sheets per Box"
+            value={productData?.noOfSheetPerBox}
+            placeholder="Enter Sheets per Box"
+            {...register("noOfSheetPerBox", {
+              required: {
+                value: true,
+                message: "No of Sheets per Box is required.",
+              },
+            })}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <FormInputText
+            control={control}
+            label="Ply"
+            value={productData?.ply}
+            placeholder="Enter Ply"
+            type="number"
+            {...register("ply", {
+              required: {
+                value: true,
+                message: "Ply is required.",
+              },
+              // pattern: {
+              //   value: ,
+              //   message: "Enter a decimal value",
+              // },
+            })}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <SelectField
+            value={productData?.jobWorkerId}
+            control={control}
+            options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
+            label="Job Worker"
+            {...register("jobWorkerId", {
+              required: {
+                value: true,
+                message: "JobWorker is required.",
+              },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <SelectField
+            control={control}
+            options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
+            label="Liner JobWorker"
+            value={productData?.linerJobWorkerId}
+            {...register("linerJobWorkerId", {
+              // required: {
+              //   value: true,
+              //   message: "JobWorker is required.",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormInputText
+            control={control}
+            label="Profit Percent"
+            value={productData?.profitPercent}
+            placeholder="Enter Profit Percent"
+            {...register("profitPercent", {
+              required: {
+                value: true,
+                message: "Profit percent is required.",
+              },
+              // pattern: {
+              //   value: ,
+              //   message: "Enter a decimal value",
+              // },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} display={"flex"} alignItems={"center"}>
+          <IsLaminationSwitch control={control} />
+        </Grid>
+        <Grid item xs={12}>
+          <FormInputText
+            name="remarks"
+            control={control}
+            label="Remarks"
+            value={productData?.remarks}
+            placeholder="Enter Remarks"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <FormImageUpload
+            images={images}
+            setImages={setImages}
+            previewImages={previewImages}
+            setPreviewImages={setPreviewImages}
+            initialImages={
+              productData?.images?.map((img) => img.imagePath) || []
+            }
+            initialPreviewImages={
+              productData?.images?.map((img) => img.imagePath) || []
+            }
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button type="submit" variant="contained" color="primary">
+            {isEdit ? "Update Product" : "Add Product"}
+          </Button>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { Controller } from "react-hook-form";
-import { Stack, Switch, Typography } from "@mui/material";
+import { Checkbox, Stack, Switch, Typography } from "@mui/material";
 
 const IsLaminationSwitch = ({ control }) => (
   <Controller
@@ -8,8 +8,8 @@ const IsLaminationSwitch = ({ control }) => (
     defaultValue={false}
     render={({ field }) => (
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography>Lamination</Typography>
-        <Switch {...field} checked={field.value} />
+        <Typography>Is Lamination?</Typography>
+        <Checkbox {...field} checked={field.value} />
       </Stack>
     )}
   />

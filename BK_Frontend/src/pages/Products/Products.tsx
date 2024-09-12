@@ -205,7 +205,13 @@ function Products() {
         justifyContent="space-between"
         alignItems="right"
       >
-        <Typography variant="h5" color="initial"></Typography>
+        <Box>
+          <SearchField
+            label="Search here ..."
+            size={"small"}
+            placeholder="BoxName"
+          />
+        </Box>
         <Box>
           <Button variant="contained" onClick={() => navigate("add")}>
             + Add Product
@@ -213,18 +219,14 @@ function Products() {
         </Box>
       </Box>
       <Table {...pageInfo}>
-        <Box
+        {/* <Box
           sx={{
             paddingBottom: 2,
             display: "flex",
             justifyContent: "space-between",
             gap: "10px",
           }}
-        >
-          <Box sx={{ width: "100%" }}>
-            <SearchField label="Search here ..." placeholder="BoxName" />
-          </Box>
-        </Box>
+        ></Box> */}
       </Table>
     </>
   );

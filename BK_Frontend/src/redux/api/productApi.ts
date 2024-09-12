@@ -48,6 +48,17 @@ const clientApi = indexApi.injectEndpoints({
         invalidatesTags: ["Product"],
       }
     ),
+    updateProfitPercent: builder.mutation<
+      Global.apiResponse<string>,
+      { id: string; profitPercent: number }
+    >({
+      query: ({ id, profitPercent }) => ({
+        method: "PATCH",
+        url: `Product/${id}`,
+        body: profitPercent,
+      }),
+      invalidatesTags: ["Product"],
+    }),
   }),
 });
 
@@ -57,4 +68,5 @@ export const {
   useUpdateProductMutation,
   useAddProductMutation,
   useDeleteProductMutation,
+  useUpdateProfitPercentMutation,
 } = clientApi;

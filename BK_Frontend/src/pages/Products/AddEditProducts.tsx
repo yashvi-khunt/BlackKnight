@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Box,
-  Grid,
-  Typography,
-  Button,
-  Switch,
-  FormControlLabel,
-  Container,
-} from "@mui/material";
+import { Box, Grid, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
   useAddProductMutation,
@@ -118,16 +110,16 @@ const AddEditProducts = ({ isEdit, productData }) => {
     console.log(formData);
 
     if (isEdit) {
-      console.log("edit", formData);
+      //console.log("edit", formData);
       updateProductMutation({ data: formData, id: productData.id });
     } else {
-      console.log("add", formData);
+      // console.log("add", formData);
       addProductMutation(formData);
     }
   };
 
   return (
-    <>
+    <Box component="form" noValidate onSubmit={handleSubmit(handleSubmitForm)}>
       <Box
         mb={2}
         display="flex"
@@ -162,6 +154,34 @@ const AddEditProducts = ({ isEdit, productData }) => {
             // setSelectedClient={setSelectedClient}
             isEdit={isEdit}
             productData={productData}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <SelectField
+            value={productData?.jobWorkerId}
+            control={control}
+            options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
+            label="Job Worker"
+            {...register("jobWorkerId", {
+              required: {
+                value: true,
+                message: "JobWorker is required.",
+              },
+            })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <SelectField
+            control={control}
+            options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
+            label="Liner JobWorker"
+            value={productData?.linerJobWorkerId}
+            {...register("linerJobWorkerId", {
+              // required: {
+              //   value: true,
+              //   message: "JobWorker is required.",
+              // },
+            })}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -469,35 +489,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <SelectField
-            value={productData?.jobWorkerId}
-            control={control}
-            options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
-            label="Job Worker"
-            {...register("jobWorkerId", {
-              required: {
-                value: true,
-                message: "JobWorker is required.",
-              },
-            })}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <SelectField
-            control={control}
-            options={(jobWorkers?.data as Global.EditableDDOptions[]) || []}
-            label="Liner JobWorker"
-            value={productData?.linerJobWorkerId}
-            {...register("linerJobWorkerId", {
-              // required: {
-              //   value: true,
-              //   message: "JobWorker is required.",
-              // },
-            })}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <FormInputText
             control={control}
             label="Profit Percent"
@@ -515,10 +507,21 @@ const AddEditProducts = ({ isEdit, productData }) => {
             })}
           />
         </Grid>
-        <Grid item xs={12} sm={6} display={"flex"} alignItems={"center"}>
-          <IsLaminationSwitch control={control} />
+        <Grid item xs={12} sm={4}>
+          {/* <IsLaminationSwitch control={control} /> */}
+          <IsLaminationSwitch
+            value={productData?.isLamination}
+            control={control}
+            label="Is Lamination"
+            {...register("isLamination", {
+              // required: {
+              //   value: true,
+              //   message: "Print type is required.",
+              // },
+            })}
+          />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={4}>
           <FormInputText
             name="remarks"
             control={control}
@@ -549,7 +552,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
           </Button>
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
 

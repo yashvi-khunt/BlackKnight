@@ -263,5 +263,22 @@ public class ProductService : IProductService
         // Save the changes to the database
         await _context.SaveChangesAsync();
     }
+    
+    public async Task UpdateProfitPercent(int id, double profitPercent)
+    {
+        // Retrieve the product by its ID
+        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (product == null)
+        {
+            throw new Exception("Product not found");
+        }
+
+        // Update the profit percent
+        product.ProfitPercent = profitPercent;
+
+        // Save changes to the database
+        await _context.SaveChangesAsync();
+    }
 
 }

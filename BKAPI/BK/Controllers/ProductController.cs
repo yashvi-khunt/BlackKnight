@@ -144,5 +144,28 @@ public class ProductController : ControllerBase
             return StatusCode(500, new Response("An error occurred while deleting the product.", false));
         }
     }
+// PATCH: api/product/{id}/profit
+    [HttpPatch("{id}/profit")]
+    public async Task<IActionResult> UpdateProfitPercent(int id, [FromBody] double profitPercent)
+    {
+        if (id <= 0 || profitPercent < 0)
+            return BadRequest(new Response("Invalid product ID or profit percent.", false));
+
+        try
+        {
+            await _productService.UpdateProfitPercent(id, profitPercent);
+            return Ok(new Response("Profit percent updated successfully.", true));
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the database during profit percent update.");
+            return StatusCode(500, new Response("An error occurred while updating the database.", false));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while updating the profit percent for product with ID {ProductId}.", id);
+            return StatusCode(500, new Response("An error occurred while updating the profit percent.", false));
+        }
+    }
 
 }

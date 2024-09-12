@@ -145,15 +145,15 @@ public class ProductController : ControllerBase
         }
     }
 // PATCH: api/product/{id}/profit
-    [HttpPatch("{id}/profit")]
-    public async Task<IActionResult> UpdateProfitPercent(int id, [FromBody] double profitPercent)
+    [HttpPatch("profit/{id}")]
+    public async Task<IActionResult> UpdateProfitPercent(int id, VMUpdateProfitPercent vmUpdateProfitPercent )
     {
-        if (id <= 0 || profitPercent < 0)
+        if (id <= 0 || vmUpdateProfitPercent.ProfitPercent < 0)
             return BadRequest(new Response("Invalid product ID or profit percent.", false));
 
         try
         {
-            await _productService.UpdateProfitPercent(id, profitPercent);
+            await _productService.UpdateProfitPercent(id, vmUpdateProfitPercent.ProfitPercent);
             return Ok(new Response("Profit percent updated successfully.", true));
         }
         catch (DbUpdateException ex)

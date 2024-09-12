@@ -54,8 +54,8 @@ const clientApi = indexApi.injectEndpoints({
     >({
       query: ({ id, profitPercent }) => ({
         method: "PATCH",
-        url: `Product/${id}`,
-        body: profitPercent,
+        url: `Product/profit/${id}`,
+        body: { profitPercent: profitPercent },
       }),
       invalidatesTags: ["Product"],
     }),

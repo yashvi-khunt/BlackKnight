@@ -1,11 +1,17 @@
-import { useGetProductsQuery } from "../../redux/api/productApi";
+import React, { useEffect, useState } from "react";
+import {
+  useGetProductsQuery,
+  useUpdateProfitPercentMutation,
+} from "../../redux/api/productApi";
 import Table from "../../components/dynamicTable/DynamicTable";
 import { EditOutlined, InfoOutlined } from "@mui/icons-material";
-import { Box, Typography, Button, Grid } from "@mui/material";
+import { Box, Typography, Button, Grid, Modal, TextField } from "@mui/material";
 import { GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultImage from "../../assets/defaultBox.png";
 import SearchField from "../../components/dynamicTable/SearchField";
+import { openSnackbar } from "../../redux/slice/snackbarSlice";
+import { useAppDispatch } from "../../redux/hooks";
 
 function Products() {
   const [searchParams] = useSearchParams();
@@ -13,7 +19,77 @@ function Products() {
     ...Object.fromEntries(searchParams.entries()),
   });
 
+  const [updateProfitPercent, { error: updateError, data: updateResponse }] =
+    useUpdateProfitPercentMutation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [open, setOpen] = useState(false);
+  const [editingRow, setEditingRow] = useState<any>(null);
+  const [profitPercent, setProfitPercent] = useState<number>(0);
+  const [finalRate, setFinalRate] = useState<string>("");
+
+  const handleOpenModal = (row: any) => {
+    setEditingRow(row);
+    setProfitPercent(row.profitPercent);
+    setFinalRate(row.finalRate);
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+    setEditingRow(null);
+  };
+
+  useEffect(() => {
+    if (updateResponse) {
+      dispatch(
+        openSnackbar({
+          severity: "success",
+          message: updateResponse?.message,
+        })
+      );
+      // navigate("/products");
+      handleCloseModal();
+    }
+    if (updateError) {
+      dispatch(
+        openSnackbar({
+          severity: "error",
+          message: (updateError as any)?.data?.message,
+        })
+      );
+      console.log("error");
+      handleCloseModal();
+    }
+  }, [updateResponse, (updateError as any)?.data]);
+
+  const handleProfitPercentChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newProfitPercent = Number(event.target.value);
+    setProfitPercent(newProfitPercent);
+
+    // Recalculate finalRate based on the new profitPercent
+    const newFinalRate = (
+      editingRow.jobWorkerPrice *
+      (1 + newProfitPercent / 100)
+    ).toFixed(1);
+    setFinalRate(newFinalRate);
+  };
+
+  const handleSave = () => {
+    if (editingRow) {
+      console.log({
+        id: editingRow.id,
+        profitPercent: profitPercent,
+      });
+      updateProfitPercent({
+        id: editingRow.id,
+        profitPercent: profitPercent,
+      });
+    }
+  };
 
   const columns: GridColDef[] = [
     {
@@ -101,6 +177,8 @@ function Products() {
       field: "jobWorkerPrice",
       headerName: "JobWorker Price",
       headerAlign: "center",
+      minWidth: 150,
+      flex: 1,
       renderCell: ({ value }) => (
         <Grid
           container
@@ -112,26 +190,30 @@ function Products() {
           {parseFloat(value).toFixed(2)}
         </Grid>
       ),
-      minWidth: 150,
-      flex: 1,
     },
     {
       field: "profitPercent",
       headerName: "Profit Percentage",
       headerAlign: "center",
-      renderCell: ({ value }) => (
+      renderCell: (params) => (
         <Grid
           container
           height="100%"
           direction="row"
           justifyContent="center"
           alignItems="center"
+          onClick={() => handleOpenModal(params.row)}
         >
-          {value + "%"}
+          {params.value + "%"}
         </Grid>
       ),
       minWidth: 150,
       flex: 1,
+      // renderCell: (params) => (
+      //   <Typography onClick={() => handleOpenModal(params.row)}>
+      //     {params.value}%
+      //   </Typography>
+      // ),
     },
     {
       field: "finalRate",
@@ -218,16 +300,55 @@ function Products() {
           </Button>
         </Box>
       </Box>
-      <Table {...pageInfo}>
-        {/* <Box
+      <Table {...pageInfo} />
+
+      {/* Modal for editing profit percent */}
+      <Modal open={open} onClose={handleCloseModal}>
+        <Box
           sx={{
-            paddingBottom: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "10px",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
           }}
-        ></Box> */}
-      </Table>
+        >
+          <Typography variant="h6" component="h2">
+            Edit Profit Percent
+          </Typography>
+          <Box mt={2}>
+            <TextField
+              label="Profit Percent"
+              type="number"
+              value={profitPercent}
+              onChange={handleProfitPercentChange}
+              fullWidth
+              variant="outlined"
+            />
+          </Box>
+          <Box mt={2}>
+            <TextField
+              label="Final Rate"
+              value={finalRate}
+              disabled
+              fullWidth
+              variant="outlined"
+            />
+          </Box>
+          <Box mt={4} display="flex" justifyContent="flex-end" gap={2}>
+            <Button onClick={handleCloseModal} variant="outlined">
+              Cancel
+            </Button>
+            <Button onClick={handleSave} variant="contained" color="primary">
+              Save
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 }

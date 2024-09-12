@@ -49,7 +49,7 @@ function Products() {
           message: updateResponse?.message,
         })
       );
-      // navigate("/products");
+
       handleCloseModal();
     }
     if (updateError) {
@@ -62,6 +62,7 @@ function Products() {
       console.log("error");
       handleCloseModal();
     }
+    navigate("/products");
   }, [updateResponse, (updateError as any)?.data]);
 
   const handleProfitPercentChange = (

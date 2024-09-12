@@ -1,6 +1,9 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useGetProductDetailsQuery } from "../../redux/api/productApi";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useDeleteProductMutation,
+  useGetProductDetailsQuery,
+} from "../../redux/api/productApi";
 import {
   Box,
   Typography,
@@ -13,9 +16,17 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import DefaultImage from "../../assets/defaultBox.png";
 import TableElement from "./TableElement";
+import { Delete, Edit } from "@mui/icons-material";
+import { openSnackbar } from "../../redux/slice/snackbarSlice";
+import { useAppDispatch } from "../../redux/hooks";
 
 function ProductDetails({
   quantity,
@@ -25,12 +36,52 @@ function ProductDetails({
   productId?: number;
 }) {
   const { id } = useParams();
+  const finalId = quantity ? productId?.toString() : id;
+
+  // Hooks should always be called in the same order
   const { data: product, isLoading } = useGetProductDetailsQuery({
-    id: quantity ? productId.toString() : id,
+    id: finalId,
   });
+  const [
+    deleteProduct,
+    { isLoading: isDeleting, error: deleteError, data: deleteResponse },
+  ] = useDeleteProductMutation();
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [open, setOpen] = useState(false);
+
   const productDet = product?.data;
   const primaryImage = productDet?.images?.filter((x) => x.isPrimary == "1")[0]
     ?.imagePath;
+
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleDelete = () => {
+    if (finalId) {
+      deleteProduct({ id: finalId });
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (deleteResponse) {
+      dispatch(
+        openSnackbar({ severity: "success", message: deleteResponse.message })
+      );
+      navigate("/products");
+    }
+    if (deleteError) {
+      dispatch(
+        openSnackbar({
+          severity: "error",
+          message: (deleteError as any)?.data?.message,
+        })
+      );
+    }
+  }, [deleteResponse, deleteError, dispatch, navigate]);
+
   if (isLoading) {
     return <Typography>Loading...</Typography>;
   }
@@ -80,7 +131,7 @@ function ProductDetails({
                 </Grid>
               ))}
         </Grid>
-        <Box mt={2}>
+        <Box my={2}>
           <Typography variant="h5" gutterBottom>
             Price Breakup
           </Typography>
@@ -149,6 +200,19 @@ function ProductDetails({
               </TableBody>
             </Table>
           </TableContainer>
+        </Box>
+        <Box display={"flex"} justifyContent={"space-between"}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              navigate(`/products/edit/${id}`);
+            }}
+          >
+            <Edit /> Edit Product
+          </Button>
+          <Button variant="contained" onClick={handleClickOpen}>
+            <Delete /> Delete Product
+          </Button>
         </Box>
       </Grid>
 
@@ -250,6 +314,32 @@ function ProductDetails({
           </TableContainer>
         </Box>
       </Grid>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this product?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This action cannot be undone. Please confirm if you want to delete
+            the product.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 }

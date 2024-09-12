@@ -186,7 +186,7 @@ function ProductDetails({
                   </TableCell>
                   <TableCell>
                     {(
-                      (productDet?.finalRate * productDet.profitPercent) /
+                      (productDet?.finalRate * productDet?.profitPercent) /
                       100
                     ).toFixed(2) || "0.00"}
                   </TableCell>
@@ -201,7 +201,7 @@ function ProductDetails({
             </Table>
           </TableContainer>
         </Box>
-        <Box display={"flex"} justifyContent={"space-between"}>
+        <Box display={"flex"} flexDirection={"column"} gap={1}>
           <Button
             variant="contained"
             onClick={() => {

@@ -1,11 +1,27 @@
 import React, { useEffect, useState } from "react";
 import {
+  useDeleteProductMutation,
   useGetProductsQuery,
   useUpdateProfitPercentMutation,
 } from "../../redux/api/productApi";
 import Table from "../../components/dynamicTable/DynamicTable";
-import { EditOutlined, InfoOutlined } from "@mui/icons-material";
-import { Box, Typography, Button, Grid, Modal, TextField } from "@mui/material";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  InfoOutlined,
+} from "@mui/icons-material";
+import {
+  Box,
+  Typography,
+  Button,
+  Grid,
+  Modal,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import { GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultImage from "../../assets/defaultBox.png";
@@ -265,12 +281,70 @@ function Products() {
             label="View"
             onClick={() => navigate(`details/${params.row.id}`)}
           />
+          <GridActionsCellItem
+            sx={{
+              border: "1px solid",
+              borderRadius: "5px",
+              borderColor: "secondary.main",
+            }}
+            color="error"
+            icon={<DeleteOutlined />}
+            label="Delete"
+            onClick={() => handleDelete(params.row.id)}
+          />
         </Box>
       ),
       minWidth: 150,
       flex: 1,
     },
   ];
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deleteProductId, setDeleteProductId] = useState<number | null>(null);
+
+  // Define mutation hook
+  const [deleteProduct, { error: deleteError, data: deleteResponse }] =
+    useDeleteProductMutation();
+
+  // Handle delete button click
+  const handleDelete = (id: number) => {
+    setDeleteProductId(id);
+    setOpenDeleteDialog(true);
+  };
+
+  // Confirm delete
+  const handleConfirmDelete = () => {
+    if (deleteProductId !== null) {
+      deleteProduct({ id: deleteProductId.toString() });
+    }
+    setOpenDeleteDialog(false);
+  };
+
+  // Cancel delete
+  const handleCancelDelete = () => {
+    setOpenDeleteDialog(false);
+  };
+
+  // Handle delete response
+  useEffect(() => {
+    if (deleteResponse) {
+      dispatch(
+        openSnackbar({
+          severity: "success",
+          message: deleteResponse?.message,
+        })
+      );
+      navigate("/products");
+    }
+    if (deleteError) {
+      dispatch(
+        openSnackbar({
+          severity: "error",
+          message: (deleteError as any)?.data?.message,
+        })
+      );
+    }
+  }, [deleteResponse, deleteError]);
 
   const pageInfo: DynamicTable.TableProps = {
     columns: columns,
@@ -350,6 +424,24 @@ function Products() {
           </Box>
         </Box>
       </Modal>
+
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this product?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

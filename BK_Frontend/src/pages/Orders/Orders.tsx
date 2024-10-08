@@ -1,33 +1,66 @@
-import { useGetOrdersQuery } from "../../redux/api/orderApi";
+import {
+  useDeleteOrderMutation,
+  useGetOrdersQuery,
+} from "../../redux/api/orderApi";
 import Table from "../../components/dynamicTable/DynamicTable";
-import { Add, EditOutlined, InfoOutlined } from "@mui/icons-material";
-import { Box, Typography, Button, Grid } from "@mui/material";
+import {
+  Add,
+  DeleteOutlined,
+  EditOutlined,
+  InfoOutlined,
+} from "@mui/icons-material";
+import {
+  Box,
+  Typography,
+  Button,
+  Grid,
+  DialogTitle,
+  DialogContent,
+  Dialog,
+  DialogActions,
+} from "@mui/material";
 import { GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultImage from "../../assets/defaultBox.png";
 import SearchField from "../../components/dynamicTable/SearchField";
 import dayjs from "dayjs";
 import DatePickerField from "../../components/dynamicTable/DatePickerField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WishlistModal from "../Wishlist/WishlistItemModal";
+import { openSnackbar } from "../../redux/slice/snackbarSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 function orders() {
+  const userRole = useAppSelector((state) => state.auth.userData?.role);
+
   const [searchParams] = useSearchParams();
   const { data: orders, isLoading } = useGetOrdersQuery({
     ...Object.fromEntries(searchParams.entries()),
   });
 
   const [isWishlistModalOpen, setWishlistModalOpen] = useState(false);
+  const [wishlistMode, setWishlistMode] = useState<"add" | "edit">("add");
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const handleOpenWishlistModal = () => {
+  const handleOpenWishlistModal = (mode: "add" | "edit", order = null) => {
+    console.log(order);
+    setWishlistMode(mode);
+    setSelectedOrder({
+      ...order,
+      clientId: order.clientId,
+      brandId: order.brandId.toString(),
+      productId: order.id.toString(),
+    });
     setWishlistModalOpen(true);
   };
 
   const handleCloseWishlistModal = () => {
     setWishlistModalOpen(false);
+    setSelectedOrder(null);
   };
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const columns: GridColDef[] = [
     {
@@ -208,18 +241,20 @@ function orders() {
       headerName: "Actions",
       renderCell: (params) => (
         <Box display="flex" gap={1}>
-          {/* <GridActionsCellItem
-            sx={{
-              border: "1px solid",
-              borderRadius: "5px",
-              borderColor: "secondary.main",
-            }}
-            color="primary"
-            icon={<Add />}
-            label="Add"
-            className="textPrimary"
-            //onClick={() => navigate(`edit/${params.row.id}`)}
-          /> */}
+          {userRole === "Admin" && (
+            <GridActionsCellItem
+              sx={{
+                border: "1px solid",
+                borderRadius: "5px",
+                borderColor: "secondary.main",
+              }}
+              color="primary"
+              icon={<EditOutlined />}
+              label="Edit"
+              className="textPrimary"
+              onClick={() => handleOpenWishlistModal("edit", params.row)}
+            />
+          )}
           <GridActionsCellItem
             sx={{
               border: "1px solid",
@@ -231,6 +266,19 @@ function orders() {
             label="View"
             onClick={() => navigate(`details/${params.row.id}`)}
           />
+          {userRole === "Admin" && (
+            <GridActionsCellItem
+              sx={{
+                border: "1px solid",
+                borderRadius: "5px",
+                borderColor: "secondary.main",
+              }}
+              color="error"
+              icon={<DeleteOutlined />}
+              label="Delete"
+              onClick={() => handleDelete(params.row.id)}
+            />
+          )}
         </Box>
       ),
       minWidth: 150,
@@ -238,6 +286,51 @@ function orders() {
     },
   ];
 
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deleteOrderId, setDeleteOrderId] = useState<number | null>(null);
+
+  const [deleteOrder, { error: deleteError, data: deleteResponse }] =
+    useDeleteOrderMutation();
+
+  // Handle delete button click
+  const handleDelete = (id: number) => {
+    setDeleteOrderId(id);
+    setOpenDeleteDialog(true);
+  };
+
+  // Confirm delete
+  const handleConfirmDelete = () => {
+    if (deleteOrderId !== null) {
+      deleteOrder({ id: deleteOrderId });
+    }
+    setOpenDeleteDialog(false);
+  };
+
+  // Cancel delete
+  const handleCancelDelete = () => {
+    setOpenDeleteDialog(false);
+  };
+
+  // Handle delete response
+  useEffect(() => {
+    if (deleteResponse) {
+      dispatch(
+        openSnackbar({
+          severity: "success",
+          message: deleteResponse?.message,
+        })
+      );
+      navigate("/products");
+    }
+    if (deleteError) {
+      dispatch(
+        openSnackbar({
+          severity: "error",
+          message: (deleteError as any)?.data?.message,
+        })
+      );
+    }
+  }, [deleteResponse, deleteError]);
   const pageInfo: DynamicTable.TableProps = {
     columns: columns,
     rows: orders?.data.data,
@@ -262,7 +355,10 @@ function orders() {
           />
         </Box>
         <Box>
-          <Button variant="contained" onClick={handleOpenWishlistModal}>
+          <Button
+            variant="contained"
+            onClick={() => handleOpenWishlistModal("add")}
+          >
             + Add order
           </Button>
         </Box>
@@ -281,8 +377,30 @@ function orders() {
       <WishlistModal
         open={isWishlistModalOpen}
         handleClose={handleCloseWishlistModal}
-        mode="add" // Pass the mode as "add"
+        mode={wishlistMode}
+        wishlistItem={selectedOrder}
       />
+
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this product?</Typography>
+          <Typography>
+            Please make sure the jobworker is informed about this change.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

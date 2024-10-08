@@ -27,9 +27,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultImage from "../../assets/defaultBox.png";
 import SearchField from "../../components/dynamicTable/SearchField";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 function Products() {
+  const userRole = useAppSelector((state) => state.auth.userData?.role);
   const [searchParams] = useSearchParams();
   const { data: products, isLoading } = useGetProductsQuery({
     ...Object.fromEntries(searchParams.entries()),
@@ -258,18 +259,20 @@ function Products() {
       headerName: "Actions",
       renderCell: (params) => (
         <Box display="flex" gap={1}>
-          <GridActionsCellItem
-            sx={{
-              border: "1px solid",
-              borderRadius: "5px",
-              borderColor: "secondary.main",
-            }}
-            color="primary"
-            icon={<EditOutlined />}
-            label="Edit"
-            className="textPrimary"
-            onClick={() => navigate(`edit/${params.row.id}`)}
-          />
+          {userRole === "Admin" && (
+            <GridActionsCellItem
+              sx={{
+                border: "1px solid",
+                borderRadius: "5px",
+                borderColor: "secondary.main",
+              }}
+              color="primary"
+              icon={<EditOutlined />}
+              label="Edit"
+              className="textPrimary"
+              onClick={() => navigate(`edit/${params.row.id}`)}
+            />
+          )}
           <GridActionsCellItem
             sx={{
               border: "1px solid",
@@ -281,17 +284,19 @@ function Products() {
             label="View"
             onClick={() => navigate(`details/${params.row.id}`)}
           />
-          <GridActionsCellItem
-            sx={{
-              border: "1px solid",
-              borderRadius: "5px",
-              borderColor: "secondary.main",
-            }}
-            color="error"
-            icon={<DeleteOutlined />}
-            label="Delete"
-            onClick={() => handleDelete(params.row.id)}
-          />
+          {userRole === "Admin" && (
+            <GridActionsCellItem
+              sx={{
+                border: "1px solid",
+                borderRadius: "5px",
+                borderColor: "secondary.main",
+              }}
+              color="error"
+              icon={<DeleteOutlined />}
+              label="Delete"
+              onClick={() => handleDelete(params.row.id)}
+            />
+          )}
         </Box>
       ),
       minWidth: 150,

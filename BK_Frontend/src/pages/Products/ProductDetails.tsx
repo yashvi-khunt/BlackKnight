@@ -26,7 +26,7 @@ import DefaultImage from "../../assets/defaultBox.png";
 import TableElement from "./TableElement";
 import { Delete, Edit } from "@mui/icons-material";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Loader from "../../components/Loader";
 
 function ProductDetails({
@@ -38,6 +38,7 @@ function ProductDetails({
 }) {
   const { id } = useParams();
   const finalId = quantity ? productId?.toString() : id;
+  const userRole = useAppSelector((state) => state.auth.userData?.role);
 
   // Hooks should always be called in the same order
   const { data: product, isLoading } = useGetProductDetailsQuery({
@@ -132,89 +133,94 @@ function ProductDetails({
                 </Grid>
               ))}
         </Grid>
-        <Box my={2}>
-          <Typography variant="h5" gutterBottom>
-            Price Breakup
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Component</TableCell>
-                  <TableCell>Price</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Top</TableCell>
-                  <TableCell>
-                    {productDet?.topPrice.toFixed(2) || "0.00"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Flute</TableCell>
-                  <TableCell>
-                    {productDet?.flutePrice.toFixed(2) || "0.00"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Back</TableCell>
-                  <TableCell>
-                    {productDet?.backPrice.toFixed(2) || "0.00"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Printing</TableCell>
-                  <TableCell>
-                    {productDet?.printRate.toFixed(2) || "0.00"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Lamination</TableCell>
-                  <TableCell>
-                    {productDet?.laminationPrice?.toFixed(2) || "0.00"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Jobworker Rates</TableCell>
-                  <TableCell>
-                    {productDet?.jobWorkerPrice.toFixed(2) || "0.00"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    Your Profit ({productDet?.profitPercent}%)
-                  </TableCell>
-                  <TableCell>
-                    {(
-                      (productDet?.finalRate * productDet?.profitPercent) /
-                      100
-                    ).toFixed(2) || "0.00"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Total Selling Price</TableCell>
-                  <TableCell>
-                    {productDet?.finalRate.toFixed(2) || "0.00"}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-        <Box display={"flex"} flexDirection={"column"} gap={1}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              navigate(`/products/edit/${id}`);
-            }}
-          >
-            <Edit /> Edit Product
-          </Button>
-          <Button variant="contained" onClick={handleClickOpen}>
-            <Delete /> Delete Product
-          </Button>
-        </Box>
+        {userRole === "Admin" && (
+          <Box my={2}>
+            <Typography variant="h5" gutterBottom>
+              Price Breakup
+            </Typography>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Component</TableCell>
+                    <TableCell>Price</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Top</TableCell>
+                    <TableCell>
+                      {productDet?.topPrice.toFixed(2) || "0.00"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Flute</TableCell>
+                    <TableCell>
+                      {productDet?.flutePrice.toFixed(2) || "0.00"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Back</TableCell>
+                    <TableCell>
+                      {productDet?.backPrice.toFixed(2) || "0.00"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Printing</TableCell>
+                    <TableCell>
+                      {productDet?.printRate.toFixed(2) || "0.00"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Lamination</TableCell>
+                    <TableCell>
+                      {productDet?.laminationPrice?.toFixed(2) || "0.00"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Jobworker Rates</TableCell>
+                    <TableCell>
+                      {productDet?.jobWorkerPrice.toFixed(2) || "0.00"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      Your Profit ({productDet?.profitPercent}%)
+                    </TableCell>
+                    <TableCell>
+                      {(
+                        (productDet?.finalRate * productDet?.profitPercent) /
+                        100
+                      ).toFixed(2) || "0.00"}
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell>Total Selling Price</TableCell>
+                    <TableCell>
+                      {productDet?.finalRate.toFixed(2) || "0.00"}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        )}
+        {userRole === "Admin" && (
+          <Box display={"flex"} flexDirection={"column"} gap={1}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                navigate(`/products/edit/${id}`);
+              }}
+            >
+              <Edit /> Edit Product
+            </Button>
+            <Button variant="contained" onClick={handleClickOpen}>
+              <Delete /> Delete Product
+            </Button>
+          </Box>
+        )}
       </Grid>
 
       {/* Second Vertical Section */}

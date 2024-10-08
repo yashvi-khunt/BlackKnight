@@ -3,6 +3,8 @@ namespace BK.DAL.ViewModels;
 public class VMGetAllOrder
 {
     public int Id { get; set; }
+    public string ClientId { get; set; }
+    public int BrandId { get; set; }
     public string ClientName { get; set; }
     public string JobWorkerName { get; set; }
     public string PrimaryImage { get; set; }

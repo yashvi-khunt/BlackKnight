@@ -9,6 +9,7 @@ public interface IOrderService
     Task<VMGetAll<VMGetAllOrder>> GetAllOrders(DateTime? fromDate , DateTime? toDate , string? search , string? field 
         , string? sor, int page , int pageSize );
     Task<VMOrderDetails> GetOrderById(int id);
-    Task<VMOrderDashboard> GetOrderDashboardData();
+    Task<VMOrderDashboard> GetOrderDashboardData(string userId);
     Task AddOrderWithWishlist(string userId);
+    Task<bool> DeleteOrder(int id);
 }

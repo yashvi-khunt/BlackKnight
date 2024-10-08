@@ -28,6 +28,13 @@ const clientApi = indexApi.injectEndpoints({
       }),
       invalidatesTags: ["Order", "Wishlist"],
     }),
+    deleteOrder: builder.mutation<Global.apiResponse<object>, { id: number }>({
+      query: ({ id }) => ({
+        method: "DELETE",
+        url: `Order/${id}`,
+      }),
+      invalidatesTags: ["Order"],
+    }),
   }),
 });
 
@@ -36,4 +43,5 @@ export const {
   useGetOrderDashboardQuery,
   useGetOrderByIdQuery,
   useAddOrderMutation,
+  useDeleteOrderMutation,
 } = clientApi;

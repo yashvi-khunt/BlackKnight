@@ -60,6 +60,7 @@ public class MappingProfile : Profile
 
         CreateMap<Order, VMGetAllOrder>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest=>dest.BrandId,opt=>opt.MapFrom(src => src.Product.Brand.Id))
             .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Product.Brand.Client.CompanyName))
             .ForMember(dest => dest.PrimaryImage,
                 opt => opt.MapFrom(src => src.Product.Images.FirstOrDefault(i => i.IsPrimary).ImagePath))

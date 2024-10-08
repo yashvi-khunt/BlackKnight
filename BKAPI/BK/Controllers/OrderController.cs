@@ -59,14 +59,15 @@ public class OrderController:ControllerBase
     {
         try
         {
-            var result = await _orderService.GetOrderDashboardData();
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _orderService.GetOrderDashboardData(user.Id);
 
             if (result == null)
             {
                 return NotFound(new { message = "No orders found" });
             }
 
-            return Ok(new Response<object>(result,true,"Data loaded successfully"));
+            return Ok(new Response<object>(result, true, "Data loaded successfully"));
         }
         catch (Exception ex)
         {
@@ -91,4 +92,28 @@ public class OrderController:ControllerBase
             return StatusCode(500, new Response("Internal server error."));
         }
     }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteOrder(int id)
+    {
+        try
+        {
+            var order = await _orderService.GetOrderById(id);
+
+            if (order == null)
+            {
+                return NotFound(new Response("Order not found.", false));
+            }
+
+            await _orderService.DeleteOrder(id);
+
+            return NoContent(); // 204 No Content, as the order was successfully deleted.
+        }
+        catch (Exception ex)
+        {
+            //_logger.LogError(ex, "An error occurred while deleting the order.");
+            return StatusCode(500, new Response("Internal server error.", false));
+        }
+    }
+
 }

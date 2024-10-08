@@ -40,36 +40,7 @@ public class OrderService : IOrderService
     {
         throw new NotImplementedException();
     }
-
-    // public async Task AddOrder(VMAddOrder addOrderModel)
-    //     {
-    //         var order = _mapper.Map<Order>(addOrderModel);
-    //         order.OrderDate = DateTime.Now;
-    //         order.IsCompleted = false; // Default value for new orders
-    //
-    //         _context.Orders.Add(order);
-    //         await _context.SaveChangesAsync();
-    //
-    //         // Additional logic, if any, goes here
-    //     }
-
-    // public async Task UpdateOrder(int id, VMUpdateOrder updateOrderModel)
-    // {
-    //     var order = await _context.Orders
-    //         .Include(o => o.Product)
-    //         .Include(o => o.Client)
-    //         .FirstOrDefaultAsync(o => o.Id == id);
-    //
-    //     if (order == null)
-    //     {
-    //         throw new Exception("Order not found");
-    //     }
-    //
-    //     _mapper.Map(updateOrderModel, order);
-    //
-    //     // Save changes to the database
-    //     await _context.SaveChangesAsync();
-    // }
+    
 
     public async Task<VMGetAll<VMGetAllOrder>> GetAllOrders(DateTime? fromDate = null, DateTime? toDate = null,
         string? search = null, string? field = "clientName", string? sort = "asc", int page = 1, int pageSize = 10)
@@ -156,9 +127,13 @@ public class OrderService : IOrderService
         return orderDetails;
     }
 
-    public async Task<VMOrderDashboard> GetOrderDashboardData()
+    public async Task<VMOrderDashboard> GetOrderDashboardData(string userId)
     {
-        // Fetch all orders from the database
+        // Fetch the user and their role
+        var user = await _userManager.FindByIdAsync(userId);
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        // Fetch orders, products, and clients data
         var orders = await _context.Orders
             .Include(o => o.Product)
             .ThenInclude(p => p.Brand)
@@ -169,10 +144,19 @@ public class OrderService : IOrderService
             .ThenInclude(p => p.JobWorker)
             .ThenInclude(j => j.User)
             .ToListAsync();
-
-        // Fetch products and clients data
         var products = await _context.Products.ToListAsync();
-        var clients = await _userManager.GetUsersInRoleAsync("Client");
+
+        // Filter orders based on the user role
+        if (userRoles.Contains("Client"))
+        {
+            // Filter orders for the specific client
+            orders = orders.Where(o => o.Product.Brand.ClientId == userId).ToList();
+        }
+        else if (userRoles.Contains("JobWorker"))
+        {
+            // Filter orders for the specific job worker
+            orders = orders.Where(o => o.Product.JobWorker.UserId == userId).ToList();
+        }
 
         // Map the orders to ViewModel
         var orderViewModels = _mapper.Map<List<VMGetAllOrder>>(orders);
@@ -181,16 +165,45 @@ public class OrderService : IOrderService
         var pendingOrders = orderViewModels.Where(o => !o.IsCompleted).ToList();
         var completedOrders = orderViewModels.Where(o => o.IsCompleted).ToList();
 
-        // Calculate flash card data
-        var flashCards = new List<VMFlashCard>
-        {
-            new VMFlashCard { Title = "Pending Orders", Count = pendingOrders.Count },
-            new VMFlashCard { Title = "Completed Orders", Count = completedOrders.Count },
-            new VMFlashCard { Title = "Total Products", Count = products.Count },
-            new VMFlashCard { Title = "Total Clients", Count = clients.Count }
-        };
+        // Flash card data
+        var flashCards = new List<VMFlashCard>();
 
-        // Construct the response
+        if (userRoles.Contains("Admin"))
+        {
+            // For Admin: pending orders, completed orders, total orders, total products, total clients
+            var clients = await _userManager.GetUsersInRoleAsync("Client");
+            flashCards = new List<VMFlashCard>
+            {
+                new VMFlashCard { Title = "Pending Orders", Count = pendingOrders.Count },
+                new VMFlashCard { Title = "Completed Orders", Count = completedOrders.Count },
+                new VMFlashCard { Title = "Total Orders", Count = orders.Count },
+                new VMFlashCard { Title = "Total Products", Count = products.Count },
+                new VMFlashCard { Title = "Total Clients", Count = clients.Count }
+            };
+        }
+        else if (userRoles.Contains("Client"))
+        {
+            // For Clients: pending orders, completed orders, total orders, total products
+            flashCards = new List<VMFlashCard>
+            {
+                new VMFlashCard { Title = "Pending Orders", Count = pendingOrders.Count },
+                new VMFlashCard { Title = "Completed Orders", Count = completedOrders.Count },
+                new VMFlashCard { Title = "Total Orders", Count = orders.Count },
+                new VMFlashCard { Title = "Total Products", Count = products.Count }
+            };
+        }
+        else if (userRoles.Contains("JobWorker"))
+        {
+            // For Job Workers: pending orders, completed orders, total orders
+            flashCards = new List<VMFlashCard>
+            {
+                new VMFlashCard { Title = "Pending Orders", Count = pendingOrders.Count },
+                new VMFlashCard { Title = "Completed Orders", Count = completedOrders.Count },
+                new VMFlashCard { Title = "Total Orders", Count = orders.Count }
+            };
+        }
+
+        // Construct the dashboard data response
         var dashboardData = new VMOrderDashboard
         {
             FlashCards = flashCards,
@@ -203,6 +216,7 @@ public class OrderService : IOrderService
 
         return dashboardData;
     }
+
 
 
     public async Task AddOrderWithWishlist(string userId)
@@ -228,7 +242,7 @@ public class OrderService : IOrderService
             var product = _mapper.Map<VMProductDetails>(vmProduct);
 
             var newOrder = _mapper.Map<Order>(product);
-            newOrder.OrderDate = DateTime.UtcNow ;
+            newOrder.OrderDate = DateTime.UtcNow;
             newOrder.IsCompleted = false;
             newOrder.Quantity = order.Quantity;
             newOrder.ClientId = vmProduct.Brand.ClientId;
@@ -244,5 +258,21 @@ public class OrderService : IOrderService
         // Save changes to the database
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<bool> DeleteOrder(int id)
+    {
+        var order = await _context.Orders.FindAsync(id);
+    
+        if (order == null)
+        {
+            return false; // Order not found
+        }
+
+        _context.Orders.Remove(order);
+        await _context.SaveChangesAsync();
+
+        return true; // Order successfully deleted
+    }
+
 
 }

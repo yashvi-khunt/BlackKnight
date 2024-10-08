@@ -10,4 +10,5 @@ public interface IOrderService
         , string? sor, int page , int pageSize );
     Task<VMOrderDetails> GetOrderById(int id);
     Task<VMOrderDashboard> GetOrderDashboardData();
+    Task AddOrderWithWishlist(string userId);
 }

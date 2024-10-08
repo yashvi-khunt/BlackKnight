@@ -13,4 +13,6 @@ public interface IProductService
     Task<List<VMOptions>> GetPrintOptions();
     Task DeleteProduct(int id);
     Task UpdateProfitPercent(int id, double profitPercent);
+
+    Task<List<VMOptions>> GetProductOptionsByBrandId(int brandId);
 }

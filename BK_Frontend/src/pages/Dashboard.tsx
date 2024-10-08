@@ -1,27 +1,16 @@
-import React from "react";
 import { useGetOrderDashboardQuery } from "../redux/api/orderApi";
 import FlashCard from "./FlashCard";
-import { CircularProgress, Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import Table from "../components/dynamicTable/DynamicTable";
 import DefaultImage from "../assets/defaultBox.png";
-import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
+import Loader from "../components/Loader";
 
 const Dashboard = () => {
   const { data, error, isLoading } = useGetOrderDashboardQuery({});
 
   if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <Loader />;
   }
 
   if (error) {

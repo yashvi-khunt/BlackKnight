@@ -27,6 +27,7 @@ import TableElement from "./TableElement";
 import { Delete, Edit } from "@mui/icons-material";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
 import { useAppDispatch } from "../../redux/hooks";
+import Loader from "../../components/Loader";
 
 function ProductDetails({
   quantity,
@@ -83,7 +84,7 @@ function ProductDetails({
   }, [deleteResponse, deleteError, dispatch, navigate]);
 
   if (isLoading) {
-    return <Typography>Loading...</Typography>;
+    return <Loader />;
   }
 
   return (

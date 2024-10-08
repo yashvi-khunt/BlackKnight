@@ -6,6 +6,9 @@ import dayjs, { Dayjs } from "dayjs";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 import { openSnackbar } from "../../redux/slice/snackbarSlice";
+import { siLK } from "@mui/material/locale";
+import { InputAdornment } from "@mui/material";
+import { CalendarIcon } from "@mui/x-date-pickers";
 
 declare namespace DatePickerFields {
   type DatePickerFieldProps = {
@@ -68,7 +71,20 @@ const DatePickerField = ({
         format="DD/MM/YYYY"
         onChange={handleChange}
         value={defaultValue}
-        slotProps={{ field: { clearable: true } }}
+        slotProps={{
+          field: { clearable: true },
+          textField: {
+            size: "small", // Ensures text field is small
+            InputProps: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <CalendarIcon sx={{ fontSize: 15 }} />{" "}
+                  {/* Adjust icon size */}
+                </InputAdornment>
+              ),
+            },
+          },
+        }}
       />
     </LocalizationProvider>
   );

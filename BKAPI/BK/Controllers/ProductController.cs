@@ -167,5 +167,20 @@ public class ProductController : ControllerBase
             return StatusCode(500, new Response("An error occurred while updating the profit percent.", false));
         }
     }
+    
+    [HttpGet("Options/{brandId}")]
+    public async Task<ActionResult<List<VMOptions>>> GetProductOptions(int brandId)
+    {
+        try
+        {
+            var productOptions = await _productService.GetProductOptionsByBrandId(brandId);
+            return Ok(new Response<List<VMOptions>>(productOptions, true, "Products retrieved successfully"));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "An error occurred while retrieving the product options for brand ID {BrandId}.", brandId);
+            return StatusCode(500, new Response($"Internal server error: {ex.Message}", false));
+        }
+    }
 
 }

@@ -1,7 +1,6 @@
 namespace BK.DAL.ViewModels.Wishlist;
 
-public class VMWishlistItem
+public class VMUpdateWishlistItem
 {
-    public int ProductId { get; set; }
     public int Quantity { get; set; }
 }

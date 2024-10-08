@@ -8,12 +8,24 @@ import DefaultImage from "../../assets/defaultBox.png";
 import SearchField from "../../components/dynamicTable/SearchField";
 import dayjs from "dayjs";
 import DatePickerField from "../../components/dynamicTable/DatePickerField";
+import { useState } from "react";
+import WishlistModal from "../Wishlist/WishlistItemModal";
 
 function orders() {
   const [searchParams] = useSearchParams();
   const { data: orders, isLoading } = useGetOrdersQuery({
     ...Object.fromEntries(searchParams.entries()),
   });
+
+  const [isWishlistModalOpen, setWishlistModalOpen] = useState(false);
+
+  const handleOpenWishlistModal = () => {
+    setWishlistModalOpen(true);
+  };
+
+  const handleCloseWishlistModal = () => {
+    setWishlistModalOpen(false);
+  };
 
   const navigate = useNavigate();
 
@@ -250,7 +262,7 @@ function orders() {
           />
         </Box>
         <Box>
-          <Button variant="contained" onClick={() => {}}>
+          <Button variant="contained" onClick={handleOpenWishlistModal}>
             + Add order
           </Button>
         </Box>
@@ -265,6 +277,12 @@ function orders() {
           </Grid>
         </Grid>
       </Table>
+      {/* Add the WishlistModal here */}
+      <WishlistModal
+        open={isWishlistModalOpen}
+        handleClose={handleCloseWishlistModal}
+        mode="add" // Pass the mode as "add"
+      />
     </>
   );
 }

@@ -13,7 +13,7 @@ import {
   HomeOutlined,
   ManageAccountsOutlined,
   PermContactCalendarOutlined,
-  ShoppingCartOutlined,
+  ReceiptLongOutlined,
   WidgetsOutlined,
 } from "@mui/icons-material";
 
@@ -30,7 +30,7 @@ export const adminRoutes: Global.RouteConfig = [
     path: "/orders",
     element: null,
     roles: ["Admin", "JobWorker", "Client"],
-    iconClass: <ShoppingCartOutlined fontSize="small" />,
+    iconClass: <WidgetsOutlined fontSize="small" />,
     children: [
       {
         path: "",
@@ -49,7 +49,7 @@ export const adminRoutes: Global.RouteConfig = [
     path: "/products",
     element: null,
     roles: ["Admin", "JobWorker", "Client"],
-    iconClass: <WidgetsOutlined fontSize="small" />,
+    iconClass: <ReceiptLongOutlined fontSize="small" />,
     children: [
       {
         path: "",

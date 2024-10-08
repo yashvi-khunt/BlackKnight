@@ -22,14 +22,16 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Avatar, Button, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Person } from "@mui/icons-material";
+import { Person, ShoppingCartOutlined } from "@mui/icons-material";
 import { logout } from "../../redux/slice/authSlice";
 import AdminModal from "../../pages/AdminModal";
 import ClientModal from "../../pages/Clients/ClientModal";
 import { useGetProfileQuery } from "../../redux/api/indexApi";
 import JobWorkerModal from "../../pages/JobWorkers/JobWorkerModel";
+import ShoppingCart from "../../pages/Wishlist/ShoppingCart";
 
 const drawerWidth = 240;
+const appBarHeight = 64; // Assuming the AppBar height is 64px
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -103,6 +105,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [openCart, setOpenCart] = useState(false); // Shopping cart state
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -208,32 +211,32 @@ export default function MiniDrawer() {
                 <Person />
               </Avatar>
             </IconButton>
-
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <div key={setting.name}>
-                  <MenuItem onClick={setting.function}>
-                    <Typography textAlign="center">{setting.name}</Typography>
-                  </MenuItem>
-                </div>
-              ))}
-            </Menu>
           </Box>
+          <Menu
+            sx={{ mt: "45px" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            {settings.map((setting) => (
+              <div key={setting.name}>
+                <MenuItem onClick={setting.function}>
+                  <Typography textAlign="center">{setting.name}</Typography>
+                </MenuItem>
+              </div>
+            ))}
+          </Menu>
+          {/* </Box> */}
         </Toolbar>
         <Divider />
       </AppBar>
@@ -249,52 +252,23 @@ export default function MiniDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List sx={{ pt: 2 }}>
-          {adminRoutes
-            .filter((x) => x.roles.includes(userRole as Global.Role))
-            .map((route) => (
-              <ListItem
-                key={route.path}
-                disablePadding
-                sx={{ display: "block" }}
-              >
-                {open ? (
-                  <ListItemButton
-                    onClick={() => navigate(route.path)}
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: "center",
-                      px: 2.5,
-                      m: 1,
-                      borderRadius: "10px",
-                      backgroundColor: currentPath.includes(route.path)
-                        ? "secondary.light"
-                        : "inherit",
-                      boxShadow: currentPath.includes(route.path) ? 3 : 0,
-                      ":hover": {
-                        backgroundColor: "secondary.light",
-                      },
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 2 : "auto",
-                        justifyContent: "center",
-                        color: "black",
-                      }}
-                    >
-                      {route.iconClass}
-                    </ListItemIcon>
-
-                    <ListItemText
-                      primary={route.name}
-                      primaryTypographyProps={{ fontWeight: 600 }}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                ) : (
-                  <Tooltip title={route.name} placement="right" arrow>
+        <Box
+          display={"flex"}
+          flexDirection="column"
+          justifyContent={"space-between"}
+          height="100%"
+          sx={{ py: 2 }}
+        >
+          <List>
+            {adminRoutes
+              .filter((x) => x.roles.includes(userRole as Global.Role))
+              .map((route) => (
+                <ListItem
+                  key={route.path}
+                  disablePadding
+                  sx={{ display: "block" }}
+                >
+                  {open ? (
                     <ListItemButton
                       onClick={() => navigate(route.path)}
                       sx={{
@@ -329,11 +303,122 @@ export default function MiniDrawer() {
                         sx={{ opacity: open ? 1 : 0 }}
                       />
                     </ListItemButton>
-                  </Tooltip>
-                )}
-              </ListItem>
-            ))}
-        </List>
+                  ) : (
+                    <Tooltip title={route.name} placement="right" arrow>
+                      <ListItemButton
+                        onClick={() => navigate(route.path)}
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: "center",
+                          px: 2.5,
+                          m: 1,
+                          borderRadius: "10px",
+                          backgroundColor: currentPath.includes(route.path)
+                            ? "secondary.light"
+                            : "inherit",
+                          boxShadow: currentPath.includes(route.path) ? 3 : 0,
+                          ":hover": {
+                            backgroundColor: "secondary.light",
+                          },
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: open ? 2 : "auto",
+                            justifyContent: "center",
+                            color: "black",
+                          }}
+                        >
+                          {route.iconClass}
+                        </ListItemIcon>
+
+                        <ListItemText
+                          primary={route.name}
+                          primaryTypographyProps={{ fontWeight: 600 }}
+                          sx={{ opacity: open ? 1 : 0 }}
+                        />
+                      </ListItemButton>
+                    </Tooltip>
+                  )}
+                </ListItem>
+              ))}
+          </List>
+          {/* <IconButton onClick={() => setOpenCart(true)}>
+            <ShoppingCartOutlined />
+          </IconButton> */}
+          <ListItem disablePadding sx={{ display: "block" }}>
+            {open ? (
+              <ListItemButton
+                onClick={() => setOpenCart(true)}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: "center",
+                  px: 2.5,
+                  m: 1,
+                  borderRadius: "10px",
+                  backgroundColor: "inherit",
+                  boxShadow: 0,
+                  ":hover": {
+                    backgroundColor: "secondary.light",
+                  },
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 2 : "auto",
+                    justifyContent: "center",
+                    color: "black",
+                  }}
+                >
+                  <ShoppingCartOutlined fontSize="small" />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary="Your Cart"
+                  primaryTypographyProps={{ fontWeight: 600 }}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            ) : (
+              <Tooltip title="Cart" placement="right" arrow>
+                <ListItemButton
+                  onClick={() => setOpenCart(true)}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: "center",
+                    px: 2.5,
+                    m: 1,
+                    borderRadius: "10px",
+                    backgroundColor: "inherit",
+                    boxShadow: 0,
+                    ":hover": {
+                      backgroundColor: "secondary.light",
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 2 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <ShoppingCartOutlined fontSize="small" />
+                  </ListItemIcon>
+
+                  <ListItemText
+                    primary={"Your Cart"}
+                    primaryTypographyProps={{ fontWeight: 600 }}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </Tooltip>
+            )}
+          </ListItem>
+        </Box>
       </Drawer>
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
@@ -345,6 +430,18 @@ export default function MiniDrawer() {
         adminData={data && data}
         mode="edit"
       />
+
+      {openCart && (
+        <ShoppingCart
+          open={openCart}
+          onClose={() => setOpenCart(false)}
+          // sx={{
+          //   position: "fixed",
+
+          //   top: appBarHeight, // Set top position to below the AppBar
+          // }}
+        />
+      )}
 
       {/* Add Client Modal */}
       <ClientModal

@@ -66,6 +66,8 @@ namespace BKAPI
             builder.Services.AddTransient<IProductService, ProductService>();
             builder.Services.AddScoped<IBrandService, BrandService>();
             builder.Services.AddTransient<IPaperTypeService, PaperTypeService>();
+            builder.Services.AddTransient<IWishlistService,WishlistService>();
+            
 
             //Identity
             builder.Services.AddDbContext<ApplicationDbContext>(

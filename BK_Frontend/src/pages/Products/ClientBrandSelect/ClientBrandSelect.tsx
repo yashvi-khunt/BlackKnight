@@ -47,6 +47,7 @@ const ClientBrandSelect = ({
 
   useEffect(() => {
     if (isEdit && productData?.brandId) {
+      console.log(productData);
       const brand = brands?.data.find(
         (brand) => brand.value == productData.brandId
       );

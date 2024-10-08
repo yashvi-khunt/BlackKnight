@@ -1,8 +1,7 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../../redux/api/orderApi";
 import ProductDetails from "../Products/ProductDetails";
-import { Typography } from "@mui/material";
+import Loader from "../../components/Loader";
 
 function OrderDetails() {
   const { id } = useParams();
@@ -10,7 +9,7 @@ function OrderDetails() {
   const { data, isLoading } = useGetOrderByIdQuery({ id: parseInt(id) });
   const order = data?.data;
   if (isLoading) {
-    return <Typography>Loading...</Typography>;
+    return <Loader />;
   }
   console.log(id, order);
   return (

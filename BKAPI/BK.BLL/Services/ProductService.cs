@@ -95,7 +95,7 @@ public class ProductService : IProductService
         {
             // Find and remove images that are no longer present
             var imagesToRemove = product.Images
-                .Where(existingImage => updateProduct.Images.All(updatedImage => updatedImage.ImagePath != existingImage.ImagePath))
+                .Where(existingImage => updateProduct.Images.All(updatedImage => updatedImage.ImagePath == existingImage.ImagePath))
                 .ToList();
 
             _context.Images.RemoveRange(imagesToRemove);
@@ -103,7 +103,7 @@ public class ProductService : IProductService
             // Add or update images
             foreach (var vmImage in updateProduct.Images)
             {
-                var existingImage = product.Images.FirstOrDefault(img => img.ImagePath == vmImage.ImagePath);
+                var existingImage = product.Images.FirstOrDefault(img => img.ImagePath != vmImage.ImagePath);
                 if (existingImage != null)
                 {
                     // Update existing image
@@ -218,6 +218,22 @@ public class ProductService : IProductService
      
         return productDetails;
     }
+    
+    public async Task<List<VMOptions>> GetProductOptionsByBrandId(int brandId)
+    {
+        var products = await _context.Products
+            .Where(p => p.BrandId == brandId)
+            .ToListAsync();
+
+        var productOptions = products.Select(p => new VMOptions
+        {
+            Value = p.Id.ToString(),
+            Label = p.BoxName // You can choose another property as the label if needed
+        }).ToList();
+
+        return productOptions;
+    }
+
 
     public async Task<List<VMOptions>> GetPrintOptions()
     {

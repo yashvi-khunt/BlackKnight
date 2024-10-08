@@ -330,12 +330,14 @@ declare namespace wishListTypes {
     id: number;
     productId: number;
     clientId: string;
+    wishlisterId: string;
     quantity: number;
     dateAdded: string;
     image: string;
     boxName: string;
     clientName: string;
     brandName: string;
+    wishlisterName: string;
     jobWorkerRate: number;
     finalRate: number;
   };

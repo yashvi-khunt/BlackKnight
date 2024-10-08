@@ -21,6 +21,13 @@ const clientApi = indexApi.injectEndpoints({
         providesTags: ["Order"],
       }),
     }),
+    addOrder: builder.mutation<Global.apiResponse<object>, null>({
+      query: () => ({
+        method: "POST",
+        url: `Order`,
+      }),
+      invalidatesTags: ["Order", "Wishlist"],
+    }),
   }),
 });
 
@@ -28,4 +35,5 @@ export const {
   useGetOrdersQuery,
   useGetOrderDashboardQuery,
   useGetOrderByIdQuery,
+  useAddOrderMutation,
 } = clientApi;

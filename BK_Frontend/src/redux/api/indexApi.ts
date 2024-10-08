@@ -23,6 +23,7 @@ export const indexApi = createApi({
     "Paper",
     "Brand",
     "Print",
+    "Wishlist",
   ],
   endpoints: (builder) => ({
     getProfile: builder.query<object, null>({

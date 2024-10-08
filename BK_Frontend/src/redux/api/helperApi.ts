@@ -37,6 +37,13 @@ const otherApis = indexApi.injectEndpoints({
       }),
       providesTags: ["JobWorker"],
     }),
+    getProductOptions: builder.query<Global.dropDownOptions, { id: string }>({
+      query: (id) => ({
+        method: "GET",
+        url: `Product/Options/${id}`,
+      }),
+      providesTags: ["Product"],
+    }),
   }),
 });
 
@@ -46,4 +53,5 @@ export const {
   useGetClientOptionsQuery,
   useGetJobWorkerOptionsQuery,
   useGetPrintTypesQuery,
+  useGetProductOptionsQuery,
 } = otherApis;

@@ -117,6 +117,7 @@ public class MappingProfile : Profile
 
 
         CreateMap<VMProductDetails, Order>()
+            .ForMember(dest=>dest.Id,opt=> opt.Ignore())
             .ForMember(dest => dest.ProductId,
                 opt => opt.MapFrom(src => src.Id)) // Assuming Id in VMProductDetails maps to ProductId in Order
             .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.BrandName))

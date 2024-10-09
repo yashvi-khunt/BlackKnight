@@ -47,9 +47,9 @@ function orders() {
     setWishlistMode(mode);
     setSelectedOrder({
       ...order,
-      clientId: order.clientId,
-      brandId: order.brandId.toString(),
-      productId: order.id.toString(),
+      clientId: order?.clientId,
+      brandId: order?.brandId.toString(),
+      productId: order?.id.toString(),
     });
     setWishlistModalOpen(true);
   };

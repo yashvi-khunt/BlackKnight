@@ -43,14 +43,15 @@ function orders() {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const handleOpenWishlistModal = (mode: "add" | "edit", order = null) => {
-    console.log(order);
-    setWishlistMode(mode);
-    setSelectedOrder({
-      ...order,
-      clientId: order?.clientId,
-      brandId: order?.brandId.toString(),
-      productId: order?.id.toString(),
-    });
+    if (mode == "edit") {
+      setWishlistMode(mode);
+      setSelectedOrder({
+        ...order,
+        clientId: order?.clientId,
+        brandId: order?.brandId.toString(),
+        productId: order?.id.toString(),
+      });
+    }
     setWishlistModalOpen(true);
   };
 

@@ -1,10 +1,11 @@
-import { Controller } from "react-hook-form";
-import { Autocomplete, Grid, TextField, Box } from "@mui/material";
+import { Grid, Autocomplete, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
+import { Controller } from "react-hook-form";
 import {
   useGetBrandsQuery,
   useGetProductOptionsQuery,
 } from "../../redux/api/helperApi";
+import { useAppSelector } from "../../redux/hooks";
 
 const ClientBrandDD = ({
   control,
@@ -14,6 +15,8 @@ const ClientBrandDD = ({
   isEdit,
   productData,
 }) => {
+  const userRole = useAppSelector((state) => state.auth?.userData?.role);
+  const userId = useAppSelector((state) => state.auth?.userData?.id);
   const [selectedClient, setSelectedClient] = useState(
     productData?.clientId || null
   );
@@ -26,9 +29,13 @@ const ClientBrandDD = ({
     productData?.productId || null
   );
 
-  const { data: brands, refetch } = useGetBrandsQuery(selectedClient, {
-    skip: !selectedClient,
-  });
+  // Conditionally use userId or selectedClient for fetching brands
+  const { data: brands, refetch: refetchBrands } = useGetBrandsQuery(
+    userRole === "Admin" ? selectedClient : userId, // Fetch based on role
+    {
+      skip: userRole === "Admin" && !selectedClient, // Only skip if admin and no client is selected
+    }
+  );
 
   const { data: products } = useGetProductOptionsQuery(selectedBrand, {
     skip: !selectedBrand,
@@ -39,14 +46,6 @@ const ClientBrandDD = ({
       setProductOptions(products?.data);
     }
   }, [products]);
-  //   useEffect(() => {
-  //     if (sClient || (isEdit && productData?.clientId)) {
-  //       const client = clients.find(
-  //         (client) => client.value === (sClient || productData.clientId)
-  //       );
-  //       setSelectedClient(client ? client.value : "");
-  //     }
-  //   }, [sClient, isEdit, productData, clients]);
 
   useEffect(() => {
     if (brands) {
@@ -59,55 +58,50 @@ const ClientBrandDD = ({
     setValue("productId", newValue ? newValue.value : "");
   };
 
-  //   useEffect(() => {
-  //     if (isEdit && productData?.brandId) {
-  //       const brand = brands?.data.find(
-  //         (brand) => brand.value == productData.brandId
-  //       );
-  //       setSelectedBrand(brand ? brand : "");
-  //     }
-  //   }, [isEdit, productData, brands]);
-
   const handleClientChange = (_, newValue) => {
     setSelectedClient(newValue ? newValue.value : "");
     setValue("clientId", newValue ? newValue.value : "");
-    refetch();
+    refetchBrands(); // Refetch brands when client changes
   };
 
   const handleBrandChange = (_, newValue) => {
     setSelectedBrand(newValue ? newValue.value : "");
     setValue("brandId", newValue ? newValue.value : "");
-    refetch();
   };
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Controller
-          name="clientId"
-          control={control}
-          render={({ field }) => (
-            <Autocomplete
-              disabled={isEdit}
-              {...field}
-              options={clients}
-              value={clients.find((x) => x.value === selectedClient) || ""}
-              getOptionLabel={(option) => option.label || ""}
-              onChange={handleClientChange}
-              renderInput={(params) => (
-                <TextField {...params} label="Client" variant="outlined" />
-              )}
-            />
-          )}
-        />
-      </Grid>
+      {/* Conditionally render the client dropdown if the user is an admin */}
+      {userRole === "Admin" && (
+        <Grid item xs={12}>
+          <Controller
+            name="clientId"
+            control={control}
+            render={({ field }) => (
+              <Autocomplete
+                disabled={isEdit}
+                {...field}
+                options={clients}
+                value={clients.find((x) => x.value === selectedClient) || ""}
+                getOptionLabel={(option) => option.label || ""}
+                onChange={handleClientChange}
+                renderInput={(params) => (
+                  <TextField {...params} label="Client" variant="outlined" />
+                )}
+              />
+            )}
+          />
+        </Grid>
+      )}
+
+      {/* The brand dropdown is always shown, but disabled for admin until a client is selected */}
       <Grid item xs={12}>
         <Controller
           name="brandId"
           control={control}
           render={({ field }) => (
             <Autocomplete
-              disabled={isEdit}
+              disabled={isEdit || (userRole === "admin" && !selectedClient)} // Disable if admin and no client
               {...field}
               options={brandOptions}
               value={brandOptions.find((x) => x.value === selectedBrand) || ""}
@@ -120,6 +114,7 @@ const ClientBrandDD = ({
           )}
         />
       </Grid>
+
       <Grid item xs={12}>
         <Controller
           name="productId"

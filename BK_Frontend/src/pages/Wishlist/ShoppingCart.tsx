@@ -207,7 +207,7 @@ export default function ShoppingCart({ open, onClose }: ShoppingCartProps) {
                     </Box>
                     <Typography variant="body2" color="text.secondary">
                       {`${
-                        userRole === "Admin" ? product.clientName + " - " : null
+                        userRole === "Admin" ? product.clientName + " - " : ""
                       }${product.brandName} `}
                     </Typography>
 

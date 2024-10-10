@@ -35,10 +35,10 @@ namespace BK.API.Controllers
 
             if (wishlist == null)
             {
-                return NotFound(new Response<List<VMGetCartItem>>(null, false, "Wishlist not found."));
+                return NotFound(new Response<List<VMGetCartItem>>(null, false, "Cart not found."));
             }
 
-            return Ok(new Response<List<VMGetCartItem>>(wishlist, true, "Wishlist loaded successfully."));
+            return Ok(new Response<List<VMGetCartItem>>(wishlist, true, "Cart loaded successfully."));
         }
 
 
@@ -54,7 +54,7 @@ namespace BK.API.Controllers
             }
 
             await _wishlistService.AddMultipleToWishlistAsync(user.Id, wishlistItems);
-            return Ok(new Response( "Items successfully added to wishlist",true));
+            return Ok(new Response("Items successfully added to cart", true));
         }
 
         // DELETE: api/wishlist/remove/{id}
@@ -66,11 +66,11 @@ namespace BK.API.Controllers
             try
             {
                 await _wishlistService.RemoveFromWishlistAsync(user.Id, id);
-                return Ok(new Response(  "Item successfully removed from wishlist" ));
+                return Ok(new Response("Item successfully removed from cart"));
             }
             catch (Exception ex)
             {
-                return BadRequest(new Response(ex.Message) );
+                return BadRequest(new Response(ex.Message));
             }
         }
 
@@ -83,11 +83,11 @@ namespace BK.API.Controllers
             try
             {
                 await _wishlistService.UpdateWishlistItemAsync(user.Id, id, item.Quantity); 
-                return Ok(new Response("Wishlist item updated successfully"));
+                return Ok(new Response("Cart item updated successfully"));
             }
             catch (Exception ex)
             {
-                return BadRequest(new Response( ex.Message ,false));
+                return BadRequest(new Response(ex.Message, false));
             }
         }
 
@@ -98,7 +98,7 @@ namespace BK.API.Controllers
             var user = await _userManager.GetUserAsync(User); // Get the logged-in user's ID
 
             await _wishlistService.ClearWishlistAsync(user.Id);
-            return Ok(new Response( "Wishlist cleared successfully" ));
+            return Ok(new Response("Cart cleared successfully"));
         }
     }
 }

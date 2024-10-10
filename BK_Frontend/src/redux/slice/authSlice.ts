@@ -23,7 +23,7 @@ const authSlice = createSlice({
       const decode = jwtDecode<Global.DecodedToken>(action.payload);
       const user: Global.UserData = {
         role: decode[tokenFields.role as keyof Global.DecodedToken],
-        id: decode[tokenFields.id as keyof Global.DecodedToken][1],
+        id: decode[tokenFields.id as keyof Global.DecodedToken],
         email: decode[tokenFields.email as keyof Global.DecodedToken],
       };
 

@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 const tokenFields = {
   role: "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
   id: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
-  email: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+  userName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
 };
 var ex_data = localStorage.getItem("user");
 var data: Global.InitialUser = ex_data ? JSON.parse(ex_data) : null;
@@ -24,9 +24,9 @@ const authSlice = createSlice({
       const user: Global.UserData = {
         role: decode[tokenFields.role as keyof Global.DecodedToken],
         id: decode[tokenFields.id as keyof Global.DecodedToken],
-        email: decode[tokenFields.email as keyof Global.DecodedToken],
+        userName: decode[tokenFields.userName as keyof Global.DecodedToken],
       };
-
+      console.log(user);
       state.status = true;
       state.token = action.payload;
       state.userData = user;

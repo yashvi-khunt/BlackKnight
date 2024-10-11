@@ -25,7 +25,7 @@ declare namespace Global {
   type UserData = {
     role: string;
     id: string;
-    email: string;
+    userName: string;
   };
 
   type InitialUser = {

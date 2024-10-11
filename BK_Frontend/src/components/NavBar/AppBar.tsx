@@ -113,6 +113,7 @@ export default function MiniDrawer() {
 
   const userStatus = useAppSelector((state) => state.auth.status);
   const userRole = useAppSelector((state) => state.auth?.userData?.role);
+  const userName = useAppSelector((state) => state.auth?.userData?.userName);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -205,7 +206,12 @@ export default function MiniDrawer() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: "flex" }}></Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box
+            sx={{ flexGrow: 0, display: "flex", alignItems: "center", gap: 1 }}
+          >
+            {userName && (
+              <Typography fontWeight={600}>{userName.toUpperCase()}</Typography>
+            )}
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar sx={{ bgcolor: "primary.main" }}>
                 <Person />

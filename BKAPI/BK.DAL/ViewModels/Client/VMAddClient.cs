@@ -15,6 +15,8 @@ public class VMAddClient
     
     [Required(ErrorMessage = "Mobile number is required.")]
     public string PhoneNumber { get; set; }
+    [Required(ErrorMessage = "Email is required.")]
+    public string Email { get; set; }
     
     public string? GSTNumber { get; set; }
     

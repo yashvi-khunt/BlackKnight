@@ -178,6 +178,21 @@ function ClientModal({
           )}
           <FormInputText
             control={control}
+            label="Email"
+            disabled={mode === "view"}
+            {...register("email", {
+              required: {
+                value: true,
+                message: "Email is required.",
+              },
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                message: "Please enter a valid email address.",
+              },
+            })}
+          />
+          <FormInputText
+            control={control}
             label="Phone"
             {...register("phoneNumber", {
               required: {

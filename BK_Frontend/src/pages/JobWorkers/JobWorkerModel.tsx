@@ -110,7 +110,7 @@ const JobWorkerModal: React.FC<JobWorkerModalProps> = ({
     console.log(jwData);
 
     if (mode === "add") {
-      addJobWorker(jwData as JobWorkerFormData);
+      addJobWorker(jwData as jobWorkerTypes.addJobWorker);
     } else if (mode === "edit") {
       updateJobWorker({ data: jwData, id: jobWorkerData?.id });
     }
@@ -212,6 +212,22 @@ const JobWorkerModal: React.FC<JobWorkerModalProps> = ({
             })}
             disabled={mode === "view"}
           />
+          <FormInputText
+            control={control}
+            label="Email"
+            disabled={mode === "view"}
+            {...register("email", {
+              required: {
+                value: true,
+                message: "Email is required.",
+              },
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                message: "Please enter a valid email address.",
+              },
+            })}
+          />
+
           <FormInputText
             control={control}
             label="Flute Rate"

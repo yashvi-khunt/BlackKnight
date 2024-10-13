@@ -44,6 +44,7 @@ declare namespace clientTypes {
   type addClient = {
     companyName: string;
     userName: string;
+    email: string;
     userPassword: string;
     phoneNumber: string;
     gstNumber?: string;
@@ -53,6 +54,7 @@ declare namespace clientTypes {
     companyName?: string;
     userName?: string;
     userPassword?: string;
+    email?: string;
     phoneNumber?: string;
     gstNumber?: string;
   };
@@ -62,6 +64,7 @@ declare namespace clientTypes {
     companyName: string;
     userName: string;
     userPassword: string;
+    email: string;
     phoneNumber: string;
     gstNumber?: string;
   };
@@ -81,6 +84,7 @@ declare namespace jobWorkerTypes {
     userName: string;
     userPassword: string;
     phoneNumber: string;
+    email: string;
     fluteRate: number;
     linerRate?: number;
     gstNumber?: string;
@@ -91,6 +95,7 @@ declare namespace jobWorkerTypes {
     userName?: string;
     userPassword?: string;
     phoneNumber?: string;
+    email?: string;
     fluteRate?: number;
     linerRate?: number;
     gstNumber?: string;
@@ -102,6 +107,7 @@ declare namespace jobWorkerTypes {
     userName: string;
     userPassword: string;
     phoneNumber: string;
+    email: string;
     fluteRate: number;
     linerRate: number;
     gstNumber: string;

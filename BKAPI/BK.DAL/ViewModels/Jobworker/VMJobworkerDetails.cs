@@ -8,6 +8,7 @@ public class VMJobworkerDetails
     public string PhoneNumber { get; set; }
     public string UserPassword { get; set; }
     public string? GSTNumber { get; set; }
+    public string Email { get; set; }
     public double FluteRate { get; set; }
     public double? LinerRate { get; set; }
 }

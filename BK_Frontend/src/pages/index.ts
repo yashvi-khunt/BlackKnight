@@ -6,5 +6,5 @@ export { default as OrderDetails } from "./Orders/OrderDetails";
 export { default as Products } from "./Products/Products";
 export { default as AddEditProducts } from "./Products/AddEditProducts";
 export { default as ProductDetails } from "./Products/ProductDetails";
-export { default as Login } from "./Login";
+export { default as Login } from "./Auth/Login";
 export { default as ProductEditPage } from "./Products/ProductEditPage";

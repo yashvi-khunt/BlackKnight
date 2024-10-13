@@ -1,0 +1,24 @@
+using System.Text;
+
+namespace BK.BLL.Helper;
+
+public class EmailTemplate
+{
+    public static string PasswordResetMail(string userName, string resetLink)
+    {
+        var message = new StringBuilder();
+
+        message.AppendFormat(@"<html>
+                    <head>
+                        <title>Password Reset Mail</title>
+                    </head>
+                    <body>
+                        <p>Hi {0},</p>
+                        <p>In order to change your password, you need to click on the below link.</p>
+                        <p>This link will redirect you to the password reset page <a href='{1}'>Click here</a>.</p>
+                        <p>If you did not sign up for this account, you can ignore this email and the account will be deleted.</p>
+                    </body>
+                    </html>", userName, resetLink);
+        return message.ToString();
+    }
+}

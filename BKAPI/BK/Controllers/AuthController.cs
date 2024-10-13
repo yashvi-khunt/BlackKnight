@@ -2,6 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BK.BLL.Helper;
+using BK.BLL.Repositories;
+using BK.DAL.Context;
 using BK.DAL.Models;
 using BK.DAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -20,13 +22,15 @@ public class AuthController : ControllerBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
     private readonly ILogger _logger;
+    private readonly IEmailService _emailService;
 
     public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration,
-        ILogger logger)
+        ILogger logger, IEmailService service)
     {
         _userManager = userManager;
         _configuration = configuration;
         _logger = logger;
+        _emailService = service;
     }
     
     [HttpPost]
@@ -93,6 +97,86 @@ public class AuthController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new Response(ex.Message, false));
         }
     }
+    
+    
+    [HttpPost("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword([FromBody] VMForgotPassword model)
+    {
+        _logger.Information("ForgotPassword request for username {UserName}", model.UserName);
+
+        // Fetch user by username
+        var user = await _userManager.FindByNameAsync(model.UserName);
+        if (user == null) 
+        {
+            _logger.Warning("ForgotPassword failed: User not found for username {UserName}", model.UserName);
+            return StatusCode(StatusCodes.Status202Accepted, new Response("If the username exists, you will receive a reset password link.", false));
+        }
+
+        try
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        
+            // Reset link sent to the user's registered email
+            var resetLink = $"http://api.synqron.in/auth/reset-password?userEmail={user.Email}&token={token}";
+
+            var emailTemplate = EmailTemplate.PasswordResetMail(user.UserName, resetLink);
+
+            MailRequest mailRequest = new MailRequest()
+            {
+                RecipientEmail = user.Email,  // Send to user's email
+                Subject = "Password Reset Mail",
+                Body = emailTemplate,
+            };
+
+            // Assuming you have an IEmailService to send emails.
+            await _emailService.SendEmailAsync(mailRequest);
+
+            _logger.Information("Password reset email sent to {Email} for username {UserName}", user.Email, model.UserName);
+            return Ok(new Response("Password reset email sent successfully."));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Exception while processing ForgotPassword for username {UserName}", model.UserName);
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response("Something went wrong. Please try again.", false));
+        }
+    }
+
+
+[HttpPost("ResetPassword")]
+public async Task<IActionResult> ResetPassword([FromBody] VMResetPassword model)
+{
+    _logger.Information("ResetPassword attempt for email {Email}", model.Email);
+
+    var user = await _userManager.FindByEmailAsync(model.Email);
+    if (user == null) 
+    {
+        _logger.Warning("ResetPassword failed: User not found for email {Email}", model.Email);
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response("Invalid request.", false));
+    }
+
+    try
+    {
+        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+
+        if (result.Succeeded)
+        {
+            _logger.Information("Password reset successfully for {Email}", model.Email);
+            return Ok(new Response("Password reset successfully.", true));
+        }
+        else
+        {
+            var message = string.Join("; ", result.Errors.Select(e => e.Description));
+            _logger.Warning("Password reset failed for {Email}: {ErrorMessage}", model.Email, message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response(message, false));
+        }
+    }
+    catch (Exception ex)
+    {
+        _logger.Error(ex, "Exception while resetting password for {Email}", model.Email);
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response("Something went wrong. Please try again.", false));
+    }
+}
+
     
     private string GenerateJwtToken(ApplicationUser user, IList<string> userRole)
     {

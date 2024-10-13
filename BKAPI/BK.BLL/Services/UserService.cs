@@ -119,6 +119,7 @@ public class UserService : IUserService
         {
             user.CompanyName = updateClient.CompanyName ?? user.CompanyName;
             user.UserName = updateClient.UserName ?? user.UserName;
+            user.Email = updateClient.Email ?? user.Email;
             if (updateClient.UserPassword != null)
             {
                 user.UserPassword = updateClient.UserPassword;
@@ -170,6 +171,7 @@ public class UserService : IUserService
             UserName = client.UserName,
             PhoneNumber = client.PhoneNumber,
             UserPassword = client.UserPassword,
+            Email = client.Email,
             GSTNumber = client.GSTNumber
         }).ToList();
 
@@ -228,6 +230,7 @@ public class UserService : IUserService
         {
             user.CompanyName = updateJobworker.CompanyName ?? user.CompanyName;
             user.UserName = updateJobworker.UserName ?? user.UserName;
+            user.Email = updateJobworker.Email ?? user.Email;
             if (updateJobworker.UserPassword != null)
             {
                 user.UserPassword = updateJobworker.UserPassword;

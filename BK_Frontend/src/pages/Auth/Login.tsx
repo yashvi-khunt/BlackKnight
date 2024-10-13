@@ -8,15 +8,16 @@ import {
   Link,
   CircularProgress,
 } from "@mui/material";
-import bgImg from "../assets/LoginBG.png";
-import Logo from "../assets/Logo.png";
+import bgImg from "../../assets/LoginBG.png";
+import Logo from "../../assets/Logo.png";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { FormInputText, FormInputPassword } from "../components/form";
-import { useAppDispatch } from "../redux/hooks";
+
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../redux/api/authApi";
-import { login } from "../redux/slice/authSlice";
+import { FormInputText, FormInputPassword } from "../../components/form";
+import { useLoginMutation } from "../../redux/api/authApi";
+import { useAppDispatch } from "../../redux/hooks";
+import { login } from "../../redux/slice/authSlice";
 
 function Login() {
   const { handleSubmit, register, control } = useForm();

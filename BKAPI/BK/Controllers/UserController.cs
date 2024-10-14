@@ -1,3 +1,4 @@
+using AutoMapper;
 using BK.BLL.Helper;
 using BK.BLL.Repositories;
 using BK.DAL.Models;
@@ -104,17 +105,17 @@ public class UserController : ControllerBase
         if (await _userManager.IsInRoleAsync(user, "Admin"))
         {
             var adminDetails = await _userService.GetAdminDetails(userId);
-            return Ok(adminDetails);
+            return Ok(new {profile=adminDetails,userRole = "Admin"});
         }
         else if (await _userManager.IsInRoleAsync(user, "Client"))
         {
             var clientDetails = await _userService.GetClientById(user.UserName);
-            return Ok(clientDetails);
+            return Ok(new {profile=clientDetails,userRole = "Client"});
         }
-        else if (await _userManager.IsInRoleAsync(user, "JobWorker"))
+        else if (await _userManager.IsInRoleAsync(user, "JobWorker "))
         {
             var jobworkerDetails = await _userService.GetJobworkerById(user.UserName);
-            return Ok(jobworkerDetails);
+            return Ok(new {profile=jobworkerDetails,userRole = "JobWorker"});
         }
 
         return Unauthorized("User role not recognized");

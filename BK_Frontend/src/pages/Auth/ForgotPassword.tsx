@@ -40,7 +40,8 @@ function ForgotPassword() {
   };
 
   useEffect(() => {
-    if (data?.success) navigate(`/sent-password-email?email=${edata.email}`);
+    if (data?.success)
+      navigate(`/auth/sent-password-email?email=${edata.email}`);
   }, [data?.data]);
 
   useEffect(() => {
@@ -105,11 +106,11 @@ function ForgotPassword() {
                 })}
               />
             </Grid>
-            {errors.userName && (
+            {/* {errors.userName && (
               <Grid item xs={12} textAlign="center" color="red">
                 {errors.userName.message.toString()}
               </Grid>
-            )}
+            )} */}
           </Grid>
 
           <Button

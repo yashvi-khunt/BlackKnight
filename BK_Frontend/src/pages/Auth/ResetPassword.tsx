@@ -46,7 +46,7 @@ function ResetPassword() {
     if ((error as any)?.data && !(error as any).data.success) {
       dispatch(
         openSnackbar({
-          severity: "(error as any)",
+          severity: "error",
           message: (error as any).data.message,
         })
       );
@@ -99,7 +99,8 @@ function ResetPassword() {
                   pattern: {
                     value:
                       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@+._-])[a-zA-Z@+._-\d]{8,}$/,
-                    message: "Password must meet the criteria.",
+                    message:
+                      "Password should have atleast one uppercase,one lowercase, one special character and should be of the minimum length 8.",
                   },
                 })}
                 label="New Password"
@@ -116,11 +117,11 @@ function ResetPassword() {
                 label="Confirm Password"
               />
             </Grid>
-            {errors.password && (
+            {/* {errors.password && (
               <Grid item xs={12} textAlign="center" color="red">
                 {errors.password.message.toString()}
               </Grid>
-            )}
+            )} */}
           </Grid>
           <Button
             type="submit"

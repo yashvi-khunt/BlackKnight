@@ -156,7 +156,7 @@ function Login() {
           </Box>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/forgot-password" variant="body2">
+              <Link href="/auth/forgot-password" variant="body2">
                 Forgot password?
               </Link>
             </Grid>

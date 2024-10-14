@@ -9,7 +9,7 @@ declare namespace authTypes {
     token: stirng;
   };
 
-  type forgotPasswordParams = { email: stirng };
+  type forgotPasswordParams = { userName: stirng };
 
   type resetPasswordParams = {
     email: string;

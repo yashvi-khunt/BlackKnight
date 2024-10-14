@@ -26,7 +26,7 @@ function ForgotPassword() {
   } = useForm();
   const navigate = useNavigate();
   const [edata, setData] = useState<authTypes.forgotPasswordParams>({
-    email: "",
+    userName: "",
   });
 
   const [forgotPasswordApi, { data, error, isLoading }] =
@@ -41,7 +41,7 @@ function ForgotPassword() {
 
   useEffect(() => {
     if (data?.success)
-      navigate(`/auth/sent-password-email?email=${edata.email}`);
+      navigate(`/auth/sent-password-email?userName=${edata.userName}`);
   }, [data?.data]);
 
   useEffect(() => {

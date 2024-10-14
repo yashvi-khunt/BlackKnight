@@ -157,9 +157,12 @@ public async Task<IActionResult> ResetPassword([FromBody] VMResetPassword model)
     try
     {
         var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+        user.UserPassword = model.NewPassword;
+         
 
         if (result.Succeeded)
         {
+            await _userManager.UpdateAsync(user);
             _logger.Information("Password reset successfully for {Email}", model.Email);
             return Ok(new Response("Password reset successfully.", true));
         }

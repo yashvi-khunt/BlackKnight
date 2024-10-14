@@ -6,12 +6,12 @@ import Logo from "../../assets/Logo.png";
 
 function SendEmail() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchParams.get("email")) {
-      setEmail(searchParams.get("email"));
+    if (searchParams.get("userName")) {
+      setUserName(searchParams.get("userName"));
 
       searchParams.delete("email");
       setSearchParams(searchParams);
@@ -51,17 +51,30 @@ function SendEmail() {
             Password Reset Request Sent!
           </Typography>
           <Typography variant="body1">
-            We have sent a password reset link to: <strong>{email}</strong>
+            Hii <strong>{userName}</strong>, we have sent a password reset link
+            to your registered email.
           </Typography>
         </Box>
-        <Button
-          component={Link}
-          to="/auth/login"
-          variant="contained"
-          sx={{ mt: 4 }}
-        >
-          Back to Login
-        </Button>
+        <Box display={"flex"} justifyContent={"center"} gap={2}>
+          <Button
+            fullWidth
+            component={Link}
+            to="/auth/login"
+            variant="contained"
+            sx={{ mt: 4 }}
+          >
+            Open Mail
+          </Button>
+          <Button
+            fullWidth
+            component={Link}
+            to="/auth/login"
+            variant="contained"
+            sx={{ mt: 4 }}
+          >
+            Back to Login
+          </Button>
+        </Box>
       </Paper>
     </Box>
   );

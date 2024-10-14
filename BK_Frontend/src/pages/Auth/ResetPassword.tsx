@@ -97,7 +97,8 @@ function ResetPassword() {
                 {...register("password", {
                   required: "Password is required.",
                   pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@+._-]).{8,}$/,
+                    value:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@+._-])[a-zA-Z@+._-\d]{8,}$/,
                     message: "Password must meet the criteria.",
                   },
                 })}

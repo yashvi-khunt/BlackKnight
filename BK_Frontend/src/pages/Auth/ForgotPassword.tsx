@@ -13,6 +13,7 @@ import {
   Button,
   CircularProgress,
   Container,
+  Link,
 } from "@mui/material";
 import bgImg from "../../assets/LoginBG.png";
 import Logo from "../../assets/Logo.png";
@@ -110,17 +111,26 @@ function ForgotPassword() {
               </Grid>
             )}
           </Grid>
+
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            sx={{ mt: 3 }}
+            sx={{ mt: 3, mb: 2 }}
             disabled={isLoading}
           >
-            Request New Password
+            Submit
             {isLoading && <CircularProgress size={24} sx={{ ml: 2 }} />}
           </Button>
+
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/auth/login" variant="body2">
+                Back To Login?
+              </Link>
+            </Grid>
+          </Grid>
         </Container>
       </Paper>
     </Box>

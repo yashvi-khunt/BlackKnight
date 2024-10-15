@@ -19,6 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ProductImage> Images { get; set; }
     
     public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<Device> Devices { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     

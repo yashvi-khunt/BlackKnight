@@ -67,6 +67,8 @@ namespace BKAPI
             builder.Services.AddScoped<IBrandService, BrandService>();
             builder.Services.AddTransient<IPaperTypeService, PaperTypeService>();
             builder.Services.AddTransient<IWishlistService,WishlistService>();
+            builder.Services.AddTransient<IDeviceService, DeviceService>();
+            builder.Services.AddTransient<INotficationService,NotficationService>();
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 

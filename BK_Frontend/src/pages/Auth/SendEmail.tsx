@@ -59,7 +59,8 @@ function SendEmail() {
           <Button
             fullWidth
             component={Link}
-            to="/auth/login"
+            to="https://mail.google.com"
+            target="_blank"
             variant="contained"
             sx={{ mt: 4 }}
           >

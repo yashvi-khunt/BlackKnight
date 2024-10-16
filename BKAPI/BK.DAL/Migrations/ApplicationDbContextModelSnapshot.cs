@@ -102,18 +102,18 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0b10405c-154d-4e5c-b2c4-f1c9287d1d0e",
+                            Id = "7ee3c0fd-f9aa-4586-b60b-3378f59a8a5a",
                             AccessFailedCount = 0,
                             CompanyName = "Black Knight Enterprise",
-                            ConcurrencyStamp = "6791210f-d2b8-4860-86c6-517b4aae5647",
-                            CreatedDate = new DateTime(2024, 10, 15, 12, 13, 24, 954, DateTimeKind.Local).AddTicks(440),
+                            ConcurrencyStamp = "04bf1dbe-c5e9-401c-bdc2-2431009fb786",
+                            CreatedDate = new DateTime(2024, 10, 17, 0, 31, 34, 327, DateTimeKind.Local).AddTicks(7350),
                             EmailConfirmed = false,
                             IsActivated = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMT8U23uOd3PoPXiyY095sgfiZVSmsO8WFGyMCAPw/ror/76oG+IDRiCk4MwGJ0IXA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO0ifxa7qSwqxH6s3MYZgMdtF0tZN7I/f082wdyiCGiL0oSjJL6WVWh2en4xogIJCw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "db0cb004-88bd-43d9-8aa5-562a62c8637a",
+                            SecurityStamp = "e2178472-78e0-4676-a271-5e2162e81e4c",
                             TwoFactorEnabled = false,
                             UserName = "admin",
                             UserPassword = "Admin@123"
@@ -176,10 +176,6 @@ namespace BK.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DeviceToken")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Platform")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -572,19 +568,19 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fb113d49-86aa-4040-8875-2aecd5e60d94",
+                            Id = "05be2af9-4c2b-4938-a67f-e050882f355b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "dbebdad8-5dad-49be-b1da-fb31a867622c",
+                            Id = "82f5b5a3-b14f-46a8-9ccb-dc09f365891b",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "709a225b-f195-4d12-b7a5-a3fbc1d1480e",
+                            Id = "be40b1ed-f30a-4fdd-ac15-191c091d795a",
                             Name = "JobWorker",
                             NormalizedName = "JOBWORKER"
                         });
@@ -675,8 +671,8 @@ namespace BK.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "0b10405c-154d-4e5c-b2c4-f1c9287d1d0e",
-                            RoleId = "fb113d49-86aa-4040-8875-2aecd5e60d94"
+                            UserId = "7ee3c0fd-f9aa-4586-b60b-3378f59a8a5a",
+                            RoleId = "05be2af9-4c2b-4938-a67f-e050882f355b"
                         });
                 });
 

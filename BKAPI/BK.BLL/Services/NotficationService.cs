@@ -11,12 +11,15 @@ public class NotficationService : INotficationService
     public NotficationService()
     {
         // Initialize Firebase using the relative path to the service account JSON
-        var serviceAccountPath = Path.Combine(Directory.GetCurrentDirectory(), "serviceAccount.json");
-
-        FirebaseApp.Create(new AppOptions()
+        if (FirebaseApp.DefaultInstance == null)
         {
-            Credential = GoogleCredential.FromFile(serviceAccountPath),
-        });
+            var serviceAccountPath = Path.Combine(Directory.GetCurrentDirectory(), "serviceAccount.json");
+
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile(serviceAccountPath),
+            });
+        }
     }
 
     public async Task<string> SendNotificationAsync(string token, string title, string body)

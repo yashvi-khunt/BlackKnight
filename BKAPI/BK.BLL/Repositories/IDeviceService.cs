@@ -7,5 +7,6 @@ public interface IDeviceService
 {
     Task RegisterDeviceAsync(Device device);
     Task<Device> GetDeviceByTokenAsync(string token);
+    Task<IEnumerable<Device>> GetDevicesByUserIdAsync(string userId);
     Task RemoveDeviceAsync(Device device);
 }

@@ -42,7 +42,6 @@ public class NotificationController : ControllerBase
         var device = new Device
         {
             DeviceToken = model.DeviceToken,
-            Platform = model.Platform,
             UserId = user.Id,
             RegisteredAt = DateTime.Now
         };
@@ -53,7 +52,6 @@ public class NotificationController : ControllerBase
         {
             // Update the existing device registration
             existingDevice.RegisteredAt = DateTime.Now;
-            existingDevice.Platform = model.Platform;
             _context.Devices.Update(existingDevice);
         }
         else

@@ -14,6 +14,8 @@ namespace BK.DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            
+
             migrationBuilder.CreateTable(
                 name: "Devices",
                 columns: table => new
@@ -21,7 +23,6 @@ namespace BK.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     DeviceToken = table.Column<string>(type: "longtext", nullable: false),
-                    Platform = table.Column<string>(type: "longtext", nullable: false),
                     UserId = table.Column<string>(type: "varchar(255)", nullable: false),
                     RegisteredAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -37,7 +38,6 @@ namespace BK.DAL.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
-            
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_UserId",
                 table: "Devices",

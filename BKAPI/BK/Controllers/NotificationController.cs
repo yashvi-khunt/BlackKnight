@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
 
 namespace BKAPI.Controllers;
-
+[Route("api")]
 [ApiController]
 public class NotificationController : ControllerBase
 {

@@ -433,7 +433,7 @@ export default function MiniDrawer() {
       <AdminModal
         open={openAdminModal}
         handleClose={handleCloseAdminModal}
-        adminData={data && data.profile}
+        adminData={data && data.data.profile}
         mode="edit"
       />
 
@@ -453,14 +453,16 @@ export default function MiniDrawer() {
       <ClientModal
         open={openClientModal}
         handleClose={handleCloseClientModal}
-        clientData={data && data.profile}
+        clientData={data && data.data.profile}
         mode="edit" // or "view", based on the context
         data={null}
       />
       <JobWorkerModal
         open={openJobWorkerModal}
         handleClose={handleCloseJobWorkerModal}
-        jobWorkerData={data && (data.profile as jobWorkerTypes.getJobWorkers)}
+        jobWorkerData={
+          data && (data.data.profile as jobWorkerTypes.getJobWorkers)
+        }
         mode={"edit"}
       />
     </Box>

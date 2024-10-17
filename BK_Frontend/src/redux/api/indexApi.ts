@@ -26,15 +26,13 @@ export const indexApi = createApi({
     "Wishlist",
   ],
   endpoints: (builder) => ({
-    getProfile: builder.query<{ profile: object; userRole: Global.Role }, null>(
-      {
-        query: () => ({
-          method: "GET",
-          url: "User/Profile",
-        }),
-        providesTags: ["Admin", "Client", "JobWorker"],
-      }
-    ),
+    getProfile: builder.query<authTypes.ProfileProps, null>({
+      query: () => ({
+        method: "GET",
+        url: "User/Profile",
+      }),
+      providesTags: ["Admin", "Client", "JobWorker"],
+    }),
     updateAdmin: builder.mutation<Global.apiResponse<string>, object>({
       query: (data) => ({
         method: "PUT",

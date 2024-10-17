@@ -38,6 +38,9 @@ declare namespace authTypes {
     userId: string;
     roleId: string;
   };
+  type ProfileProps = Omit<Global.apiResponse, "data"> & {
+    data: { profile: object; userRole: Global.Role };
+  };
 }
 
 declare namespace clientTypes {

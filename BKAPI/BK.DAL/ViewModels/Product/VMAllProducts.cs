@@ -7,6 +7,8 @@ public class VMAllProducts
     public string BoxName { get; set; }
     public string ClientName { get; set; }
     public string JobWorkerName { get; set; }
+    public int BrandId { get; set; }
+    public string BrandName { get; set; }
     public double JobWorkerPrice { get; set; }
     public double ProfitPercent { get; set; }
     public double FinalRate { get; set; }

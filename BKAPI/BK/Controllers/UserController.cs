@@ -99,26 +99,26 @@ public class UserController : ControllerBase
             
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(new Response("User not found",false));
         }
 
         if (await _userManager.IsInRoleAsync(user, "Admin"))
         {
             var adminDetails = await _userService.GetAdminDetails(userId);
-            return Ok(new {profile=adminDetails,userRole = "Admin"});
+            return Ok(new Response<object>(new {profile=adminDetails,userRole = "Admin"}));
         }
         else if (await _userManager.IsInRoleAsync(user, "Client"))
         {
             var clientDetails = await _userService.GetClientById(user.UserName);
-            return Ok(new {profile=clientDetails,userRole = "Client"});
+            return Ok(new Response<object>(new {profile=clientDetails,userRole = "Client"}));
         }
-        else if (await _userManager.IsInRoleAsync(user, "JobWorker "))
+        else if (await _userManager.IsInRoleAsync(user, "JobWorker"))
         {
             var jobworkerDetails = await _userService.GetJobworkerById(user.UserName);
-            return Ok(new {profile=jobworkerDetails,userRole = "JobWorker"});
+            return Ok(new Response<object>(new {profile=jobworkerDetails,userRole = "JobWorker"}));
         }
 
-        return Unauthorized("User role not recognized");
+        return Unauthorized(new Response("User role not recognized",false));
     }
 
     [HttpPost("Add-client")]

@@ -84,7 +84,7 @@ public class AuthController : ControllerBase
                 else
                 {
                     _logger.Error("Error changing password for user {UserName}", user.UserName);
-                    return StatusCode(500, "Something went wrong.");
+                    return StatusCode(500,new Response( "Something went wrong.",false));
                 }
 
             }

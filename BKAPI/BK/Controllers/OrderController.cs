@@ -51,7 +51,7 @@ public class OrderController:ControllerBase
         catch (Exception ex)
         {
             //_logger.LogError(ex, "An error occurred while getting all orders.");
-            return StatusCode(500, "Internal server error.");
+            return StatusCode(500, new Response("Internal server error.",false));
         }
     }
     [HttpGet("Dashboard")]
@@ -64,14 +64,14 @@ public class OrderController:ControllerBase
 
             if (result == null)
             {
-                return NotFound(new { message = "No orders found" });
+                return NotFound(new Response( "No orders found" ,false));
             }
 
             return Ok(new Response<object>(result, true, "Data loaded successfully"));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = ex.Message });
+            return StatusCode(500, new Response(   ex.Message ,false));
         }
     }
     

@@ -75,15 +75,32 @@ public class OrderController:ControllerBase
         }
     }
     
+    // [HttpPost]
+    // public async Task<IActionResult> AddOrder()
+    // {
+    //     // Assume the userId is obtained from the user claims or session
+    //     var user = await _userManager.GetUserAsync(User); // This assumes you're using Identity
+    //
+    //     try
+    //     {
+    //         await _orderService.AddOrderWithWishlist(user.Id);
+    //         return Ok(new Response("Orders added successfully."));
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         //_logger.LogError(ex, "An error occurred while adding the orders.");
+    //         return StatusCode(500, new Response("Internal server error."));
+    //     }
+    // }
+    
     [HttpPost]
-    public async Task<IActionResult> AddOrder()
+    public async Task<IActionResult> AddOrder([FromBody] List<int> cartItemIds = null)
     {
-        // Assume the userId is obtained from the user claims or session
-        var user = await _userManager.GetUserAsync(User); // This assumes you're using Identity
+        var user = await _userManager.GetUserAsync(User); // Assuming you're using Identity
 
         try
         {
-            await _orderService.AddOrderWithWishlist(user.Id);
+            await _orderService.AddOrderWithWishlist(user.Id, cartItemIds);
             return Ok(new Response("Orders added successfully."));
         }
         catch (Exception ex)

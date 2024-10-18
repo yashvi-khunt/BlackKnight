@@ -10,6 +10,6 @@ public interface IOrderService
         , string? sor, int page , int pageSize );
     Task<VMOrderDetails> GetOrderById(int id);
     Task<VMOrderDashboard> GetOrderDashboardData(string userId);
-    Task AddOrderWithWishlist(string userId);
+    Task AddOrderWithWishlist(string userId, List<int> cartItemIds);
     Task<bool> DeleteOrder(int id);
 }

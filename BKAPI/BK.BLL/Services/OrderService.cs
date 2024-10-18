@@ -219,25 +219,72 @@ public class OrderService : IOrderService
 
 
 
-    public async Task AddOrderWithWishlist(string userId)
+    // public async Task AddOrderWithWishlist(string userId)
+    // {
+    //     // Retrieve user's wishlist
+    //     var wishlistItems = await _context.CartItems
+    //         .Where(w => w.ClientId == userId)
+    //         .Include(w => w.Product)
+    //         .ThenInclude(p => p.Brand) // Include related Brand for BrandName
+    //         .Include(w => w.Product.TopPaperType) // Include related TopPaperType
+    //         .Include(w => w.Product.FlutePaperType) // Include related FlutePaperType
+    //         .Include(w => w.Product.BackPaperType).Include(w => w.Product.PrintType) // Include related BackPaperType
+    //         .Include(w => w.Product.JobWorker) // Include related JobWorker
+    //         .ToListAsync();
+    //
+    //     // Add wishlist items to the order
+    //     var orders = _mapper.Map<List<Order>>(wishlistItems);
+    //
+    //     foreach (var order in orders)
+    //     {
+    //         // Get product details from the mapped product in the order
+    //         var vmProduct = wishlistItems.First(w => w.ProductId == order.ProductId).Product;
+    //         var product = _mapper.Map<VMProductDetails>(vmProduct);
+    //
+    //         var newOrder = _mapper.Map<Order>(product);
+    //         newOrder.OrderDate = DateTime.UtcNow;
+    //         newOrder.IsCompleted = false;
+    //         newOrder.Quantity = order.Quantity;
+    //         newOrder.ClientId = vmProduct.Brand.ClientId;
+    //
+    //
+    //         // Add the order to the context
+    //         _context.Set<Order>().Add(newOrder);
+    //     }
+    //
+    //     // Clear the wishlist for the user
+    //     _context.CartItems.RemoveRange(wishlistItems);
+    //
+    //     // Save changes to the database
+    //     await _context.SaveChangesAsync();
+    // }
+
+    public async Task AddOrderWithWishlist(string userId, List<int> cartItemIds = null)
     {
-        // Retrieve user's wishlist
-        var wishlistItems = await _context.CartItems
-            .Where(w => w.ClientId == userId)
+        // Start by including all necessary relationships
+        var wishlistQuery = _context.CartItems
             .Include(w => w.Product)
-            .ThenInclude(p => p.Brand) // Include related Brand for BrandName
-            .Include(w => w.Product.TopPaperType) // Include related TopPaperType
-            .Include(w => w.Product.FlutePaperType) // Include related FlutePaperType
-            .Include(w => w.Product.BackPaperType).Include(w => w.Product.PrintType) // Include related BackPaperType
-            .Include(w => w.Product.JobWorker) // Include related JobWorker
-            .ToListAsync();
+            .ThenInclude(p => p.Brand)
+            .Include(w => w.Product.TopPaperType)
+            .Include(w => w.Product.FlutePaperType)
+            .Include(w => w.Product.BackPaperType)
+            .Include(w => w.Product.PrintType)
+            .Include(w => w.Product.JobWorker)
+            .Where(w => w.ClientId == userId); // Apply Where clause only after Include()
+
+        // If cartItemIds is provided, filter the items further
+        if (cartItemIds != null && cartItemIds.Any())
+        {
+            wishlistQuery = wishlistQuery.Where(w => cartItemIds.Contains(w.Id));
+        }
+
+        var wishlistItems = await wishlistQuery.ToListAsync();
 
         // Add wishlist items to the order
         var orders = _mapper.Map<List<Order>>(wishlistItems);
 
         foreach (var order in orders)
         {
-            // Get product details from the mapped product in the order
             var vmProduct = wishlistItems.First(w => w.ProductId == order.ProductId).Product;
             var product = _mapper.Map<VMProductDetails>(vmProduct);
 
@@ -247,18 +294,18 @@ public class OrderService : IOrderService
             newOrder.Quantity = order.Quantity;
             newOrder.ClientId = vmProduct.Brand.ClientId;
 
-
             // Add the order to the context
             _context.Set<Order>().Add(newOrder);
         }
 
-        // Clear the wishlist for the user
+        // Remove only the processed wishlist items from the cart
         _context.CartItems.RemoveRange(wishlistItems);
 
         // Save changes to the database
         await _context.SaveChangesAsync();
     }
-    
+
+
     public async Task<bool> DeleteOrder(int id)
     {
         var order = await _context.Orders.FindAsync(id);

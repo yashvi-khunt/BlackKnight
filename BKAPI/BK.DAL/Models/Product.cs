@@ -26,12 +26,12 @@ public class Product
     public int Back { get; set; }
     public double NoOfSheetPerBox { get; set; }
     [ForeignKey("PrintTypeId")]
-    public int PrintTypeId { get; set; }
+    public int? PrintTypeId { get; set; }
     public string? PrintingPlate { get; set; }
     public int Ply { get; set; }
     public double PrintRate { get; set; }
     public bool IsLamination { get; set; }
-    public int? DieCode { get; set; }
+    public string? DieCode { get; set; }
     [ForeignKey("JobWorkerId")]
     public int JobWorkerId { get; set; }
     [ForeignKey("LinerJobWorkerId")]

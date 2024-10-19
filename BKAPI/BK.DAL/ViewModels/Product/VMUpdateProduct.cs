@@ -23,7 +23,7 @@ public class VMUpdateProduct
     public int? Ply { get; set; }
     public double? PrintRate { get; set; }
     public bool? IsLamination { get; set; }
-    public int? DieCode { get; set; }
+    public string? DieCode { get; set; }
     public int? JobWorkerId { get; set; }
     public int? LinerJobWorkerId { get; set; }
     public double? ProfitPercent { get; set; }

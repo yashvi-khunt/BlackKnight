@@ -101,7 +101,7 @@ const AddEditProducts = ({ isEdit, productData }) => {
       backPaperTypeId: data.backPaperTypeId.value,
       jobWorkerId: data.jobWorkerId.value,
       linerJobWorkerId: data.linerJobWorkerId?.value || null,
-      printTypeId: data.printTypeId.value,
+      printTypeId: data.printTypeId?.value || null,
       images: images
         .map((image, idx) => ({ imagePath: image, isPrimary: idx === 0 }))
         .filter((image) => image.imagePath),
@@ -396,16 +396,17 @@ const AddEditProducts = ({ isEdit, productData }) => {
         </Grid>
         <Grid item xs={12} sm={3}>
           <SelectField
+            name="printTypeId"
             value={productData?.printTypeId}
             control={control}
             options={(printTypesData?.data as Global.EditableDDOptions[]) || []}
             label="Print Type"
-            {...register("printTypeId", {
-              required: {
-                value: true,
-                message: "Print type is required.",
-              },
-            })}
+            // {...register("printTypeId", {
+            //   required: {
+            //     value: true,
+            //     message: "Print type is required.",
+            //   },
+            //})}
           />
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -444,10 +445,10 @@ const AddEditProducts = ({ isEdit, productData }) => {
         </Grid>
         <Grid item xs={12} sm={3}>
           <FormInputText
-            type="number"
+            type="text"
             control={control}
             label="Die Code"
-            value={productData?.noOfSheetPerBox}
+            value={productData?.dieCode}
             placeholder="Enter Die Code"
             {...register("dieCode", {})}
           />

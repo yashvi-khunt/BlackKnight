@@ -12,6 +12,15 @@ import { useState } from "react";
 
 const Dashboard = () => {
   const { data, error, isLoading } = useGetOrderDashboardQuery({});
+  const [pendingPaginationModel, setPendingPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
+
+  const [completedPaginationModel, setCompletedPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
 
   if (isLoading) {
     return <Loader />;
@@ -211,16 +220,6 @@ const Dashboard = () => {
     //   flex: 1,
     // },
   ];
-
-  const [pendingPaginationModel, setPendingPaginationModel] = useState({
-    page: 0,
-    pageSize: 5,
-  });
-
-  const [completedPaginationModel, setCompletedPaginationModel] = useState({
-    page: 0,
-    pageSize: 5,
-  });
 
   // Separate handler for Pending Orders pagination
   const handlePendingPaginationModelChange = (model: GridPaginationModel) => {

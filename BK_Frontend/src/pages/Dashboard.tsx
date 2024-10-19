@@ -1,10 +1,14 @@
 import { useGetOrderDashboardQuery } from "../redux/api/orderApi";
 import FlashCard from "./FlashCard";
 import { Box, Typography, Grid } from "@mui/material";
-import Table from "../components/dynamicTable/DynamicTable";
+import Table, {
+  CustomNoRowsOverlay,
+} from "../components/dynamicTable/DynamicTable";
 import DefaultImage from "../assets/defaultBox.png";
-import { GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
 import Loader from "../components/Loader";
+import CustomPagination from "../components/dynamicTable/CustomPagination";
+import { useState } from "react";
 
 const Dashboard = () => {
   const { data, error, isLoading } = useGetOrderDashboardQuery({});
@@ -208,27 +212,27 @@ const Dashboard = () => {
     // },
   ];
 
+  const [pendingPaginationModel, setPendingPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
+
+  const [completedPaginationModel, setCompletedPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
+
+  // Separate handler for Pending Orders pagination
+  const handlePendingPaginationModelChange = (model: GridPaginationModel) => {
+    setPendingPaginationModel(model);
+  };
+
+  // Separate handler for Completed Orders pagination
+  const handleCompletedPaginationModelChange = (model: GridPaginationModel) => {
+    setCompletedPaginationModel(model);
+  };
+
   const flashCards = data?.data.flashCards || [];
-  const pendingOrders = data?.data?.orders?.pending || [];
-  const completedOrders = data?.data?.orders?.completed || [];
-
-  const pendingInfo: DynamicTable.TableProps = {
-    columns: columns,
-    rows: pendingOrders,
-    rowCount: pendingOrders.length,
-    isLoading: isLoading,
-    getRowHeight: () => "auto",
-    isHeight: false,
-  };
-
-  const completedInfo: DynamicTable.TableProps = {
-    columns: columns,
-    rows: completedOrders,
-    rowCount: completedOrders.length,
-    isLoading: isLoading,
-    getRowHeight: () => "auto",
-    isHeight: false,
-  };
 
   return (
     <Box>
@@ -240,13 +244,85 @@ const Dashboard = () => {
         ))}
       </Grid>
 
-      <Box sx={{ my: 4 }}>
+      <Box
+        sx={{
+          my: 4,
+          height: "800px",
+          // overflow: "hidden",
+          maxHeight: "800px",
+          display: "grid",
+        }}
+      >
         <Typography variant="h6">Pending Orders</Typography>
-        <Table {...pendingInfo} />
+        <DataGrid
+          pagination
+          columns={columns}
+          rows={data?.data?.orders?.pending || []}
+          loading={isLoading}
+          disableColumnResize
+          // rowCount={data?.data?.orders?.pending.length || 0}
+          pageSizeOptions={[5, 10, 25, 50, 100]}
+          slots={{
+            pagination: CustomPagination,
+            noRowsOverlay: CustomNoRowsOverlay,
+          }}
+          paginationModel={pendingPaginationModel}
+          onPaginationModelChange={handlePendingPaginationModelChange}
+          sx={{
+            fontSize: 17,
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontSize: "default",
+              overflow: "visible",
+              whiteSpace: "normal",
+              lineHeight: "normal",
+            },
+          }}
+          autoHeight={false}
+          disableColumnMenu={true}
+          getRowHeight={() => "auto"}
+          disableRowSelectionOnClick
+        />
       </Box>
       <Box sx={{ mb: 4 }}>
         <Typography variant="h6">Completed Orders</Typography>
-        <Table {...completedInfo} />
+        <Box
+          sx={{
+            mb: 4,
+            height:
+              data?.data?.orders?.completed.length === 0 ? "400px" : "800px",
+            // overflow: "hidden",
+            maxHeight: "800px",
+          }}
+        >
+          <DataGrid
+            pagination
+            columns={columns}
+            rows={data?.data?.orders?.completed || []}
+            loading={isLoading}
+            disableColumnResize
+            // rowCount={data?.data?.orders?.pending.length || 0}
+            pageSizeOptions={[5, 10, 25, 50, 100]}
+            slots={{
+              pagination: CustomPagination,
+              noRowsOverlay: CustomNoRowsOverlay,
+            }}
+            paginationModel={completedPaginationModel}
+            onPaginationModelChange={handleCompletedPaginationModelChange}
+            sx={{
+              fontSize: 17,
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontSize: "default",
+                overflow: "visible",
+                whiteSpace: "normal",
+                lineHeight: "normal",
+              },
+            }}
+            autoHeight={false}
+            disableColumnMenu={true}
+            getRowHeight={() => "auto"}
+            disableRowSelectionOnClick
+          />
+        </Box>
       </Box>
     </Box>
   );

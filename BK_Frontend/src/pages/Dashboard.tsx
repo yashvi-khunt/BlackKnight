@@ -243,50 +243,52 @@ const Dashboard = () => {
         ))}
       </Grid>
 
-      <Box
-        sx={{
-          my: 4,
-          height: "800px",
-          // overflow: "hidden",
-          maxHeight: "800px",
-          display: "grid",
-        }}
-      >
+      <Box sx={{ mb: 4 }}>
         <Typography variant="h6">Pending Orders</Typography>
-        <DataGrid
-          pagination
-          columns={columns}
-          rows={data?.data?.orders?.pending || []}
-          loading={isLoading}
-          disableColumnResize
-          // rowCount={data?.data?.orders?.pending.length || 0}
-          pageSizeOptions={[5, 10, 25, 50, 100]}
-          slots={{
-            pagination: CustomPagination,
-            noRowsOverlay: CustomNoRowsOverlay,
-          }}
-          paginationModel={pendingPaginationModel}
-          onPaginationModelChange={handlePendingPaginationModelChange}
+        <Box
           sx={{
-            fontSize: 17,
-            "& .MuiDataGrid-columnHeaderTitle": {
-              fontSize: "default",
-              overflow: "visible",
-              whiteSpace: "normal",
-              lineHeight: "normal",
-            },
+            my: 4,
+            height: "800px",
+            // overflow: "hidden",
+            maxHeight: "800px",
+            display: "grid",
           }}
-          autoHeight={false}
-          disableColumnMenu={true}
-          getRowHeight={() => "auto"}
-          disableRowSelectionOnClick
-        />
+        >
+          <DataGrid
+            pagination
+            columns={columns}
+            rows={data?.data?.orders?.pending || []}
+            loading={isLoading}
+            disableColumnResize
+            // rowCount={data?.data?.orders?.pending.length || 0}
+            pageSizeOptions={[5, 10, 25, 50, 100]}
+            slots={{
+              pagination: CustomPagination,
+              noRowsOverlay: CustomNoRowsOverlay,
+            }}
+            paginationModel={pendingPaginationModel}
+            onPaginationModelChange={handlePendingPaginationModelChange}
+            sx={{
+              fontSize: 17,
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontSize: "default",
+                overflow: "visible",
+                whiteSpace: "normal",
+                lineHeight: "normal",
+              },
+            }}
+            autoHeight={false}
+            disableColumnMenu={true}
+            getRowHeight={() => "auto"}
+            disableRowSelectionOnClick
+          />
+        </Box>
       </Box>
       <Box sx={{ mb: 4 }}>
         <Typography variant="h6">Completed Orders</Typography>
         <Box
           sx={{
-            mb: 4,
+            my: 4,
             height:
               data?.data?.orders?.completed.length === 0 ? "400px" : "800px",
             // overflow: "hidden",

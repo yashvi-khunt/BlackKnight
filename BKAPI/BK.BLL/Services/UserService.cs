@@ -65,6 +65,7 @@ public class UserService : IUserService
             UserName = addClient.UserName,
             UserPassword = addClient.UserPassword,
             PhoneNumber = addClient.PhoneNumber,
+            Email = addClient.Email,
             GSTNumber = addClient.GSTNumber ?? null
         };
 
@@ -198,6 +199,7 @@ public class UserService : IUserService
             CreatedDate = DateTime.Now,
             UserName = addJobworker.UserName,
             UserPassword = addJobworker.UserPassword,
+            Email = addJobworker.Email,
             PhoneNumber = addJobworker.PhoneNumber,
             GSTNumber = addJobworker.GSTNumber ?? null
         };

@@ -54,7 +54,7 @@ const JobWorkerModal: React.FC<JobWorkerModalProps> = ({
         phoneNumber: "",
         gstNumber: "",
         fluteRate: "",
-        linerRate: "",
+        linerRate: 0,
       });
     }
   }, [jobWorkerData, reset]);

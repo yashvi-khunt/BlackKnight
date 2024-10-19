@@ -39,7 +39,7 @@ public class VMProductDetails
     public string? DieCode { get; set; }
     public string? PrintTypeName { get; set; }
     public int? PrintTypeId { get; set; }
-    public string PrintingPlate { get; set; }
+    public string? PrintingPlate { get; set; }
     
     //price breakup
     public double TopPrice { get; set; }

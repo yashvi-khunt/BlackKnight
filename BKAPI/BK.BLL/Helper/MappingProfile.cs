@@ -81,7 +81,7 @@ public class MappingProfile : Profile
 
 
 
-        CreateMap<Order, VMOrderDetails>().ReverseMap();
+        CreateMap<Order, VMOrderDetails>().ForMember(dest=>dest.Images,opt=>opt.MapFrom(src=>src.Product.Images)).ReverseMap();
 
         CreateMap<PaperType, VMAddPaperType>().ReverseMap();
         CreateMap<PaperType, VMPaperTypeDetails>().ReverseMap();

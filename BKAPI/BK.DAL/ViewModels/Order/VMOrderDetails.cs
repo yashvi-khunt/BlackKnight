@@ -9,6 +9,7 @@ public class VMOrderDetails
     public float JobWorkerRate { get; set; }
     public float FinalRate { get; set; }
     public bool IsCompleted { get; set; }
+    public List<VMAddProductImage>? Images { get; set; }
     
     public string BoxName { get; set; }
 

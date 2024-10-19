@@ -116,7 +116,7 @@ public class OrderService : IOrderService
 
     public async Task<VMOrderDetails> GetOrderById(int id)
     {
-        var order = await _context.Orders
+        var order = await _context.Orders.Include(o => o.Product).ThenInclude(p => p.Images)
             .FirstOrDefaultAsync(o => o.Id == id);
         if (order == null)
         {

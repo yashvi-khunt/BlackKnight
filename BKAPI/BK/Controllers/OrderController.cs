@@ -132,5 +132,26 @@ public class OrderController:ControllerBase
             return StatusCode(500, new Response("Internal server error.", false));
         }
     }
+    
+    [HttpPut("{id}/complete")]
+    public async Task<IActionResult> MarkOrderAsCompleted(int id)
+    {
+        try
+        {
+            var result = await _orderService.MarkOrderAsCompleted(id);
+            if (!result)
+            {
+                return NotFound(new Response("Order not found.", false));
+            }
+
+            return Ok(new Response("Order marked as completed successfully.", true));
+        }
+        catch (Exception ex)
+        {
+            //_logger.LogError(ex, "An error occurred while marking the order as completed.");
+            return StatusCode(500, new Response("Internal server error.", false));
+        }
+    }
+
 
 }

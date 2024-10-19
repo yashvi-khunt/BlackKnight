@@ -12,4 +12,5 @@ public interface IOrderService
     Task<VMOrderDashboard> GetOrderDashboardData(string userId);
     Task AddOrderWithWishlist(string userId, List<int> cartItemIds);
     Task<bool> DeleteOrder(int id);
+    Task<bool> MarkOrderAsCompleted(int id);
 }

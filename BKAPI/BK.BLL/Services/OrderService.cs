@@ -320,6 +320,22 @@ public class OrderService : IOrderService
 
         return true; // Order successfully deleted
     }
+    
+    public async Task<bool> MarkOrderAsCompleted(int id)
+    {
+        var order = await _context.Orders.FindAsync(id);
+
+        if (order == null)
+        {
+            return false; // Order not found
+        }
+
+        order.IsCompleted = true;
+        await _context.SaveChangesAsync();
+
+        return true; // Order successfully marked as completed
+    }
+
 
 
 }

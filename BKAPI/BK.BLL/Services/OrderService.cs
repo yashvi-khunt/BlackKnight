@@ -260,6 +260,11 @@ public class OrderService : IOrderService
     // }
 
     public async Task AddOrderWithWishlist(string userId, List<int> cartItemIds = null)
+{
+    // Start a new transaction scope
+    using var transaction = await _context.Database.BeginTransactionAsync();
+
+    try
     {
         // Start by including all necessary relationships
         var wishlistQuery = _context.CartItems
@@ -285,7 +290,8 @@ public class OrderService : IOrderService
 
         foreach (var order in orders)
         {
-            var vmProduct = wishlistItems.First(w => w.ProductId == order.ProductId).Product;
+            var vmProduct = wishlistItems.FirstOrDefault(w => w.ProductId == order.ProductId).Product;
+            
             var product = _mapper.Map<VMProductDetails>(vmProduct);
 
             var newOrder = _mapper.Map<Order>(product);
@@ -298,12 +304,26 @@ public class OrderService : IOrderService
             _context.Set<Order>().Add(newOrder);
         }
 
-        // Remove only the processed wishlist items from the cart
+        // Save the orders to the database
+        await _context.SaveChangesAsync();
+
+        // If the order creation succeeds, remove the processed wishlist items from the cart
         _context.CartItems.RemoveRange(wishlistItems);
 
-        // Save changes to the database
+        // Save the removal changes to the database
         await _context.SaveChangesAsync();
+
+        // Commit the transaction
+        await transaction.CommitAsync();
     }
+    catch (Exception)
+    {
+        // Rollback the transaction in case of an error
+        await transaction.RollbackAsync();
+        throw;
+    }
+}
+
 
 
     public async Task<bool> DeleteOrder(int id)

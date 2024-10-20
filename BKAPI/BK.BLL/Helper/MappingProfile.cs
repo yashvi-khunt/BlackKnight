@@ -49,7 +49,36 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.JobWorkerPrice, opt => opt.MapFrom<JobWorkerPriceResolver>())
             .ForMember(dest => dest.FinalRate, opt => opt.MapFrom<FinalRateResolver>());
 
-
+          CreateMap<VMProductDetails, Order>()
+            .ForMember(dest=>dest.Id,opt=> opt.Ignore())
+            .ForMember(dest => dest.ProductId,
+                opt => opt.MapFrom(src => src.Id)) // Assuming Id in VMProductDetails maps to ProductId in Order
+            .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.BrandName))
+            .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.ClientId))
+            .ForMember(dest => dest.JobWorkerId, opt => opt.MapFrom(src => src.JobWorkerId))
+            .ForMember(dest => dest.ProfitPercent, opt => opt.MapFrom(src => src.ProfitPercent))
+            .ForMember(dest => dest.LinerJobworkerId, opt => opt.MapFrom(src => src.LinerJobworkerId))
+            .ForMember(dest => dest.TopPaperTypeName, opt => opt.MapFrom(src => src.TopPaperTypeName))
+            .ForMember(dest => dest.FlutePaperTypeName, opt => opt.MapFrom(src => src.FlutePaperTypeName))
+            .ForMember(dest => dest.BackPaperTypeName, opt => opt.MapFrom(src => src.BackPaperTypeName))
+            .ForMember(dest => dest.Top, opt => opt.MapFrom(src => src.Top))
+            .ForMember(dest => dest.Flute, opt => opt.MapFrom(src => src.Flute))
+            .ForMember(dest => dest.Back, opt => opt.MapFrom(src => src.Back))
+            .ForMember(dest => dest.Ply, opt => opt.MapFrom(src => src.Ply))
+            .ForMember(dest => dest.NoOfSheetPerBox, opt => opt.MapFrom(src => src.NoOfSheetPerBox))
+            .ForMember(dest => dest.DieCode, opt => opt.MapFrom(src => src.DieCode))
+            .ForMember(dest => dest.PrintTypeName, opt => opt.MapFrom(src => src.PrintTypeName))
+            .ForMember(dest => dest.PrintingPlate, opt => opt.MapFrom(src => src.PrintingPlate))
+            .ForMember(dest => dest.TopPrice, opt => opt.MapFrom(src => src.TopPrice))
+            .ForMember(dest => dest.FlutePrice, opt => opt.MapFrom(src => src.FlutePrice))
+            .ForMember(dest => dest.BackPrice, opt => opt.MapFrom(src => src.BackPrice))
+            .ForMember(dest => dest.PrintRate, opt => opt.MapFrom(src => src.PrintRate))
+            .ForMember(dest => dest.LaminationPrice, opt => opt.MapFrom(src => src.LaminationPrice))
+            .ForMember(dest => dest.JobWorkerRate,
+                opt => opt.MapFrom(src => (float)src.JobWorkerPrice)) // Cast to float if necessary
+            .ForMember(dest => dest.FinalRate,
+                opt => opt.MapFrom(src => (float)src.FinalRate)); // Cast to float if necessary
+        
 
         CreateMap<VMProductDetails, VMAllProducts>()
             .ForMember(dest => dest.PrimaryImage,

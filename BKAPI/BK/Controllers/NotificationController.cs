@@ -75,11 +75,12 @@ public class NotificationController : ControllerBase
         }
     }
 
-    [HttpGet("Notification/{userId}")]
-    public async Task<IActionResult> GetNotificationsForUser(string userId)
+    [HttpGet("Notification")]
+    public async Task<IActionResult> GetNotificationsForUser()
     {
+        var user = await _userManager.GetUserAsync(User);
         var notifications = await _context.Notifications
-            .Where(n => n.UserId == userId && n.CreatedAt >= DateTime.UtcNow.AddDays(-15))
+            .Where(n => n.UserId == user.Id && n.CreatedAt >= DateTime.UtcNow.AddDays(-15))
             .ToListAsync();
 
         return Ok(new Response<List<Notification>>(notifications));

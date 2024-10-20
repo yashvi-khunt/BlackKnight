@@ -20,6 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Device> Devices { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     

@@ -23,14 +23,16 @@ public class AuthController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly ILogger _logger;
     private readonly IEmailService _emailService;
+    private readonly INotficationService _notficationService;
 
     public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration,
-        ILogger logger, IEmailService service)
+        ILogger logger, IEmailService service,INotficationService notficationService)
     {
         _userManager = userManager;
         _configuration = configuration;
         _logger = logger;
         _emailService = service;
+        _notficationService = notficationService;
     }
     
     [HttpPost]
@@ -56,6 +58,8 @@ public class AuthController : ControllerBase
         var userRole = await _userManager.GetRolesAsync(user);
 
         var token = GenerateJwtToken(user, userRole);
+       await _notficationService.CreateAndSendNotificationAsync(user.Id,
+            "Login", "Logged in successfully");
         
         _logger.Information("User {UserName} logged in successfully", model.UserName);
         return StatusCode(200, new Response<string>(token, true, "Logged in successfully!"));

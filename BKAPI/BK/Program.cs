@@ -71,6 +71,8 @@ namespace BKAPI
             builder.Services.AddTransient<INotficationService,NotficationService>();
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+            builder.Services.AddHostedService<NotificationCleanupService>();
+
 
             //Identity
             builder.Services.AddDbContext<ApplicationDbContext>(

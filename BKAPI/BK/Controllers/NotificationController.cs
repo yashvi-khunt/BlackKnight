@@ -6,6 +6,7 @@ using BK.DAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ILogger = Serilog.ILogger;
 
 namespace BKAPI.Controllers;
@@ -74,5 +75,29 @@ public class NotificationController : ControllerBase
         }
     }
 
+    [HttpGet("Notification/{userId}")]
+    public async Task<IActionResult> GetNotificationsForUser(string userId)
+    {
+        var notifications = await _context.Notifications
+            .Where(n => n.UserId == userId && n.CreatedAt >= DateTime.UtcNow.AddDays(-15))
+            .ToListAsync();
+
+        return Ok(new Response<List<Notification>>(notifications));
+    }
+
+    [HttpPut("Notification/MarkAsRead/{id}")]
+    public async Task<IActionResult> MarkNotificationAsRead(int id)
+    {
+        var notification = await _context.Notifications.FindAsync(id);
+        if (notification == null)
+        {
+            return NotFound();
+        }
+
+        notification.IsRead = true;
+        await _context.SaveChangesAsync();
+
+        return Ok(new Response<Notification>(notification,true,"Notifications update successfully"));
+    }
 
 }

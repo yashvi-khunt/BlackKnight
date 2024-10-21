@@ -32,6 +32,8 @@ public class MappingProfile : Profile
         CreateMap<Product, VMAddProduct>().ReverseMap();
         CreateMap<ProductImage, VMAddProductImage>().ReverseMap();
 
+        CreateMap<Notification, VMGetNotification>();
+
         CreateMap<Product, VMProductDetails>()
             .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
             .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images))

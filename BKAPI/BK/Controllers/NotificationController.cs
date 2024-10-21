@@ -1,3 +1,4 @@
+using AutoMapper;
 using BK.BLL.Helper;
 using BK.BLL.Repositories;
 using BK.DAL.Context;
@@ -19,14 +20,16 @@ public class NotificationController : ControllerBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IDeviceService _deviceService;
     private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
     public NotificationController(ILogger logger, UserManager<ApplicationUser> userManager, IDeviceService 
-            deviceService,ApplicationDbContext context)
+            deviceService,ApplicationDbContext context,IMapper mapper)
     {
         _logger = logger;
         _userManager = userManager;
         _deviceService = deviceService;
         _context = context;
+        _mapper = mapper;
     }
     
     [Authorize]
@@ -82,8 +85,9 @@ public class NotificationController : ControllerBase
         var notifications = await _context.Notifications
             .Where(n => n.UserId == user.Id && n.CreatedAt >= DateTime.UtcNow.AddDays(-15))
             .ToListAsync();
+        var vmNotifications = _mapper.Map<List<VMGetNotification>>(notifications);
 
-        return Ok(new Response<List<Notification>>(notifications));
+        return Ok(new Response<List<VMGetNotification>>(vmNotifications));
     }
 
     [HttpPut("Notification/MarkAsRead/{id}")]
